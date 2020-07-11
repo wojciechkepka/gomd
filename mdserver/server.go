@@ -37,7 +37,7 @@ type MdServer struct {
 func NewMdServer(bind_host string, bind_port int, path, theme string) MdServer {
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		log.Println("Specified path doesn't exist. Using default.")
-		path = "."
+		path = "./"
 	}
 
 	files := LoadFiles(path)
@@ -100,6 +100,9 @@ func LoadFiles(path string) []MdFile {
 
 // Serves markdown file as html
 func (md *MdServer) serveFile(path string) string {
+	if md.path == "." {
+		path = path[1:]
+	}
 	for _, file := range md.Files {
 		if file.Path == path {
 			return file.AsHtml(md.IsDarkMode())
