@@ -34,6 +34,13 @@ $SASS ./sass/style.sass ./static/css/style.css
 # Write to .go file
 GO_FILE="./mdserver/html/css.go"
 
+command -v cleancss >/dev/null
+if [ $? != 0 ]
+then
+    echo "Build failed. No cleancss in \$PATH"
+    echo "Run 'npm install clean-css'"
+    exit 1
+
 echo -e "package html\n\n" > $GO_FILE
 
 for f in ./static/css/*
