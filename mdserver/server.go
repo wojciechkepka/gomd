@@ -72,9 +72,19 @@ func (md *MdServer) SetTheme(theme string) {
 	md.theme = theme
 }
 
-func (md *MdServer) ReloadFiles() {
+func (md *MdServer) WatchFiles() {
 	for {
-		md.Files = LoadFiles(md.path)
+		for i := 0; i < len(md.Files); i++ {
+			f := &md.Files[i]
+			if hasChanged, _ := f.HasModTimeChanged(); hasChanged {
+				log.Printf("File %v changed. Reloading.", f.Filename)
+				file, err := LoadMdFile(f.Path)
+				if err != nil {
+					log.Fatalf("Failed to reload file - %v", err)
+				}
+				*f = file
+			}
+		}
 		time.Sleep(SLEEP_DURATION * time.Millisecond)
 	}
 }
@@ -177,7 +187,7 @@ func (md *MdServer) Serve() {
 	http.HandleFunc(THEME_DARK_EP, md.DarkThemeHandler)
 	http.HandleFunc(THEME_LIGHT_EP, md.LightThemeHandler)
 	http.Handle(STATIC_EP, http.StripPrefix(STATIC_EP, fs))
-	go md.ReloadFiles()
+	go md.WatchFiles()
 	go md.OpenUrl()
 	log.Fatal(http.ListenAndServe(md.BindAddr(), nil))
 }
