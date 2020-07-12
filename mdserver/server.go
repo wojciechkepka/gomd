@@ -3,6 +3,7 @@ package mdserver
 import (
 	"fmt"
 	. "gomd/mdserver/html"
+	util "gomd/util"
 	"log"
 	"net/http"
 	"os"
@@ -10,7 +11,8 @@ import (
 	"time"
 )
 
-const RESCAN_SLEEP_DURATION = 1000
+const SLEEP_DURATION = 1000
+const HTTP = "http://"
 
 //################################################################################
 // Endpoints
@@ -50,8 +52,12 @@ func NewMdServer(bind_host string, bind_port int, path, theme string) MdServer {
 	}
 }
 
-func (md *MdServer) bindAddr() string {
+func (md *MdServer) BindAddr() string {
 	return fmt.Sprintf("%v:%v", md.bind_host, md.bind_port)
+}
+
+func (md *MdServer) Url() string {
+	return HTTP + md.BindAddr()
 }
 
 func (md *MdServer) IsDarkMode() bool {
@@ -69,8 +75,12 @@ func (md *MdServer) SetTheme(theme string) {
 func (md *MdServer) ReloadFiles() {
 	for {
 		md.Files = LoadFiles(md.path)
-		time.Sleep(RESCAN_SLEEP_DURATION * time.Millisecond)
+		time.Sleep(SLEEP_DURATION * time.Millisecond)
 	}
+}
+
+func (md *MdServer) OpenUrl() {
+	util.UrlOpen(md.Url())
 }
 
 //########################################
@@ -160,6 +170,9 @@ func (md *MdServer) LightThemeHandler(w http.ResponseWriter, r *http.Request) {
 
 // Mount all endpoints and serve...
 func (md *MdServer) Serve() {
+	log.Printf("Listening at %v", md.Url())
+	log.Printf("Directory: %v", md.path)
+	log.Printf("Theme: %v", md.theme)
 	fs := http.FileServer(http.Dir("./static"))
 	http.HandleFunc(FILELISTVIEW_EP, md.FileListViewHandler)
 	http.HandleFunc(FILEVIEW_EP, md.FileViewHandler)
@@ -167,5 +180,6 @@ func (md *MdServer) Serve() {
 	http.HandleFunc(THEME_LIGHT_EP, md.LightThemeHandler)
 	http.Handle(STATIC_EP, http.StripPrefix(STATIC_EP, fs))
 	go md.ReloadFiles()
-	log.Fatal(http.ListenAndServe(md.bindAddr(), nil))
+	go md.OpenUrl()
+	log.Fatal(http.ListenAndServe(md.BindAddr(), nil))
 }

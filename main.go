@@ -4,7 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"gomd/mdserver"
-	"log"
 	"strconv"
 )
 
@@ -24,9 +23,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	log.Printf("Listening at http://%v:%v", *bindAddr, *bindPort)
-	log.Printf("Directory: %v", *dir)
-	log.Printf("Theme: %v", *theme)
 	md := mdserver.NewMdServer(*bindAddr, port, *dir, *theme)
 
 	md.Serve()
