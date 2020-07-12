@@ -24,15 +24,15 @@ You can view the files in dark and light mode.
   - No setup required. `gomd` comes with all the batteries included, no need for static assets etc.
 - **Monitoring files**
   - `gomd` will monitor the directory for any changes and update the files whenever any file is modified or added.
-- **Code Highlight**
+- **Code Highlight && Selectable themes**
   - All blocks of code in most common languages will be color highlighted using [highlight.js](https://github.com/highlightjs/highlight.js).
+  - Choose from available themes: `solarized`, `gruvbox`
 
 
 ![highlight-demo](https://github.com/wojciechkepka/gomd/blob/master/highlight.gif)
 
 ## TODO
-- [ ] Add selectable themes for code highlight
-
+- [ ] Add more themes
 
 ## License
 [MIT](https://github.com/wojciechkepka/gomd/blob/master/LICENSE)
