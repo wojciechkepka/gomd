@@ -24,7 +24,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	log.Printf("Listening at %v:%v", *bindAddr, *bindPort)
+	log.Printf("Listening at http://%v:%v", *bindAddr, *bindPort)
 	log.Printf("Directory: %v", *dir)
 	log.Printf("Theme: %v", *theme)
 	md := mdserver.NewMdServer(*bindAddr, port, *dir, *theme)
