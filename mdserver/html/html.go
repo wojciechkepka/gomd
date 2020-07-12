@@ -57,6 +57,13 @@ function reload() {
 }
 `
 
+const HIGHLIGHT_JS = `
+<link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+`
+
 //################################################################################
 // Funcs
 
@@ -68,6 +75,7 @@ func HtmlHead(title, extra string) string {
 	return HEAD_BEG + NL +
 		META_CHARSET + META_VIEWPORT + NL +
 		HtmlTitle(title) + NL +
+		HIGHLIGHT_JS +
 		SCRIPT_BEG + JS + SCRIPT_END + NL +
 		extra + NL +
 		HEAD_END
@@ -107,9 +115,9 @@ func TopBarSlider(isDarkMode bool) string {
 
 func MdFileStyle(isDarkMode bool) string {
 	if isDarkMode {
-		return STYLE_BEG + FONTS + GHMD + GHMD_DARK + STYLE + NL + STYLE_END
+		return STYLE_BEG + FONTS + GHMD + GHMD_DARK + STYLE + GRUVBOX_DARK_HLJS + NL + STYLE_END
 	} else {
-		return STYLE_BEG + FONTS + GHMD + GHMD_LIGHT + STYLE + NL + STYLE_END
+		return STYLE_BEG + FONTS + GHMD + GHMD_LIGHT + STYLE + GRUVBOX_LIGHT_HLJS + NL + STYLE_END
 	}
 }
 
