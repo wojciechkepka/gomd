@@ -16,6 +16,7 @@ type MdFile struct {
 	Mod_time time.Time
 	Path     string
 	Filename string
+	Size     int64
 	Content  []byte
 }
 
@@ -37,22 +38,23 @@ func LoadMdFile(path string) (MdFile, error) {
 		Mod_time: info.ModTime(),
 		Path:     path,
 		Filename: file,
+		Size:     info.Size(),
 		Content:  content,
 	}, nil
 }
 
 // Checks modification time. If changed updates Mod_time
-func (f *MdFile) CheckModTime() error {
+func (f *MdFile) HasModTimeChanged() (bool, error) {
 	info, err := os.Stat(f.Path)
 	if err != nil {
-		return err
+		return false, err
 	}
 
 	if f.Mod_time != info.ModTime() {
-		f.Mod_time = info.ModTime()
+		return true, nil
 	}
 
-	return nil
+	return false, nil
 }
 
 // Creates HTML string with this file contents
