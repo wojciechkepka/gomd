@@ -57,13 +57,8 @@ func (f *MdFile) CheckModTime() error {
 
 // Creates HTML string with this file contents
 func (f *MdFile) AsHtml(isDarkMode bool) string {
-	body, style := TopBar(isDarkMode), LINK_STYLE_OTHER
+	body, style := TopBar(isDarkMode), MdFileStyle(isDarkMode)
 
-	if isDarkMode {
-		style += LINK_STYLE_GH_DARK
-	} else {
-		style += LINK_STYLE_GH_LIGHT
-	}
 	body += string(markdown.ToHTML(f.Content, nil, nil))
 	return Html(f.Filename, style, body)
 }

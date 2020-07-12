@@ -19,7 +19,6 @@ const FILELISTVIEW_EP = "/"
 const FILEVIEW_EP = "/file/"
 const THEME_DARK_EP = "/theme/dark"
 const THEME_LIGHT_EP = "/theme/light"
-const RESCAN_FILES_EP = "/rescan"
 const STATIC_EP = "/static/"
 
 //################################################################################
@@ -128,12 +127,7 @@ func (md *MdServer) filesBody() string {
 
 // Prepares full FileListView html
 func (md *MdServer) filesHtml() string {
-	body, style := TopBarSlider(md.IsDarkMode()), LINK_STYLE_OTHER
-	if md.IsDarkMode() {
-		style += LINK_STYLE_DARK
-	} else {
-		style += LINK_STYLE_LIGHT
-	}
+	body, style := TopBarSlider(md.IsDarkMode()), FileListViewStyle(md.IsDarkMode())
 	body += md.filesBody()
 	return Html(FILES_TITLE, style, body)
 }
@@ -163,9 +157,6 @@ func (md *MdServer) LightThemeHandler(w http.ResponseWriter, r *http.Request) {
 	md.SetTheme("light")
 	fmt.Fprintf(w, md.filesHtml())
 }
-func (md *MdServer) RescanHandler(w http.ResponseWriter, r *http.Request) {
-	md.ReloadFiles()
-}
 
 // Mount all endpoints and serve...
 func (md *MdServer) Serve() {
@@ -174,7 +165,6 @@ func (md *MdServer) Serve() {
 	http.HandleFunc(FILEVIEW_EP, md.FileViewHandler)
 	http.HandleFunc(THEME_DARK_EP, md.DarkThemeHandler)
 	http.HandleFunc(THEME_LIGHT_EP, md.LightThemeHandler)
-	http.HandleFunc(RESCAN_FILES_EP, md.RescanHandler)
 	http.Handle(STATIC_EP, http.StripPrefix(STATIC_EP, fs))
 	go md.ReloadFiles()
 	log.Fatal(http.ListenAndServe(md.bindAddr(), nil))

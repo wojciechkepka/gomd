@@ -8,12 +8,6 @@ const DOCTYPE = "<!DOCTYPE html>"
 const META_CHARSET = "<meta charset=\"utf-8\">"
 const META_VIEWPORT = "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">"
 
-const LINK_STYLE_LIGHT = "<link rel=\"stylesheet\" href=\"/static/css/style_light.css\">\n"
-const LINK_STYLE_DARK = "<link rel=\"stylesheet\" href=\"/static/css/style_dark.css\">\n"
-const LINK_STYLE_OTHER = "<link rel=\"stylesheet\" href=\"/static/css/other.css\">\n"
-const LINK_STYLE_GH_LIGHT = "<link rel=\"stylesheet\" href=\"/static/css/ghmd_light.css\">\n"
-const LINK_STYLE_GH_DARK = "<link rel=\"stylesheet\" href=\"/static/css/ghmd_dark.css\">\n"
-
 const HTML_BEG = "<html>"
 const HTML_END = "</html>"
 const BODY_BEG = "<body>"
@@ -31,6 +25,8 @@ const UL_BEG = "<ul>"
 const UL_END = "</ul>"
 const LI_BEG = "<li>"
 const LI_END = "</li>"
+const STYLE_BEG = "<style>"
+const STYLE_END = "</style>"
 
 const DARK_BG = "#1c1c1c"
 const LIGHT_BG = "#ffffff"
@@ -107,4 +103,21 @@ func TopBarSlider(isDarkMode bool) string {
 	} else {
 		return Div("top-bar", THEME_SLIDER_CHECKED)
 	}
+}
+
+func MdFileStyle(isDarkMode bool) string {
+	if isDarkMode {
+		return STYLE_BEG + FONTS + GHMD + GHMD_DARK + STYLE + NL + STYLE_END
+	} else {
+		return STYLE_BEG + FONTS + GHMD + GHMD_LIGHT + STYLE + NL + STYLE_END
+	}
+}
+
+func FileListViewStyle(isDarkMode bool) string {
+	if isDarkMode {
+		return STYLE_BEG + FONTS + FV_COMMON + FV_DARK + STYLE + NL + STYLE_END
+	} else {
+		return STYLE_BEG + FONTS + FV_COMMON + FV_LIGHT + STYLE + NL + STYLE_END
+	}
+
 }
