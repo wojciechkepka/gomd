@@ -160,12 +160,10 @@ func (md *MdServer) FileListViewHandler(w http.ResponseWriter, r *http.Request) 
 func (md *MdServer) DarkThemeHandler(w http.ResponseWriter, r *http.Request) {
 	log.Println("Switching theme to dark")
 	md.SetTheme("dark")
-	fmt.Fprintf(w, md.filesHtml())
 }
 func (md *MdServer) LightThemeHandler(w http.ResponseWriter, r *http.Request) {
 	log.Println("Switching theme to light")
 	md.SetTheme("light")
-	fmt.Fprintf(w, md.filesHtml())
 }
 
 // Mount all endpoints and serve...
