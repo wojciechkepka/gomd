@@ -43,6 +43,24 @@ func LoadMdFile(path string) (MdFile, error) {
 	}, nil
 }
 
+func (f *MdFile) ReloadMdFile() error {
+	content, err := ioutil.ReadFile(f.Path)
+	if err != nil {
+		return err
+	}
+
+	info, err := os.Stat(f.Path)
+	if err != nil {
+		return err
+	}
+
+	f.Content = content
+	f.Mod_time = info.ModTime()
+	f.Size = info.Size()
+
+	return nil
+}
+
 // Checks modification time. If changed updates Mod_time
 func (f *MdFile) HasModTimeChanged() (bool, error) {
 	info, err := os.Stat(f.Path)

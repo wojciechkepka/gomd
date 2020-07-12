@@ -78,15 +78,37 @@ func (md *MdServer) WatchFiles() {
 			f := &md.Files[i]
 			if hasChanged, _ := f.HasModTimeChanged(); hasChanged {
 				log.Printf("File %v changed. Reloading.", f.Filename)
-				file, err := LoadMdFile(f.Path)
+				err := f.ReloadMdFile()
 				if err != nil {
 					log.Fatalf("Failed to reload file - %v", err)
 				}
-				*f = file
 			}
 		}
+		md.FindNewFiles()
 		time.Sleep(SLEEP_DURATION * time.Millisecond)
 	}
+}
+
+func (md *MdServer) FindNewFiles() {
+	err := filepath.Walk(md.path, func(p string, info os.FileInfo, err error) error {
+		if !info.IsDir() {
+			if !md.isFileInFiles(p) {
+				log.Printf("New file found - '%v'", p)
+				file, err := LoadMdFile(p)
+				if err != nil {
+					log.Fatalf("Failed to load file - %v", err)
+					return nil
+				}
+				md.Files = append(md.Files, file)
+			}
+
+		}
+		return nil
+	})
+	if err != nil {
+		log.Fatalf("Error: failed to read directory %v - %v", md.path, err)
+	}
+
 }
 
 func (md *MdServer) OpenUrl() {
@@ -96,13 +118,23 @@ func (md *MdServer) OpenUrl() {
 //########################################
 // Other
 
+func (md *MdServer) isFileInFiles(path string) bool {
+	for _, f := range md.Files {
+		if f.Path == path {
+			return true
+		}
+	}
+	return false
+}
+
 func LoadFiles(path string) []MdFile {
 	var files []MdFile
 	err := filepath.Walk(path, func(p string, info os.FileInfo, err error) error {
 		if !info.IsDir() {
 			file, err := LoadMdFile(p)
 			if err != nil {
-				return err
+				log.Fatalf("Failed to load file - %v", err)
+				return nil
 			}
 			files = append(files, file)
 		}
