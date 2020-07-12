@@ -17,6 +17,25 @@ const THEME_SLIDER_CHECKED = `
 	</label>
 `
 
+const THEME_DROPDOWN = `
+	<div class="dropdown">
+	  <a class="bbut">Themes</a>
+	  <div class="dropdown-content">
+		%v
+	  </div>
+	</div> 
+`
+
+const THEME_A_ONCLICK = `<a onclick="codeHlChange(this);" >%v</a>`
+
 func BackButtonHtml(href, text string) string {
 	return fmt.Sprintf(BACK_BUTTON, href, text)
+}
+
+func ThemeDropdownHtml(themes []string) string {
+	links := ""
+	for _, theme := range themes {
+		links += fmt.Sprintf(THEME_A_ONCLICK, theme)
+	}
+	return fmt.Sprintf(THEME_DROPDOWN, links)
 }

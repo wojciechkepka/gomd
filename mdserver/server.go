@@ -19,8 +19,9 @@ const HTTP = "http://"
 
 const FILELISTVIEW_EP = "/"
 const FILEVIEW_EP = "/file/"
-const THEME_DARK_EP = "/theme/dark"
+const THEME_EP = "/theme/"
 const THEME_LIGHT_EP = "/theme/light"
+const THEME_DARK_EP = "/theme/dark"
 const STATIC_EP = "/static/"
 
 //################################################################################
@@ -32,6 +33,7 @@ type MdServer struct {
 	path      string
 	Files     []MdFile
 	theme     string
+	darkMode  bool
 }
 
 // Initializes MdServer
@@ -49,6 +51,7 @@ func NewMdServer(bind_host string, bind_port int, path, theme string) MdServer {
 		path:      path,
 		Files:     files,
 		theme:     theme,
+		darkMode:  true,
 	}
 }
 
@@ -61,11 +64,11 @@ func (md *MdServer) Url() string {
 }
 
 func (md *MdServer) IsDarkMode() bool {
-	if md.theme == "dark" {
-		return true
-	} else {
-		return false
-	}
+	return md.darkMode
+}
+
+func (md *MdServer) SetDarkMode(on bool) {
+	md.darkMode = on
 }
 
 func (md *MdServer) SetTheme(theme string) {
@@ -156,7 +159,7 @@ func (md *MdServer) serveFile(path string) string {
 	}
 	for _, file := range md.Files {
 		if file.Path == path {
-			return file.AsHtml(md.IsDarkMode())
+			return file.AsHtml(md.IsDarkMode(), md.theme)
 		}
 	}
 	return ""
@@ -199,13 +202,21 @@ func (md *MdServer) FileListViewHandler(w http.ResponseWriter, r *http.Request) 
 	fmt.Fprintf(w, md.filesHtml())
 }
 
-func (md *MdServer) DarkThemeHandler(w http.ResponseWriter, r *http.Request) {
-	log.Println("Switching theme to dark")
-	md.SetTheme("dark")
-}
-func (md *MdServer) LightThemeHandler(w http.ResponseWriter, r *http.Request) {
-	log.Println("Switching theme to light")
-	md.SetTheme("light")
+func (md *MdServer) ThemeHandler(w http.ResponseWriter, r *http.Request) {
+	url := r.URL.RequestURI()
+	if url == THEME_DARK_EP {
+		log.Println("Switching theme to dark")
+		md.SetDarkMode(true)
+	} else if url == THEME_LIGHT_EP {
+		log.Println("Switching theme to light")
+		md.SetDarkMode(false)
+	} else {
+		_, theme := filepath.Split(url)
+		if IsInThemes(theme) {
+			log.Printf("Changing theme to %v", theme)
+			md.SetTheme(theme)
+		}
+	}
 }
 
 // Mount all endpoints and serve...
@@ -216,8 +227,7 @@ func (md *MdServer) Serve() {
 	fs := http.FileServer(http.Dir("./static"))
 	http.HandleFunc(FILELISTVIEW_EP, md.FileListViewHandler)
 	http.HandleFunc(FILEVIEW_EP, md.FileViewHandler)
-	http.HandleFunc(THEME_DARK_EP, md.DarkThemeHandler)
-	http.HandleFunc(THEME_LIGHT_EP, md.LightThemeHandler)
+	http.HandleFunc(THEME_EP, md.ThemeHandler)
 	http.Handle(STATIC_EP, http.StripPrefix(STATIC_EP, fs))
 	go md.WatchFiles()
 	go md.OpenUrl()

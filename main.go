@@ -11,7 +11,7 @@ func main() {
 	bindAddr := flag.String("bind-addr", "127.0.0.1", "Binding address")
 	bindPort := flag.String("bind-port", "5001", "Binding port")
 	dir := flag.String("dir", ".", "The directory to serve")
-	theme := flag.String("theme", "dark", "Available Dark/light")
+	theme := flag.String("theme", "gruvbox", "Available gruvbox/solarized")
 	help := flag.Bool("help", false, "Print help")
 	flag.Parse()
 	if *help {

@@ -1,5 +1,43 @@
 package html
 
+import "fmt"
+
+func Themes() []string {
+	return []string{
+		"gruvbox",
+		"solarized",
+	}
+}
+
+func IsInThemes(theme string) bool {
+	for _, t := range Themes() {
+		if t == theme {
+			return true
+		}
+	}
+
+	return false
+}
+
+func ThemeCss(isDarkMode bool, theme string) string {
+	switch theme {
+	case "gruvbox":
+		if isDarkMode {
+			return GRUVBOX_DARK_HLJS
+		} else {
+			return GRUVBOX_LIGHT_HLJS
+		}
+	case "solarized":
+		if isDarkMode {
+			return SOLARIZED_DARK_HLJS
+		} else {
+			return SOLARIZED_LIGHT_HLJS
+		}
+	default:
+		return ""
+	}
+}
+
 //################################################################################
 // HTML
 const FILES_TITLE = "gomd - Files"
@@ -52,6 +90,12 @@ function themeChange(cb) {
 	rq.onreadystatechange = reload;
 	rq.send();
 }
+function codeHlChange(a_theme) {
+	var rq = new XMLHttpRequest();
+	rq.open("GET", "/theme/" + a_theme.textContent, true);
+	rq.onreadystatechange = reload;
+	rq.send();
+}
 function reload() {
 	location.reload();
 }
@@ -69,6 +113,10 @@ const HIGHLIGHT_JS = `
 
 func HtmlTitle(title string) string {
 	return TITLE_BEG + title + TITLE_END
+}
+
+func HtmlA(href, content string) string {
+	return fmt.Sprintf(A_BEG, href) + content + A_END
 }
 
 func HtmlHead(title, extra string) string {
@@ -99,9 +147,9 @@ func Div(class, content string) string {
 
 func TopBar(isDarkMode bool) string {
 	if isDarkMode {
-		return Div("top-bar", THEME_SLIDER+BackButtonHtml("/", "<<"))
+		return Div("top-bar", THEME_SLIDER+BackButtonHtml("/", "<<")+ThemeDropdownHtml(Themes()))
 	} else {
-		return Div("top-bar", THEME_SLIDER_CHECKED+BackButtonHtml("/", "<<"))
+		return Div("top-bar", THEME_SLIDER_CHECKED+BackButtonHtml("/", "<<")+ThemeDropdownHtml(Themes()))
 	}
 }
 
@@ -113,11 +161,11 @@ func TopBarSlider(isDarkMode bool) string {
 	}
 }
 
-func MdFileStyle(isDarkMode bool) string {
+func MdFileStyle(isDarkMode bool, theme string) string {
 	if isDarkMode {
-		return STYLE_BEG + FONTS + GHMD + GHMD_DARK + STYLE + GRUVBOX_DARK_HLJS + NL + STYLE_END
+		return STYLE_BEG + FONTS + GHMD + GHMD_DARK + STYLE + ThemeCss(isDarkMode, theme) + NL + STYLE_END
 	} else {
-		return STYLE_BEG + FONTS + GHMD + GHMD_LIGHT + STYLE + GRUVBOX_LIGHT_HLJS + NL + STYLE_END
+		return STYLE_BEG + FONTS + GHMD + GHMD_LIGHT + STYLE + ThemeCss(isDarkMode, theme) + NL + STYLE_END
 	}
 }
 
