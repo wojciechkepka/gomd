@@ -153,11 +153,11 @@ func TopBar(isDarkMode bool) string {
 	}
 }
 
-func TopBarSlider(isDarkMode bool) string {
+func TopBarSliderDropdown(isDarkMode bool) string {
 	if isDarkMode {
-		return Div("top-bar", THEME_SLIDER)
+		return Div("top-bar", THEME_SLIDER+ThemeDropdownHtml(Themes()))
 	} else {
-		return Div("top-bar", THEME_SLIDER_CHECKED)
+		return Div("top-bar", THEME_SLIDER_CHECKED+ThemeDropdownHtml(Themes()))
 	}
 }
 

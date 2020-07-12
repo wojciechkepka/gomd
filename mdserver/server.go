@@ -182,7 +182,7 @@ func (md *MdServer) filesBody() string {
 
 // Prepares full FileListView html
 func (md *MdServer) filesHtml() string {
-	body, style := TopBarSlider(md.IsDarkMode()), FileListViewStyle(md.IsDarkMode())
+	body, style := TopBarSliderDropdown(md.IsDarkMode()), FileListViewStyle(md.IsDarkMode())
 	body += md.filesBody()
 	return Html(FILES_TITLE, style, body)
 }
