@@ -20,15 +20,15 @@ else
     SASS=sass
 fi
 
-$SASS ./sass/fv_common.sass ./static/css/fv_common.css
-$SASS ./sass/fv_dark.sass ./static/css/fv_dark.css
-$SASS ./sass/fv_light.sass ./static/css/fv_light.css
-$SASS ./sass/ghmd.sass ./static/css/ghmd.css
-$SASS ./sass/ghmd_dark.sass ./static/css/ghmd_dark.css
-$SASS ./sass/ghmd_light.sass ./static/css/ghmd_light.css
-$SASS ./sass/fonts.scss ./static/css/fonts.css
-$SASS ./sass/style.sass ./static/css/style.css
-
+for f in ./sass/*
+do
+    filename="$(basename -- $f | cut -d '.' -f1)"
+    if [[ ! $filename =~ ^_.* ]]
+    then
+        echo "Compiling $filename"
+        $SASS $f ./static/css/$filename.css
+    fi
+done
 
 ################################################################################
 # Write to .go file
@@ -42,6 +42,7 @@ then
     exit 1
 fi
 
+rm -v $GO_FILE
 echo -e "package html\n\n" > $GO_FILE
 
 for f in ./static/css/*
