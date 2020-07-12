@@ -40,6 +40,7 @@ then
     echo "Build failed. No cleancss in \$PATH"
     echo "Run 'npm install clean-css'"
     exit 1
+fi
 
 echo -e "package html\n\n" > $GO_FILE
 
