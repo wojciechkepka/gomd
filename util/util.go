@@ -1,7 +1,6 @@
 package util
 
 import (
-	"bytes"
 	"fmt"
 	"os/exec"
 	rt "runtime"
@@ -21,7 +20,5 @@ func UrlOpen(url string) error {
 		return fmt.Errorf("Unsupported os %v", os)
 	}
 
-	var out bytes.Buffer
-	cmd.Stdout = &out
 	return cmd.Run()
 }
