@@ -2,7 +2,7 @@
 
 Quickly display formatted markdown files in your browser.  
 
-![working-app](https://github.com/wojciechkepka/gomd/blob/master/gomd.gif)
+![working-app](https://raw.githubusercontent.com/wojciechkepka/gomd/master/gomd.gif)
 
 ## About
 `gomd` sets up a http server rendering markdown files in selected flavour and theme.  
@@ -31,7 +31,7 @@ You can view the files in dark and light mode.
 - **Selectable themes**
   - Choose from available code themes: `solarized`, `gruvbox`
 
-![highlight-demo](https://github.com/wojciechkepka/gomd/blob/master/highlight.gif)
+![highlight-demo](https://raw.githubusercontent.com/wojciechkepka/gomd/master/highlight.gif)
 
 ## TODO
 - [ ] Add more themes
