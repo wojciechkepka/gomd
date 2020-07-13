@@ -5,7 +5,8 @@ import "fmt"
 //################################################################################
 // JS
 
-const JS = `
+const (
+	JS = `
 function themeChange(cb) {
 	var rq = new XMLHttpRequest();
 
@@ -29,12 +30,13 @@ function reload() {
 
 `
 
-const HIGHLIGHT_JS = `
+	HIGHLIGHT_JS = `
 <link rel="stylesheet"
       href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 `
+)
 
 func ReloadJs(bindAddr string) string {
 	return fmt.Sprintf(`

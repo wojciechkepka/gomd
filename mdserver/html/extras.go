@@ -2,22 +2,21 @@ package html
 
 import "fmt"
 
-const BACK_BUTTON = `<a href="%v" class="bbut">%v</a>`
-
-const THEME_SLIDER = `
+const (
+	BACK_BUTTON  = `<a href="%v" class="bbut">%v</a>`
+	THEME_SLIDER = `
 	<label class="switch">
 		<input type="checkbox" onclick="themeChange(this);">
 		<span class="slider"></span>
 	</label>
 `
-const THEME_SLIDER_CHECKED = `
+	THEME_SLIDER_CHECKED = `
 	<label class="switch">
 		<input type="checkbox" checked="checked" onclick="themeChange(this);">
 		<span class="slider"></span>
 	</label>
 `
-
-const THEME_DROPDOWN = `
+	THEME_DROPDOWN = `
 	<div class="dropdown">
 	  <a class="bbut">Themes</a>
 	  <div class="dropdown-content">
@@ -25,8 +24,8 @@ const THEME_DROPDOWN = `
 	  </div>
 	</div> 
 `
-
-const THEME_A_ONCLICK = `<a onclick="codeHlChange(this);" >%v</a>`
+	THEME_A_ONCLICK = `<a onclick="codeHlChange(this);" >%v</a>`
+)
 
 func BackButtonHtml(href, text string) string {
 	return fmt.Sprintf(BACK_BUTTON, href, text)
