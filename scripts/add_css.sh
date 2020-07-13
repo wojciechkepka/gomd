@@ -50,4 +50,5 @@ do
     filename="$(basename -- $f | cut -d '.' -f1)"
     cleancss -o $f $f
     echo -e "const ${filename^^} = \`\n$(cat $f)\`\n" >> $GO_FILE
+    rm $f
 done
