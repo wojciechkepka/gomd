@@ -2,6 +2,7 @@ package mdserver
 
 import (
 	"github.com/gomarkdown/markdown"
+	log "github.com/sirupsen/logrus"
 	. "gomd/mdserver/html"
 	"io/ioutil"
 	"os"
@@ -79,7 +80,27 @@ func (f *MdFile) HasModTimeChanged() (bool, error) {
 func (f *MdFile) AsHtml(isDarkMode bool, theme, bind_addr string) string {
 	body, style := TopBar(isDarkMode), MdFileStyle(isDarkMode, theme)
 
-    style += ReloadJs(bind_addr)
+	style += ReloadJs(bind_addr)
 	body += string(markdown.ToHTML(f.Content, nil, nil))
 	return Html(f.Filename, style, body)
+}
+
+// Walks through a specified directory and finds md files
+func LoadFiles(path string) []MdFile {
+	var files []MdFile
+	err := filepath.Walk(path, func(p string, info os.FileInfo, err error) error {
+		if !info.IsDir() {
+			file, err := LoadMdFile(p)
+			if err != nil {
+				log.Fatalf("Failed to load file - %v", err)
+				return nil
+			}
+			files = append(files, file)
+		}
+		return nil
+	})
+	if err != nil {
+		log.Printf("Error: failed to read file - %v", err)
+	}
+	return files
 }

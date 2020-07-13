@@ -3,29 +3,30 @@ package mdserver
 import (
 	"bytes"
 	"fmt"
-	. "gomd/mdserver/html"
+	log "github.com/sirupsen/logrus"
+	html "gomd/mdserver/html"
 	"gomd/mdserver/ws"
 	util "gomd/util"
-	"log"
 	"net/http"
 	"os"
 	"path/filepath"
 	"time"
 )
 
-const SLEEP_DURATION = 1000
-const HTTP = "http://"
+const (
+	SLEEP_DURATION = 1000
+	HTTP           = "http://"
+	FILES_TITLE    = "gomd - Files"
 
-//################################################################################
-// Endpoints
-
-const FILELISTVIEW_EP = "/"
-const FILEVIEW_EP = "/file/"
-const THEME_EP = "/theme/"
-const THEME_LIGHT_EP = "/theme/light"
-const THEME_DARK_EP = "/theme/dark"
-const STATIC_EP = "/static/"
-const RELOAD_EP = "/reload"
+	// Endpoints
+	FILELISTVIEW_EP = "/"
+	FILEVIEW_EP     = "/file/"
+	THEME_EP        = "/theme/"
+	THEME_LIGHT_EP  = "/theme/light"
+	THEME_DARK_EP   = "/theme/dark"
+	STATIC_EP       = "/static/"
+	RELOAD_EP       = "/reload"
+)
 
 //################################################################################
 // Server
@@ -33,16 +34,16 @@ const RELOAD_EP = "/reload"
 var hub *ws.Hub
 
 type MdServer struct {
-	bind_host string
-	bind_port int
-	path      string
-	Files     []MdFile
-	theme     string
-	darkMode  bool
+	bindHost string
+	bindPort int
+	path     string
+	Files    []MdFile
+	theme    string
+	darkMode bool
 }
 
 // Initializes MdServer
-func NewMdServer(bind_host string, bind_port int, path, theme string) MdServer {
+func NewMdServer(bindHost string, bindPort int, path, theme string) MdServer {
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		log.Println("Specified path doesn't exist. Using default.")
 		path = "./"
@@ -51,17 +52,17 @@ func NewMdServer(bind_host string, bind_port int, path, theme string) MdServer {
 	files := LoadFiles(path)
 
 	return MdServer{
-		bind_host: bind_host,
-		bind_port: bind_port,
-		path:      path,
-		Files:     files,
-		theme:     theme,
-		darkMode:  true,
+		bindHost: bindHost,
+		bindPort: bindPort,
+		path:     path,
+		Files:    files,
+		theme:    theme,
+		darkMode: true,
 	}
 }
 
 func (md *MdServer) BindAddr() string {
-	return fmt.Sprintf("%v:%v", md.bind_host, md.bind_port)
+	return fmt.Sprintf("%v:%v", md.bindHost, md.bindPort)
 }
 
 func (md *MdServer) Url() string {
@@ -121,10 +122,6 @@ func (md *MdServer) FindNewFiles() {
 
 }
 
-func (md *MdServer) OpenUrl() {
-	util.UrlOpen(md.Url())
-}
-
 //########################################
 // Other
 
@@ -137,23 +134,8 @@ func (md *MdServer) isFileInFiles(path string) bool {
 	return false
 }
 
-func LoadFiles(path string) []MdFile {
-	var files []MdFile
-	err := filepath.Walk(path, func(p string, info os.FileInfo, err error) error {
-		if !info.IsDir() {
-			file, err := LoadMdFile(p)
-			if err != nil {
-				log.Fatalf("Failed to load file - %v", err)
-				return nil
-			}
-			files = append(files, file)
-		}
-		return nil
-	})
-	if err != nil {
-		log.Printf("Error: failed to read file - %v", err)
-	}
-	return files
+func (md *MdServer) OpenUrl() {
+	util.UrlOpen(md.Url())
 }
 
 //########################################
@@ -174,25 +156,25 @@ func (md *MdServer) serveFile(path string) string {
 
 // Prepares FileListView body html
 func (md *MdServer) filesBody() string {
-	html := UL_BEG + NL
+	body := html.UL_BEG + html.NL
 	for _, file := range md.Files {
-		html += LI_BEG
+		body += html.LI_BEG
 		end_point := FILEVIEW_EP + file.Path
-		html += fmt.Sprintf(A_BEG, end_point)
-		html += file.Path
-		html += A_END
-		html += LI_END + NL
+		body += fmt.Sprintf(html.A_BEG, end_point)
+		body += file.Path
+		body += html.A_END
+		body += html.LI_END + html.NL
 	}
-	html += UL_END
-	return Div("files", html)
+	body += html.UL_END
+	return html.Div("files", body)
 }
 
 // Prepares full FileListView html
 func (md *MdServer) filesHtml() string {
-	body, style := TopBarSliderDropdown(md.IsDarkMode()), FileListViewStyle(md.IsDarkMode())
+	body, style := html.TopBarSliderDropdown(md.IsDarkMode()), html.FileListViewStyle(md.IsDarkMode())
 	body += md.filesBody()
-	style += ReloadJs(md.BindAddr())
-	return Html(FILES_TITLE, style, body)
+	style += html.ReloadJs(md.BindAddr())
+	return html.Html(FILES_TITLE, style, body)
 }
 
 //########################################
@@ -220,7 +202,7 @@ func (md *MdServer) themeHandler(w http.ResponseWriter, r *http.Request) {
 		md.SetDarkMode(false)
 	} else {
 		_, theme := filepath.Split(url)
-		if IsInThemes(theme) {
+		if html.IsInThemes(theme) {
 			log.Printf("Changing theme to %v", theme)
 			md.SetTheme(theme)
 		}
