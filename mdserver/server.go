@@ -1,8 +1,10 @@
 package mdserver
 
 import (
+	"bytes"
 	"fmt"
 	. "gomd/mdserver/html"
+	"gomd/mdserver/ws"
 	util "gomd/util"
 	"log"
 	"net/http"
@@ -23,9 +25,12 @@ const THEME_EP = "/theme/"
 const THEME_LIGHT_EP = "/theme/light"
 const THEME_DARK_EP = "/theme/dark"
 const STATIC_EP = "/static/"
+const RELOAD_EP = "/reload"
 
 //################################################################################
 // Server
+
+var hub *ws.Hub
 
 type MdServer struct {
 	bind_host string
@@ -85,6 +90,7 @@ func (md *MdServer) WatchFiles() {
 				if err != nil {
 					log.Fatalf("Failed to reload file - %v", err)
 				}
+				sendReload()
 			}
 		}
 		md.FindNewFiles()
@@ -103,6 +109,7 @@ func (md *MdServer) FindNewFiles() {
 					return nil
 				}
 				md.Files = append(md.Files, file)
+				sendReload()
 			}
 
 		}
@@ -159,7 +166,7 @@ func (md *MdServer) serveFile(path string) string {
 	}
 	for _, file := range md.Files {
 		if file.Path == path {
-			return file.AsHtml(md.IsDarkMode(), md.theme)
+			return file.AsHtml(md.IsDarkMode(), md.theme, md.BindAddr())
 		}
 	}
 	return ""
@@ -184,6 +191,7 @@ func (md *MdServer) filesBody() string {
 func (md *MdServer) filesHtml() string {
 	body, style := TopBarSliderDropdown(md.IsDarkMode()), FileListViewStyle(md.IsDarkMode())
 	body += md.filesBody()
+	style += ReloadJs(md.BindAddr())
 	return Html(FILES_TITLE, style, body)
 }
 
@@ -191,18 +199,18 @@ func (md *MdServer) filesHtml() string {
 // Server methods
 
 // Handler for FileView
-func (md *MdServer) FileViewHandler(w http.ResponseWriter, r *http.Request) {
+func (md *MdServer) fileViewHandler(w http.ResponseWriter, r *http.Request) {
 	file_path := r.RequestURI[len(FILEVIEW_EP)-1:]
 	log.Printf("Serving file %v", file_path)
 	fmt.Fprintf(w, string(md.serveFile(file_path)))
 }
 
 // Handler for FileListView
-func (md *MdServer) FileListViewHandler(w http.ResponseWriter, r *http.Request) {
+func (md *MdServer) fileListViewHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, md.filesHtml())
 }
 
-func (md *MdServer) ThemeHandler(w http.ResponseWriter, r *http.Request) {
+func (md *MdServer) themeHandler(w http.ResponseWriter, r *http.Request) {
 	url := r.URL.RequestURI()
 	if url == THEME_DARK_EP {
 		log.Println("Switching theme to dark")
@@ -219,17 +227,29 @@ func (md *MdServer) ThemeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Mount all endpoints and serve...
+func (md *MdServer) watchHandler(w http.ResponseWriter, r *http.Request) {
+	ws.ServeWs(hub, w, r)
+}
+
+// Serve - Mount all endpoints and serve...
 func (md *MdServer) Serve() {
 	log.Printf("Listening at %v", md.Url())
 	log.Printf("Directory: %v", md.path)
 	log.Printf("Theme: %v", md.theme)
 	fs := http.FileServer(http.Dir("./static"))
-	http.HandleFunc(FILELISTVIEW_EP, md.FileListViewHandler)
-	http.HandleFunc(FILEVIEW_EP, md.FileViewHandler)
-	http.HandleFunc(THEME_EP, md.ThemeHandler)
+	hub = ws.NewHub()
+	go hub.Run()
+	http.HandleFunc(FILELISTVIEW_EP, md.fileListViewHandler)
+	http.HandleFunc(FILEVIEW_EP, md.fileViewHandler)
+	http.HandleFunc(THEME_EP, md.themeHandler)
+	http.HandleFunc(RELOAD_EP, md.watchHandler)
 	http.Handle(STATIC_EP, http.StripPrefix(STATIC_EP, fs))
 	go md.WatchFiles()
 	go md.OpenUrl()
 	log.Fatal(http.ListenAndServe(md.BindAddr(), nil))
+}
+
+func sendReload() {
+	message := bytes.TrimSpace([]byte("reload"))
+	hub.Broadcast <- message
 }

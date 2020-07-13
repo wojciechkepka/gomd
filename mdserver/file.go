@@ -76,9 +76,10 @@ func (f *MdFile) HasModTimeChanged() (bool, error) {
 }
 
 // Creates HTML string with this file contents
-func (f *MdFile) AsHtml(isDarkMode bool, theme string) string {
+func (f *MdFile) AsHtml(isDarkMode bool, theme, bind_addr string) string {
 	body, style := TopBar(isDarkMode), MdFileStyle(isDarkMode, theme)
 
+    style += ReloadJs(bind_addr)
 	body += string(markdown.ToHTML(f.Content, nil, nil))
 	return Html(f.Filename, style, body)
 }
