@@ -167,16 +167,16 @@ func (md *MdServer) serveFile(path string) string {
 
 // Prepares FileListView body html
 func (md *MdServer) filesBody() string {
-	body := html.UL_BEG + html.NL
+	body := html.UlBeg + html.NL
 	for _, file := range md.Files {
-		body += html.LI_BEG
+		body += html.LiBeg
 		endPoint := fileviewEp + file.Path
-		body += fmt.Sprintf(html.A_BEG, endPoint)
+		body += fmt.Sprintf(html.ABeg, endPoint)
 		body += file.Path
-		body += html.A_END
-		body += html.LI_END + html.NL
+		body += html.AEnd
+		body += html.LiEnd + html.NL
 	}
-	body += html.UL_END
+	body += html.UlEnd
 	return html.Div("files", body)
 }
 
@@ -185,7 +185,7 @@ func (md *MdServer) filesHTML() string {
 	body, style := html.TopBarSliderDropdown(md.IsDarkMode()), html.FileListViewStyle(md.IsDarkMode())
 	body += md.filesBody()
 	style += html.ReloadJs(md.BindAddr())
-	return html.Html(filesTitle, style, body)
+	return html.HTML(filesTitle, style, body)
 }
 
 //########################################

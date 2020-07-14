@@ -85,7 +85,7 @@ func (f *MdFile) AsHTML(isDarkMode bool, theme, bindAddr string) string {
 
 	style += html.ReloadJs(bindAddr)
 	body += string(markdown.ToHTML(f.Content, nil, nil))
-	return html.Html(f.Filename, style, body)
+	return html.HTML(f.Filename, style, body)
 }
 
 //LoadFiles - Walks through a specified directory and finds md files

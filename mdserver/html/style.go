@@ -3,10 +3,10 @@ package html
 //MdFileStyle returns style for markdown file
 func MdFileStyle(isDarkMode bool, theme string) string {
 	if isDarkMode {
-		return StyleBeg + FONTS + GHMD + GHMD_DARK + STYLE + ThemeCss(isDarkMode, theme) + NL + StyleEnd
+		return StyleBeg + FONTS + GHMD + GHMD_DARK + STYLE + ThemeCSS(isDarkMode, theme) + NL + StyleEnd
 	}
 
-	return StyleBeg + FONTS + GHMD + GHMD_LIGHT + STYLE + ThemeCss(isDarkMode, theme) + NL + StyleEnd
+	return StyleBeg + FONTS + GHMD + GHMD_LIGHT + STYLE + ThemeCSS(isDarkMode, theme) + NL + StyleEnd
 }
 
 //FileListViewStyle returns style for main file list view

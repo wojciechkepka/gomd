@@ -50,7 +50,7 @@ func Head(title, extra string) string {
 	return HeadBeg + NL +
 		MetaCharset + MetaViewport + NL +
 		Title(title) + NL +
-		HIGHLIGHT_JS +
+		HighlightJs +
 		ScriptBeg + JS + ScriptEnd + NL +
 		extra + NL +
 		HeadEnd
@@ -73,22 +73,4 @@ func HTML(title, style, body string) string {
 //Div returns a div with class and content specified enclosed in div tags
 func Div(class, content string) string {
 	return "<div class=\"" + class + "\">" + content + DivEnd
-}
-
-//TopBar returns a TopBar with theme slider, back button and dropdown theme chooser
-func TopBar(isDarkMode bool) string {
-	if isDarkMode {
-		return Div("top-bar", THEME_SLIDER+BackButtonHtml("/", "<<")+ThemeDropdownHtml(Themes()))
-	}
-
-	return Div("top-bar", THEME_SLIDER_CHECKED+BackButtonHtml("/", "<<")+ThemeDropdownHtml(Themes()))
-}
-
-//TopBarSliderDropdown returns a div with theme slider and theme dropdown menu
-func TopBarSliderDropdown(isDarkMode bool) string {
-	if isDarkMode {
-		return Div("top-bar", THEME_SLIDER+ThemeDropdownHtml(Themes()))
-	}
-
-	return Div("top-bar", THEME_SLIDER_CHECKED+ThemeDropdownHtml(Themes()))
 }
