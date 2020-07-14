@@ -21,9 +21,6 @@ const (
 	<div class="dropdown">
 	  <a class="bbut">Themes</a>
 	  <div class="dropdown-content">
-		%v
-	  </div>
-	</div> 
 `
 	themeAOnClick = `<a onclick="codeHlChange(this);" >%v</a>`
 )
@@ -39,7 +36,7 @@ func ThemeDropdown(themes []string) string {
 	for _, theme := range themes {
 		links += fmt.Sprintf(themeAOnClick, theme)
 	}
-	return fmt.Sprintf(themeDropdown, links)
+	return themeDropdown + links + DivEnd + DivEnd
 }
 
 //TopBar returns a TopBar with theme slider, back button and dropdown theme chooser

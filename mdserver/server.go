@@ -135,7 +135,7 @@ func (md *MdServer) FindNewFiles() {
 
 }
 
-//########################################
+//########################################n
 // Other
 
 func (md *MdServer) isFileInFiles(path string) bool {
@@ -177,9 +177,7 @@ func (md *MdServer) filesBody() string {
 		}
 		body += html.LiBeg
 		endPoint := fileviewEp + file.Path
-		body += fmt.Sprintf(html.ABeg, endPoint)
-		body += file.Path
-		body += html.AEnd
+		body += html.A(endPoint, file.Path)
 		body += html.LiEnd + html.NL
 	}
 	body += html.UlEnd
@@ -201,12 +199,12 @@ func (md *MdServer) filesHTML() string {
 func (md *MdServer) fileViewHandler(w http.ResponseWriter, r *http.Request) {
 	filePath := r.RequestURI[len(fileviewEp)-1:]
 	log.Printf("Serving file %v", filePath)
-	fmt.Fprintf(w, string(md.serveFile(filePath)))
+	fmt.Fprintln(w, string(md.serveFile(filePath)))
 }
 
 // Handler for FileListView
 func (md *MdServer) fileListViewHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, md.filesHTML())
+	fmt.Fprintln(w, md.filesHTML())
 }
 
 func (md *MdServer) themeHandler(w http.ResponseWriter, r *http.Request) {
@@ -232,7 +230,7 @@ func (md *MdServer) watchHandler(w http.ResponseWriter, r *http.Request) {
 
 func (md *MdServer) pingHandler(w http.ResponseWriter, r *http.Request) {
 	log.Println("Ping")
-	fmt.Fprintf(w, "pong")
+	fmt.Fprintln(w, "pong")
 }
 
 // Serve - Mount all endpoints and serve...

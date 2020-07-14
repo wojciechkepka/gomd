@@ -1,6 +1,6 @@
 package html
 
-import "fmt"
+import "log"
 
 //################################################################################
 // HTML Elements
@@ -19,7 +19,8 @@ const (
 	TitleEnd  = "</title>"
 	ScriptBeg = "<script>"
 	ScriptEnd = "</script>"
-	ABeg      = "<a href=\"%v\">"
+	ABeg      = "<a href=\""
+	AMid      = "\">"
 	AEnd      = "</a>"
 	DivEnd    = "</div>\n"
 	UlBeg     = "<ul>"
@@ -42,7 +43,9 @@ func Title(title string) string {
 
 //A returns a hyperlink with link set to href and text to content
 func A(href, content string) string {
-	return fmt.Sprintf(ABeg, href) + content + AEnd
+	a := ABeg + href + AMid + content + AEnd
+	log.Println(a)
+	return a
 }
 
 //Head returns a full head with style, metadata, title and scripts included
