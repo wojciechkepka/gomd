@@ -4,7 +4,6 @@ import "fmt"
 
 //################################################################################
 // JS
-
 const (
 	JS = `
 function themeChange(cb) {
@@ -30,7 +29,7 @@ function reload() {
 
 `
 
-	HIGHLIGHT_JS = `
+	HighlightJs = `
 <link rel="stylesheet"
       href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
@@ -38,6 +37,7 @@ function reload() {
 `
 )
 
+//ReloadJs returns script responsible for reload websocket
 func ReloadJs(bindAddr string) string {
 	return fmt.Sprintf(`
 <script>

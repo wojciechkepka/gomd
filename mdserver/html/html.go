@@ -3,39 +3,31 @@ package html
 import "fmt"
 
 //################################################################################
-// HTML
-
+// HTML Elements
 const (
-	DOCTYPE       = "<!DOCTYPE html>"
-	META_CHARSET  = "<meta charset=\"utf-8\">"
-	META_VIEWPORT = "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">"
+	Doctype      = "<!DOCTYPE html>"
+	MetaCharset  = "<meta charset=\"utf-8\">"
+	MetaViewport = "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">"
 
-	HTML_BEG   = "<html>"
-	HTML_END   = "</html>"
-	BODY_BEG   = "<body>"
-	BODY_END   = "</body>"
-	HEAD_BEG   = "<head>"
-	HEAD_END   = "</head>"
-	TITLE_BEG  = "<title>"
-	TITLE_END  = "</title>"
-	SCRIPT_BEG = "<script>"
-	SCRIPT_END = "</script>"
-	A_BEG      = "<a href=\"%v\">"
-	A_END      = "</a>"
-	DIV_END    = "</div>\n"
-	UL_BEG     = "<ul>"
-	UL_END     = "</ul>"
-	LI_BEG     = "<li>"
-	LI_END     = "</li>"
-	STYLE_BEG  = "<style>"
-	STYLE_END  = "</style>"
-
-	DARK_BG      = "#1c1c1c"
-	LIGHT_BG     = "#ffffff"
-	LIGHT_TEXT   = "#f8efe1"
-	DARK_TEXT    = "#000000"
-	LIGHT_BORDER = "#eaeaea"
-	DARK_BORDER  = "#666666"
+	HTMLBeg   = "<html>"
+	HTMLEnd   = "</html>"
+	BodyBeg   = "<body>"
+	BodyEnd   = "</body>"
+	HeadBeg   = "<head>"
+	HeadEnd   = "</head>"
+	TitleBeg  = "<title>"
+	TitleEnd  = "</title>"
+	ScriptBeg = "<script>"
+	ScriptEnd = "</script>"
+	ABeg      = "<a href=\"%v\">"
+	AEnd      = "</a>"
+	DivEnd    = "</div>\n"
+	UlBeg     = "<ul>"
+	UlEnd     = "</ul>"
+	LiBeg     = "<li>"
+	LiEnd     = "</li>"
+	StyleBeg  = "<style>"
+	StyleEnd  = "</style>"
 
 	NL = "\n"
 )
@@ -43,52 +35,60 @@ const (
 //################################################################################
 // Funcs
 
-func HtmlTitle(title string) string {
-	return TITLE_BEG + title + TITLE_END
+//Title returns a title string enclosed in title tags
+func Title(title string) string {
+	return TitleBeg + title + TitleEnd
 }
 
-func HtmlA(href, content string) string {
-	return fmt.Sprintf(A_BEG, href) + content + A_END
+//A returns a hyperlink with link set to href and text to content
+func A(href, content string) string {
+	return fmt.Sprintf(ABeg, href) + content + AEnd
 }
 
-func HtmlHead(title, extra string) string {
-	return HEAD_BEG + NL +
-		META_CHARSET + META_VIEWPORT + NL +
-		HtmlTitle(title) + NL +
+//Head returns a full head with style, metadata, title and scripts included
+func Head(title, extra string) string {
+	return HeadBeg + NL +
+		MetaCharset + MetaViewport + NL +
+		Title(title) + NL +
 		HIGHLIGHT_JS +
-		SCRIPT_BEG + JS + SCRIPT_END + NL +
+		ScriptBeg + JS + ScriptEnd + NL +
 		extra + NL +
-		HEAD_END
+		HeadEnd
 }
 
-func HtmlBody(body string) string {
-	return BODY_BEG + NL + body + NL + BODY_END
+//Body returns a body enclosed by opening and closing body tag
+func Body(body string) string {
+	return BodyBeg + NL + body + NL + BodyEnd
 }
 
-func Html(title, style, body string) string {
-	return DOCTYPE + NL +
-		HTML_BEG + NL +
-		HtmlHead(title, style) + NL +
-		HtmlBody(body) + NL +
-		HTML_END
+//HTML creates a full webpage
+func HTML(title, style, body string) string {
+	return Doctype + NL +
+		HTMLBeg + NL +
+		Head(title, style) + NL +
+		Body(body) + NL +
+		HTMLEnd
 }
 
+//Div returns a div with class and content specified enclosed in div tags
 func Div(class, content string) string {
-	return "<div class=\"" + class + "\">" + content + DIV_END
+	return "<div class=\"" + class + "\">" + content + DivEnd
 }
 
+//TopBar returns a TopBar with theme slider, back button and dropdown theme chooser
 func TopBar(isDarkMode bool) string {
 	if isDarkMode {
 		return Div("top-bar", THEME_SLIDER+BackButtonHtml("/", "<<")+ThemeDropdownHtml(Themes()))
-	} else {
-		return Div("top-bar", THEME_SLIDER_CHECKED+BackButtonHtml("/", "<<")+ThemeDropdownHtml(Themes()))
 	}
+
+	return Div("top-bar", THEME_SLIDER_CHECKED+BackButtonHtml("/", "<<")+ThemeDropdownHtml(Themes()))
 }
 
+//TopBarSliderDropdown returns a div with theme slider and theme dropdown menu
 func TopBarSliderDropdown(isDarkMode bool) string {
 	if isDarkMode {
 		return Div("top-bar", THEME_SLIDER+ThemeDropdownHtml(Themes()))
-	} else {
-		return Div("top-bar", THEME_SLIDER_CHECKED+ThemeDropdownHtml(Themes()))
 	}
+
+	return Div("top-bar", THEME_SLIDER_CHECKED+ThemeDropdownHtml(Themes()))
 }

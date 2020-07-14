@@ -1,33 +1,34 @@
 package mdserver
 
 import (
-	"github.com/gomarkdown/markdown"
-	log "github.com/sirupsen/logrus"
-	. "gomd/mdserver/html"
+	"gomd/mdserver/html"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"time"
+
+	"github.com/gomarkdown/markdown"
+	log "github.com/sirupsen/logrus"
 )
 
 //################################################################################
 // MdFile
 
+// MdFile - structure representing a markdown file
 type MdFile struct {
-	Mod_time time.Time
+	ModTime  time.Time
 	Path     string
 	Filename string
 	Size     int64
 	Content  []byte
 }
 
-// Loads a markdown file from path loading all metadata and content
+// LoadMdFile - Loads a markdown file from path loading all metadata and content
 func LoadMdFile(path string) (MdFile, error) {
 	content, err := ioutil.ReadFile(path)
 	if err != nil {
 		return MdFile{}, err
 	}
-
 	info, err := os.Stat(path)
 	if err != nil {
 		return MdFile{}, err
@@ -36,7 +37,7 @@ func LoadMdFile(path string) (MdFile, error) {
 	_, file := filepath.Split(path)
 
 	return MdFile{
-		Mod_time: info.ModTime(),
+		ModTime:  info.ModTime(),
 		Path:     path,
 		Filename: file,
 		Size:     info.Size(),
@@ -44,6 +45,8 @@ func LoadMdFile(path string) (MdFile, error) {
 	}, nil
 }
 
+//ReloadMdFile - Reloads md file returning error if read failed or failed
+//to read metadata
 func (f *MdFile) ReloadMdFile() error {
 	content, err := ioutil.ReadFile(f.Path)
 	if err != nil {
@@ -56,36 +59,36 @@ func (f *MdFile) ReloadMdFile() error {
 	}
 
 	f.Content = content
-	f.Mod_time = info.ModTime()
+	f.ModTime = info.ModTime()
 	f.Size = info.Size()
 
 	return nil
 }
 
-// Checks modification time. If changed updates Mod_time
+//HasModTimeChanged - Checks modification time. If changed updates ModTime
 func (f *MdFile) HasModTimeChanged() (bool, error) {
 	info, err := os.Stat(f.Path)
 	if err != nil {
 		return false, err
 	}
 
-	if f.Mod_time != info.ModTime() {
+	if f.ModTime != info.ModTime() {
 		return true, nil
 	}
 
 	return false, nil
 }
 
-// Creates HTML string with this file contents
-func (f *MdFile) AsHtml(isDarkMode bool, theme, bind_addr string) string {
-	body, style := TopBar(isDarkMode), MdFileStyle(isDarkMode, theme)
+//AsHTML - Creates HTML string with this file contents
+func (f *MdFile) AsHTML(isDarkMode bool, theme, bindAddr string) string {
+	body, style := html.TopBar(isDarkMode), html.MdFileStyle(isDarkMode, theme)
 
-	style += ReloadJs(bind_addr)
+	style += html.ReloadJs(bindAddr)
 	body += string(markdown.ToHTML(f.Content, nil, nil))
-	return Html(f.Filename, style, body)
+	return html.Html(f.Filename, style, body)
 }
 
-// Walks through a specified directory and finds md files
+//LoadFiles - Walks through a specified directory and finds md files
 func LoadFiles(path string) []MdFile {
 	var files []MdFile
 	err := filepath.Walk(path, func(p string, info os.FileInfo, err error) error {

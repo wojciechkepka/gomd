@@ -6,7 +6,8 @@ import (
 	rt "runtime"
 )
 
-func UrlOpen(url string) error {
+//URLOpen - tries to open a url based on OS
+func URLOpen(url string) error {
 	var cmd *exec.Cmd
 
 	switch os := rt.GOOS; os {

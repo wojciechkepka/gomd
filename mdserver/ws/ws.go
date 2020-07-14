@@ -1,9 +1,10 @@
 package ws
 
 import (
-	log "github.com/sirupsen/logrus"
 	"net/http"
 	"time"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/gorilla/websocket"
 )

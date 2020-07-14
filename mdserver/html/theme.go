@@ -1,5 +1,6 @@
 package html
 
+//Themes - available themes in mdserver
 func Themes() []string {
 	return []string{
 		"gruvbox",
@@ -7,6 +8,7 @@ func Themes() []string {
 	}
 }
 
+//IsInThemes - checks whether theme is in available themes
 func IsInThemes(theme string) bool {
 	for _, t := range Themes() {
 		if t == theme {
@@ -17,7 +19,8 @@ func IsInThemes(theme string) bool {
 	return false
 }
 
-func ThemeCss(isDarkMode bool, theme string) string {
+//ThemeCSS - returns style of specified theme
+func ThemeCSS(isDarkMode bool, theme string) string {
 	switch theme {
 	case "gruvbox":
 		if isDarkMode {
