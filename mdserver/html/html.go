@@ -1,7 +1,5 @@
 package html
 
-import "log"
-
 //################################################################################
 // HTML Elements
 const (
@@ -43,9 +41,7 @@ func Title(title string) string {
 
 //A returns a hyperlink with link set to href and text to content
 func A(href, content string) string {
-	a := ABeg + href + AMid + content + AEnd
-	log.Println(a)
-	return a
+	return ABeg + href + AMid + content + AEnd
 }
 
 //Head returns a full head with style, metadata, title and scripts included
