@@ -114,7 +114,7 @@ func (md *MdServer) WatchFiles() {
 //FindNewFiles - Checks for new files in md.Path
 func (md *MdServer) FindNewFiles() {
 	err := filepath.Walk(md.path, func(p string, info os.FileInfo, err error) error {
-		if !info.IsDir() {
+		if !info.IsDir() && !util.IsSubDirPath(p) {
 			if !md.isFileInFiles(p) {
 				log.Printf("New file found - '%v'", p)
 				file, err := LoadMdFile(p)
