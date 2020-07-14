@@ -226,6 +226,7 @@ func (md *MdServer) watchHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (md *MdServer) pingHandler(w http.ResponseWriter, r *http.Request) {
+	log.Println("Ping")
 	fmt.Fprintf(w, "pong")
 }
 
