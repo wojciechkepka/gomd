@@ -27,6 +27,7 @@ const (
 	themeDarkEp    = "/theme/dark"
 	staticEp       = "/static/"
 	reloadEp       = "/reload"
+	pingEp         = "/ping"
 )
 
 //################################################################################
@@ -224,6 +225,10 @@ func (md *MdServer) watchHandler(w http.ResponseWriter, r *http.Request) {
 	ws.ServeWs(hub, w, r)
 }
 
+func (md *MdServer) pingHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "pong")
+}
+
 // Serve - Mount all endpoints and serve...
 func (md *MdServer) Serve() {
 	log.Printf("Listening at %v", md.URL())
@@ -236,6 +241,7 @@ func (md *MdServer) Serve() {
 	http.HandleFunc(fileviewEp, md.fileViewHandler)
 	http.HandleFunc(themeEp, md.themeHandler)
 	http.HandleFunc(reloadEp, md.watchHandler)
+	http.HandleFunc(pingEp, md.pingHandler)
 	http.Handle(staticEp, http.StripPrefix(staticEp, fs))
 	go md.WatchFiles()
 	go md.OpenURL()
