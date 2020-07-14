@@ -38,7 +38,7 @@ command -v cleancss >/dev/null
 if [ $? != 0 ]
 then
     echo "Build failed. No cleancss in \$PATH"
-    echo "Run 'npm install clean-css'"
+    echo "Run 'npm install clean-css -g'"
     exit 1
 fi
 
