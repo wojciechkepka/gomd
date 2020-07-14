@@ -7,7 +7,7 @@ before_install:
   - sudo apt -y update
   - curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
   - sudo apt -y install sassc nodejs
-  - npm install clean-css-cli
+  - npm install clean-css-cli -g
 install:
   - make
 script:
