@@ -2,7 +2,7 @@ language: go
 go:
   - 1.14
 before_install:
-  - sudo apt -y install curl
+  - sudo apt -y update
   - curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
   - sudo apt -y install sassc nodejs
   - npm install clean-css-cli
