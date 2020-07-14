@@ -4,4 +4,8 @@
 
 sleep 2
 PING="$(curl http://localhost:5001/ping)"
-[[ ! $PING =~ pong ]] && echo '1'
+if [[ ! $PING =~ pong ]]
+then
+    exit 1
+fi
+
