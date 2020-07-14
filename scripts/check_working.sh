@@ -6,4 +6,6 @@ echo "$(ip a)"
 
 PING="$(curl http://localhost:5001/ping)"
 
-[[ ! $PING =~ "pong" ]] && exit 1
+echo "Got: '$PING' want 'pong'"
+
+[[ ! $PING =~ pong ]] && exit 1
