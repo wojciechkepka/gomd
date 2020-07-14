@@ -24,16 +24,16 @@ func ThemeCSS(isDarkMode bool, theme string) string {
 	switch theme {
 	case "gruvbox":
 		if isDarkMode {
-			return GRUVBOX_DARK_HLJS
-		} else {
-			return GRUVBOX_LIGHT_HLJS
+			return GruvboxDarkHljs
 		}
+
+		return GruvboxLightHljs
 	case "solarized":
 		if isDarkMode {
-			return SOLARIZED_DARK_HLJS
-		} else {
-			return SOLARIZED_LIGHT_HLJS
+			return SolarizedDarkHljs
 		}
+
+		return SolarizedLightHljs
 	default:
 		return ""
 	}

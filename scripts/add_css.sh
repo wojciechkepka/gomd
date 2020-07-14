@@ -43,12 +43,14 @@ then
 fi
 
 rm -v $GO_FILE
-echo -e "package html\n\n" > $GO_FILE
+echo -e "package html\n\n// Stylesheets\nconst (\n" > $GO_FILE
 
 for f in ./static/css/*
 do
     filename="$(basename -- $f | cut -d '.' -f1)"
     cleancss -o $f $f
-    echo -e "const ${filename^^} = \`\n$(cat $f)\`\n" >> $GO_FILE
+    echo -e "    ${filename^} = \`\n$(cat $f)\`\n" >> $GO_FILE
     rm $f
 done
+
+echo ")" >> $GO_FILE
