@@ -1,5 +1,7 @@
 # gomd 📘 
 
+[![Build Status](https://travis-ci.org/wojciechkepka/gomd.svg?branch=master)](https://travis-ci.org/wojciechkepka/gomd)
+
 Quickly display formatted markdown files in your browser.  
 
 ![working-app](https://raw.githubusercontent.com/wojciechkepka/gomd/master/gomd.gif)
