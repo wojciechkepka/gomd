@@ -107,3 +107,8 @@ func LoadFiles(path string) []MdFile {
 	}
 	return files
 }
+
+//IsHidden check whether this file is hidden
+func (f *MdFile) IsHidden() bool {
+	return f.Path[0] == '.'
+}

@@ -37,16 +37,17 @@ var hub *ws.Hub
 
 //MdServer - http server used for displaying rendered markdown files
 type MdServer struct {
-	bindHost string
-	bindPort int
-	path     string
-	Files    []MdFile
-	theme    string
-	darkMode bool
+	bindHost   string
+	bindPort   int
+	path       string
+	Files      []MdFile
+	theme      string
+	darkMode   bool
+	showHidden bool
 }
 
 //NewMdServer - Initializes MdServer
-func NewMdServer(bindHost string, bindPort int, path, theme string) MdServer {
+func NewMdServer(bindHost string, bindPort int, path, theme string, showHidden bool) MdServer {
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		log.Println("Specified path doesn't exist. Using default.")
 		path = "./"
@@ -55,12 +56,13 @@ func NewMdServer(bindHost string, bindPort int, path, theme string) MdServer {
 	files := LoadFiles(path)
 
 	return MdServer{
-		bindHost: bindHost,
-		bindPort: bindPort,
-		path:     path,
-		Files:    files,
-		theme:    theme,
-		darkMode: true,
+		bindHost:   bindHost,
+		bindPort:   bindPort,
+		path:       path,
+		Files:      files,
+		theme:      theme,
+		darkMode:   true,
+		showHidden: showHidden,
 	}
 }
 
@@ -170,6 +172,9 @@ func (md *MdServer) serveFile(path string) string {
 func (md *MdServer) filesBody() string {
 	body := html.UlBeg + html.NL
 	for _, file := range md.Files {
+		if file.IsHidden() && !md.showHidden {
+			continue
+		}
 		body += html.LiBeg
 		endPoint := fileviewEp + file.Path
 		body += fmt.Sprintf(html.ABeg, endPoint)
