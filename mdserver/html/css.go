@@ -4,7 +4,7 @@ package html
 const (
 
     Fonts = `
-@font-face{font-family:FiraCode-Regular;src:url(/static/fonts/FiraCode-Regular.ttf)}`
+@font-face{font-family:FiraCode-Regular;src:url(https://unpkg.com/firacode/distr/ttf/FiraCode-Regular.ttf)}`
 
     FvCommon = `
 *{margin:0;padding:0}nav{margin:50px}ul{list-style-type:none}li{height:25px;margin-right:0;padding:0 20px}.files{margin:auto;height:50%;padding:10px;display:flex;flex-direction:column}.top-bar{display:flex;padding-left:30px;line-height:1.6}`
