@@ -54,7 +54,7 @@ func NewMdServer(bindHost string, bindPort int, path, theme string, showHidden, 
 	}
 
 	if quiet {
-		u.IsVerbose = false
+		u.LogEnabled(false)
 	}
 
 	files := LoadFiles(path)

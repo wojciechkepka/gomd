@@ -21,8 +21,7 @@ const (
 )
 
 var (
-	//IsVerbose - Should the output be printed
-	IsVerbose bool = true
+	isVerbose bool = true
 )
 
 //URLOpen - tries to open a url based on OS
@@ -64,15 +63,15 @@ func CountChInStr(ch rune, str string) int {
 func Logf(level LogLevel, f string, args ...interface{}) {
 	switch level {
 	case Debug:
-		if IsVerbose {
+		if isVerbose {
 			log.Debugf(f, args)
 		}
 	case Info:
-		if IsVerbose {
+		if isVerbose {
 			log.Infof(f, args)
 		}
 	case Warn:
-		if IsVerbose {
+		if isVerbose {
 			log.Warnf(f, args)
 		}
 	case Error:
@@ -84,15 +83,15 @@ func Logf(level LogLevel, f string, args ...interface{}) {
 func Logln(level LogLevel, args ...interface{}) {
 	switch level {
 	case Debug:
-		if IsVerbose {
+		if isVerbose {
 			log.Debugln(args)
 		}
 	case Info:
-		if IsVerbose {
+		if isVerbose {
 			log.Infoln(args)
 		}
 	case Warn:
-		if IsVerbose {
+		if isVerbose {
 			log.Warnln(args)
 		}
 	case Error:
@@ -105,4 +104,9 @@ func Logln(level LogLevel, args ...interface{}) {
 //LogFatal - log.Fatal interface
 func LogFatal(args ...interface{}) {
 	log.Fatal(args)
+}
+
+//LogEnabled decide if informational log should be logged
+func LogEnabled(isLogEnabled bool) {
+	isVerbose = isLogEnabled
 }
