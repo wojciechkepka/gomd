@@ -3,7 +3,7 @@
 ################################################################################
 # Compile css
 
-mkdir -v ./static/css 2>/dev/null || true
+mkdir -vp ./static/css 2>/dev/null || true
 
 command -v sass >/dev/null
 if [ $? != 0 ]
