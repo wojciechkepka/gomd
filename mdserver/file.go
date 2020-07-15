@@ -2,7 +2,7 @@ package mdserver
 
 import (
 	"gomd/mdserver/html"
-	"gomd/util"
+	u "gomd/util"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -91,10 +91,10 @@ func (f *MdFile) AsHTML(isDarkMode bool, theme, bindAddr string) string {
 func LoadFiles(path string) []MdFile {
 	var files []MdFile
 	err := filepath.Walk(path, func(p string, info os.FileInfo, err error) error {
-		if !info.IsDir() && !util.IsSubDirPath(path, p) {
+		if !info.IsDir() && !u.IsSubDirPath(path, p) {
 			file, err := LoadMdFile(p)
 			if err != nil {
-				util.Logf(util.Error, "Failed to load file - %v", err)
+				u.Logf(u.Error, "Failed to load file - %v", err)
 				return nil
 			}
 			files = append(files, file)
@@ -102,7 +102,7 @@ func LoadFiles(path string) []MdFile {
 		return nil
 	})
 	if err != nil {
-		util.Logf(util.Error, "Error: failed to read file - %v", err)
+		u.Logf(u.Error, "Error: failed to read file - %v", err)
 	}
 	return files
 }

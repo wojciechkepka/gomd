@@ -1,7 +1,7 @@
 package ws
 
 import (
-	"gomd/util"
+	u "gomd/util"
 	"net/http"
 	"time"
 
@@ -53,7 +53,7 @@ func (c *Client) readPump() {
 		_, _, err := c.conn.ReadMessage()
 		if err != nil {
 			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway) {
-				util.Logf(util.Error, "An error happened when reading from the Websocket client: %v", err)
+				u.Logf(u.Error, "An error happened when reading from the Websocket client: %v", err)
 			}
 			break
 		}
@@ -110,7 +110,7 @@ func (c *Client) writePump() {
 func ServeWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
-		util.Logln(util.Error, err)
+		u.Logln(u.Error, err)
 		return
 	}
 	client := &Client{hub: hub, conn: conn, send: make(chan []byte, 256)}
