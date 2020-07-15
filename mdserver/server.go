@@ -30,10 +30,6 @@ const (
 	pingEp         = "/ping"
 )
 
-var (
-	hub *ws.Hub
-)
-
 //MdServer - http server used for displaying rendered markdown files
 type MdServer struct {
 	bindHost   string
@@ -43,6 +39,7 @@ type MdServer struct {
 	theme      string
 	darkMode   bool
 	showHidden bool
+	hub        *ws.Hub
 }
 
 //New - Initializes MdServer
@@ -66,6 +63,7 @@ func New(bindHost string, bindPort int, path, theme string, showHidden, quiet bo
 		theme:      theme,
 		darkMode:   true,
 		showHidden: showHidden,
+		hub:        ws.NewHub(),
 	}
 }
 
@@ -113,9 +111,11 @@ func (md *MdServer) OpenURL() {
 	u.URLOpen(md.URL())
 }
 
-func sendReload() {
+//sendReload sends a "reload" message that is then broadcasted to a websocket which
+//reloads a webpage
+func (md *MdServer) sendReload() {
 	message := bytes.TrimSpace([]byte("reload"))
-	hub.Broadcast <- message
+	md.hub.Broadcast <- message
 }
 
 // Serve - Mount all endpoints and serve...
@@ -123,8 +123,8 @@ func (md *MdServer) Serve() {
 	u.Logf(u.Info, "Listening at %v", md.URL())
 	u.Logf(u.Info, "Directory: %v", md.path)
 	u.Logf(u.Info, "Theme: %v", md.theme)
-	hub = ws.NewHub()
-	go hub.Run()
+
+	go md.hub.Run()
 	http.HandleFunc(filelistviewEp, md.fileListViewHandler)
 	http.HandleFunc(fileviewEp, md.fileViewHandler)
 	http.HandleFunc(themeEp, md.themeHandler)

@@ -18,7 +18,7 @@ func (md *MdServer) checkIfFilesChanged() {
 			if err != nil {
 				u.Logln(u.Warn, "Failed to reload file - ", err)
 			}
-			sendReload()
+			md.sendReload()
 		}
 	}
 }
@@ -36,7 +36,7 @@ func (md *MdServer) findNewFiles() {
 					return nil
 				}
 				md.Files = append(md.Files, file)
-				sendReload()
+				md.sendReload()
 			}
 
 		}

@@ -42,7 +42,7 @@ func (md *MdServer) themeHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (md *MdServer) watchHandler(w http.ResponseWriter, r *http.Request) {
-	ws.ServeWs(hub, w, r)
+	ws.ServeWs(md.hub, w, r)
 }
 
 func (md *MdServer) pingHandler(w http.ResponseWriter, r *http.Request) {
