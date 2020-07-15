@@ -49,7 +49,7 @@ type MdServer struct {
 //NewMdServer - Initializes MdServer
 func NewMdServer(bindHost string, bindPort int, path, theme string, showHidden, quiet bool) MdServer {
 	if _, err := os.Stat(path); os.IsNotExist(err) {
-		util.Logln("Specified path doesn't exist. Using default.")
+		util.Logln(util.Warn, "Specified path doesn't exist. Using default.")
 		path = "./"
 	}
 
@@ -102,10 +102,10 @@ func (md *MdServer) WatchFiles() {
 		for i := 0; i < len(md.Files); i++ {
 			f := &md.Files[i]
 			if hasChanged, _ := f.HasModTimeChanged(); hasChanged {
-				util.Logf("File %v changed. Reloading.", f.Filename)
+				util.Logf(util.Info, "File %v changed. Reloading.", f.Filename)
 				err := f.ReloadMdFile()
 				if err != nil {
-					util.LogFatalf("Failed to reload file - %v", err)
+					util.Logln(util.Warn, "Failed to reload file - ", err)
 				}
 				sendReload()
 			}
@@ -120,10 +120,10 @@ func (md *MdServer) FindNewFiles() {
 	err := filepath.Walk(md.path, func(p string, info os.FileInfo, err error) error {
 		if !info.IsDir() && !util.IsSubDirPath(md.path, p) {
 			if !md.isFileInFiles(p) {
-				util.Logf("New file found - '%v'", p)
+				util.Logf(util.Info, "New file found - '%v'", p)
 				file, err := LoadMdFile(p)
 				if err != nil {
-					util.LogFatalf("Failed to load file - %v", err)
+					util.Logln(util.Error, "Failed to load file - ", err)
 					return nil
 				}
 				md.Files = append(md.Files, file)
@@ -134,7 +134,7 @@ func (md *MdServer) FindNewFiles() {
 		return nil
 	})
 	if err != nil {
-		util.LogFatalf("Error: failed to read directory %v - %v", md.path, err)
+		util.Logf(util.Error, "Error: failed to read directory %v - %v", md.path, err)
 	}
 
 }
@@ -202,7 +202,7 @@ func (md *MdServer) filesHTML() string {
 // Handler for FileView
 func (md *MdServer) fileViewHandler(w http.ResponseWriter, r *http.Request) {
 	filePath := r.RequestURI[len(fileviewEp)-1:]
-	util.Logf("Serving file %v", filePath)
+	util.Logf(util.Info, "Serving file %v", filePath)
 	fmt.Fprintln(w, string(md.serveFile(filePath)))
 }
 
@@ -214,15 +214,15 @@ func (md *MdServer) fileListViewHandler(w http.ResponseWriter, r *http.Request) 
 func (md *MdServer) themeHandler(w http.ResponseWriter, r *http.Request) {
 	url := r.URL.RequestURI()
 	if url == themeDarkEp {
-		util.Logln("Switching theme to dark")
+		util.Logln(util.Info, "Switching theme to dark")
 		md.SetDarkMode(true)
 	} else if url == themeLightEp {
-		util.Logln("Switching theme to light")
+		util.Logln(util.Info, "Switching theme to light")
 		md.SetDarkMode(false)
 	} else {
 		_, theme := filepath.Split(url)
 		if html.IsInThemes(theme) {
-			util.Logf("Changing theme to %v", theme)
+			util.Logf(util.Info, "Changing theme to %v", theme)
 			md.SetTheme(theme)
 		}
 	}
@@ -233,15 +233,15 @@ func (md *MdServer) watchHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (md *MdServer) pingHandler(w http.ResponseWriter, r *http.Request) {
-	util.Logln("Ping")
+	util.Logln(util.Info, "Ping")
 	fmt.Fprintln(w, "pong")
 }
 
 // Serve - Mount all endpoints and serve...
 func (md *MdServer) Serve() {
-	util.Logf("Listening at %v", md.URL())
-	util.Logf("Directory: %v", md.path)
-	util.Logf("Theme: %v", md.theme)
+	util.Logf(util.Info, "Listening at %v", md.URL())
+	util.Logf(util.Info, "Directory: %v", md.path)
+	util.Logf(util.Info, "Theme: %v", md.theme)
 	fs := http.FileServer(http.Dir("./static"))
 	hub = ws.NewHub()
 	go hub.Run()

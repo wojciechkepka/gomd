@@ -8,6 +8,18 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+//LogLevel - specifies at what level to log
+type LogLevel string
+
+// Log levels
+const (
+	Debug LogLevel = "debug"
+	Info  LogLevel = "info"
+	Warn  LogLevel = "warn"
+	Error LogLevel = "error"
+	Fatal LogLevel = "fatal"
+)
+
 var (
 	//IsVerbose - Should the output be printed
 	IsVerbose bool = true
@@ -48,31 +60,49 @@ func CountChInStr(ch rune, str string) int {
 	return count
 }
 
-//Logln - logs line if IsVerbose is set to true
-func Logln(args ...interface{}) {
-	if IsVerbose {
-		log.Println(args)
+//Logf - logs a formated string if IsVerbose is set to true at specified LogLevel
+func Logf(level LogLevel, f string, args ...interface{}) {
+	switch level {
+	case Debug:
+		if IsVerbose {
+			log.Debugf(f, args)
+		}
+	case Info:
+		if IsVerbose {
+			log.Infof(f, args)
+		}
+	case Warn:
+		if IsVerbose {
+			log.Warnf(f, args)
+		}
+	case Error:
+		log.Errorf(f, args)
 	}
 }
 
-//Logf - logs format string with args if IsVerbose is set to true
-func Logf(f string, args ...interface{}) {
-	if IsVerbose {
-		log.Printf(f, args)
+//Logln - logs a line if IsVerbose is set to true at specified LogLevel
+func Logln(level LogLevel, args ...interface{}) {
+	switch level {
+	case Debug:
+		if IsVerbose {
+			log.Debugln(args)
+		}
+	case Info:
+		if IsVerbose {
+			log.Infoln(args)
+		}
+	case Warn:
+		if IsVerbose {
+			log.Warnln(args)
+		}
+	case Error:
+		log.Errorln(args)
+	case Fatal:
+		log.Fatalln(args)
 	}
 }
 
-//LogFatalln - logs a fatal line
-func LogFatalln(args ...interface{}) {
-	log.Fatalln(args)
-}
-
-//LogFatalf - logs a fatal format string with args
-func LogFatalf(f string, args ...interface{}) {
-	log.Fatalf(f, args)
-}
-
-//LogFatal - to unify logging interface
+//LogFatal - log.Fatal interface
 func LogFatal(args ...interface{}) {
 	log.Fatal(args)
 }

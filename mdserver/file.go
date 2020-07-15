@@ -94,7 +94,7 @@ func LoadFiles(path string) []MdFile {
 		if !info.IsDir() && !util.IsSubDirPath(path, p) {
 			file, err := LoadMdFile(p)
 			if err != nil {
-				util.LogFatalf("Failed to load file - %v", err)
+				util.Logf(util.Error, "Failed to load file - %v", err)
 				return nil
 			}
 			files = append(files, file)
@@ -102,7 +102,7 @@ func LoadFiles(path string) []MdFile {
 		return nil
 	})
 	if err != nil {
-		util.Logf("Error: failed to read file - %v", err)
+		util.Logf(util.Error, "Error: failed to read file - %v", err)
 	}
 	return files
 }
