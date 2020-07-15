@@ -10,8 +10,6 @@ import (
 	"os"
 	"path/filepath"
 	"time"
-
-	log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -33,7 +31,9 @@ const (
 //################################################################################
 // Server
 
-var hub *ws.Hub
+var (
+	hub *ws.Hub
+)
 
 //MdServer - http server used for displaying rendered markdown files
 type MdServer struct {
@@ -47,10 +47,14 @@ type MdServer struct {
 }
 
 //NewMdServer - Initializes MdServer
-func NewMdServer(bindHost string, bindPort int, path, theme string, showHidden bool) MdServer {
+func NewMdServer(bindHost string, bindPort int, path, theme string, showHidden, quiet bool) MdServer {
 	if _, err := os.Stat(path); os.IsNotExist(err) {
-		log.Println("Specified path doesn't exist. Using default.")
+		util.Logln("Specified path doesn't exist. Using default.")
 		path = "./"
+	}
+
+	if quiet {
+		util.IsVerbose = false
 	}
 
 	files := LoadFiles(path)
@@ -98,10 +102,10 @@ func (md *MdServer) WatchFiles() {
 		for i := 0; i < len(md.Files); i++ {
 			f := &md.Files[i]
 			if hasChanged, _ := f.HasModTimeChanged(); hasChanged {
-				log.Printf("File %v changed. Reloading.", f.Filename)
+				util.Logf("File %v changed. Reloading.", f.Filename)
 				err := f.ReloadMdFile()
 				if err != nil {
-					log.Fatalf("Failed to reload file - %v", err)
+					util.LogFatalf("Failed to reload file - %v", err)
 				}
 				sendReload()
 			}
@@ -114,12 +118,12 @@ func (md *MdServer) WatchFiles() {
 //FindNewFiles - Checks for new files in md.Path
 func (md *MdServer) FindNewFiles() {
 	err := filepath.Walk(md.path, func(p string, info os.FileInfo, err error) error {
-		if !info.IsDir() && !util.IsSubDirPath(p) {
+		if !info.IsDir() && !util.IsSubDirPath(md.path, p) {
 			if !md.isFileInFiles(p) {
-				log.Printf("New file found - '%v'", p)
+				util.Logf("New file found - '%v'", p)
 				file, err := LoadMdFile(p)
 				if err != nil {
-					log.Fatalf("Failed to load file - %v", err)
+					util.LogFatalf("Failed to load file - %v", err)
 					return nil
 				}
 				md.Files = append(md.Files, file)
@@ -130,7 +134,7 @@ func (md *MdServer) FindNewFiles() {
 		return nil
 	})
 	if err != nil {
-		log.Fatalf("Error: failed to read directory %v - %v", md.path, err)
+		util.LogFatalf("Error: failed to read directory %v - %v", md.path, err)
 	}
 
 }
@@ -198,7 +202,7 @@ func (md *MdServer) filesHTML() string {
 // Handler for FileView
 func (md *MdServer) fileViewHandler(w http.ResponseWriter, r *http.Request) {
 	filePath := r.RequestURI[len(fileviewEp)-1:]
-	log.Printf("Serving file %v", filePath)
+	util.Logf("Serving file %v", filePath)
 	fmt.Fprintln(w, string(md.serveFile(filePath)))
 }
 
@@ -210,15 +214,15 @@ func (md *MdServer) fileListViewHandler(w http.ResponseWriter, r *http.Request) 
 func (md *MdServer) themeHandler(w http.ResponseWriter, r *http.Request) {
 	url := r.URL.RequestURI()
 	if url == themeDarkEp {
-		log.Println("Switching theme to dark")
+		util.Logln("Switching theme to dark")
 		md.SetDarkMode(true)
 	} else if url == themeLightEp {
-		log.Println("Switching theme to light")
+		util.Logln("Switching theme to light")
 		md.SetDarkMode(false)
 	} else {
 		_, theme := filepath.Split(url)
 		if html.IsInThemes(theme) {
-			log.Printf("Changing theme to %v", theme)
+			util.Logf("Changing theme to %v", theme)
 			md.SetTheme(theme)
 		}
 	}
@@ -229,15 +233,15 @@ func (md *MdServer) watchHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (md *MdServer) pingHandler(w http.ResponseWriter, r *http.Request) {
-	log.Println("Ping")
+	util.Logln("Ping")
 	fmt.Fprintln(w, "pong")
 }
 
 // Serve - Mount all endpoints and serve...
 func (md *MdServer) Serve() {
-	log.Printf("Listening at %v", md.URL())
-	log.Printf("Directory: %v", md.path)
-	log.Printf("Theme: %v", md.theme)
+	util.Logf("Listening at %v", md.URL())
+	util.Logf("Directory: %v", md.path)
+	util.Logf("Theme: %v", md.theme)
 	fs := http.FileServer(http.Dir("./static"))
 	hub = ws.NewHub()
 	go hub.Run()
@@ -249,7 +253,7 @@ func (md *MdServer) Serve() {
 	http.Handle(staticEp, http.StripPrefix(staticEp, fs))
 	go md.WatchFiles()
 	go md.OpenURL()
-	log.Fatal(http.ListenAndServe(md.BindAddr(), nil))
+	util.LogFatal(http.ListenAndServe(md.BindAddr(), nil))
 }
 
 func sendReload() {

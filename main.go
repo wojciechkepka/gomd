@@ -13,6 +13,7 @@ func main() {
 	dir := flag.String("dir", ".", "The directory to serve")
 	theme := flag.String("theme", "gruvbox", "Available gruvbox/solarized")
 	showHidden := flag.Bool("hidden", false, "Display hidden files")
+	quiet := flag.Bool("quiet", false, "Hide info output. Only errors are displayed")
 	help := flag.Bool("help", false, "Print help")
 	flag.Parse()
 	if *help {
@@ -24,7 +25,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	md := mdserver.NewMdServer(*bindAddr, port, *dir, *theme, *showHidden)
+	md := mdserver.NewMdServer(*bindAddr, port, *dir, *theme, *showHidden, *quiet)
 
 	md.Serve()
 

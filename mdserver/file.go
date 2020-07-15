@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/gomarkdown/markdown"
-	log "github.com/sirupsen/logrus"
 )
 
 //################################################################################
@@ -92,10 +91,10 @@ func (f *MdFile) AsHTML(isDarkMode bool, theme, bindAddr string) string {
 func LoadFiles(path string) []MdFile {
 	var files []MdFile
 	err := filepath.Walk(path, func(p string, info os.FileInfo, err error) error {
-		if !info.IsDir() && !util.IsSubDirPath(p) {
+		if !info.IsDir() && !util.IsSubDirPath(path, p) {
 			file, err := LoadMdFile(p)
 			if err != nil {
-				log.Fatalf("Failed to load file - %v", err)
+				util.LogFatalf("Failed to load file - %v", err)
 				return nil
 			}
 			files = append(files, file)
@@ -103,7 +102,7 @@ func LoadFiles(path string) []MdFile {
 		return nil
 	})
 	if err != nil {
-		log.Printf("Error: failed to read file - %v", err)
+		util.Logf("Error: failed to read file - %v", err)
 	}
 	return files
 }
