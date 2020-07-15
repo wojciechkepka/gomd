@@ -24,7 +24,6 @@ const (
 	themeEp        = "/theme/"
 	themeLightEp   = "/theme/light"
 	themeDarkEp    = "/theme/dark"
-	staticEp       = "/static/"
 	reloadEp       = "/reload"
 	pingEp         = "/ping"
 )
@@ -262,7 +261,6 @@ func (md *MdServer) Serve() {
 	u.Logf(u.Info, "Listening at %v", md.URL())
 	u.Logf(u.Info, "Directory: %v", md.path)
 	u.Logf(u.Info, "Theme: %v", md.theme)
-	fs := http.FileServer(http.Dir("./static"))
 	hub = ws.NewHub()
 	go hub.Run()
 	http.HandleFunc(filelistviewEp, md.fileListViewHandler)
@@ -270,7 +268,6 @@ func (md *MdServer) Serve() {
 	http.HandleFunc(themeEp, md.themeHandler)
 	http.HandleFunc(reloadEp, md.watchHandler)
 	http.HandleFunc(pingEp, md.pingHandler)
-	http.Handle(staticEp, http.StripPrefix(staticEp, fs))
 	go md.WatchFiles()
 	go md.OpenURL()
 	u.LogFatal(http.ListenAndServe(md.BindAddr(), nil))
