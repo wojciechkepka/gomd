@@ -15,6 +15,7 @@ const (
 	DefShowHidden = false
 	DefQuiet      = false
 	DefHelp       = false
+	Version       = "1.1.0"
 )
 
 /*MdOpts Options for running MdServer*/
@@ -40,7 +41,7 @@ func ParseMdOpts() MdOpts {
 //CheckHelp exits with status code 1 if help flag is provided printing defaults
 func (opts *MdOpts) CheckHelp() {
 	if *opts.help {
-		fmt.Println("gomd\n\nUSAGE:")
+		fmt.Println("gomd -", Version, "\n\nUSAGE:")
 		flag.PrintDefaults()
 		os.Exit(1)
 	}
