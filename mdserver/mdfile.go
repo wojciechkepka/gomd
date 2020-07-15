@@ -1,5 +1,10 @@
 package mdserver
 
+/********************************************************************************/
+/*                                  MdFile                                      */
+/*                                                                              */
+/********************************************************************************/
+
 import (
 	"gomd/mdserver/html"
 	u "gomd/util"
@@ -10,9 +15,6 @@ import (
 
 	"github.com/gomarkdown/markdown"
 )
-
-//################################################################################
-// MdFile
 
 // MdFile - structure representing a markdown file
 type MdFile struct {
@@ -87,8 +89,8 @@ func (f *MdFile) AsHTML(isDarkMode bool, theme, bindAddr string) string {
 	return html.HTML(f.Filename, style, body)
 }
 
-//LoadFiles - Walks through a specified directory and finds md files
-func LoadFiles(path string) []MdFile {
+//LoadMdFiles - Walks through a specified directory and finds md files
+func LoadMdFiles(path string) []MdFile {
 	var files []MdFile
 	err := filepath.Walk(path, func(p string, info os.FileInfo, err error) error {
 		if !info.IsDir() && !u.IsSubDirPath(path, p) {
