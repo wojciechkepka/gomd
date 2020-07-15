@@ -7,7 +7,7 @@ const (
 @font-face{font-family:FiraCode-Regular;src:url(/static/fonts/FiraCode-Regular.ttf)}`
 
     FvCommon = `
-*{margin:0;padding:0}nav{margin:50px}ul{list-style-type:none}li{height:25px;margin-right:0;padding:0 20px}.files{margin:auto;height:50%;padding:10px;display:flex;flex-direction:column}.top-bar{display:flex;padding-left:30px}`
+*{margin:0;padding:0}nav{margin:50px}ul{list-style-type:none}li{height:25px;margin-right:0;padding:0 20px}.files{margin:auto;height:50%;padding:10px;display:flex;flex-direction:column}.top-bar{display:flex;padding-left:30px;line-height:1.6}`
 
     FvDark = `
 body{background:#1c1c1c;display:flex;flex-direction:column;height:100vh;padding-top:30px}a.bbut{border:.15em solid #666;color:#f8efe1}a.bbut:hover{color:#000;background-color:#f8efe1}li a{color:#ccc;text-decoration:none;font:25px/1 FiraCode-Regular,Verdana,sans-serif;-webkit-transition:all .5s ease;-moz-transition:all .5s ease;-o-transition:all .5s ease;-ms-transition:all .5s ease;transition:all .5s ease}li a:hover{color:#666}li.active a{font-weight:700;color:#333}`
