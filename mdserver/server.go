@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
 	"time"
 )
 
@@ -46,8 +47,8 @@ type MdServer struct {
 	showHidden bool
 }
 
-//NewMdServer - Initializes MdServer
-func NewMdServer(bindHost string, bindPort int, path, theme string, showHidden, quiet bool) MdServer {
+//New - Initializes MdServer
+func New(bindHost string, bindPort int, path, theme string, showHidden, quiet bool) MdServer {
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		u.Logln(u.Warn, "Specified path doesn't exist. Using default.")
 		path = "./"
@@ -68,6 +69,20 @@ func NewMdServer(bindHost string, bindPort int, path, theme string, showHidden, 
 		darkMode:   true,
 		showHidden: showHidden,
 	}
+}
+
+//FromOpts creates MdServer instance from MdOpts
+func FromOpts(opts MdOpts) MdServer {
+	var port int
+	var err error
+	port, err = strconv.Atoi(*opts.BindPort)
+	if err != nil {
+		u.Logln(u.Warn, "Invalid port '", port, "' using default", DefPort)
+		port, _ = strconv.Atoi(DefPort)
+	}
+	md := New(*opts.BindAddr, port, *opts.Dir, *opts.Theme, *opts.ShowHidden, *opts.Quiet)
+
+	return md
 }
 
 //BindAddr - Returns binding address of this server.
@@ -154,6 +169,11 @@ func (md *MdServer) isFileInFiles(path string) bool {
 //OpenURL - opens server's url in default web browser
 func (md *MdServer) OpenURL() {
 	u.URLOpen(md.URL())
+}
+
+func sendReload() {
+	message := bytes.TrimSpace([]byte("reload"))
+	hub.Broadcast <- message
 }
 
 //########################################
@@ -256,7 +276,11 @@ func (md *MdServer) Serve() {
 	u.LogFatal(http.ListenAndServe(md.BindAddr(), nil))
 }
 
-func sendReload() {
-	message := bytes.TrimSpace([]byte("reload"))
-	hub.Broadcast <- message
+//Run parses commandline opts and prints help if necessary otherwise starts mdserver with
+//provided options
+func Run() {
+	opts := ParseMdOpts()
+	opts.CheckHelp()
+	md := FromOpts(opts)
+	md.Serve()
 }
