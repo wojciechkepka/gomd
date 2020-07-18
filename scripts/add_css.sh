@@ -20,7 +20,7 @@ else
     SASS=sass
 fi
 
-for f in ./sass/*
+for f in ./assets/sass/*
 do
     filename="$(basename -- $f | cut -d '.' -f1)"
     if [[ ! $filename =~ ^_.* ]]
@@ -51,7 +51,8 @@ do
     filename=`echo ${filename:0:1} | tr  '[a-z]' '[A-Z]'`${filename:1}
     cleancss -o $f $f
     echo -e "    ${filename} = \`\n$(cat $f)\`\n" >> $GO_FILE
-    rm $f
 done
 
 echo ")" >> $GO_FILE
+
+rm -rf ./static/css
