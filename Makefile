@@ -1,4 +1,4 @@
 this:
-	./scripts/add_css.sh
+	./scripts/add_assets.sh
 	go build .
 
