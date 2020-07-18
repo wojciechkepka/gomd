@@ -15,10 +15,7 @@ const (
 	TitleEnd  = "</title>"
 	ScriptBeg = "<script>"
 	ScriptEnd = "</script>"
-	ABeg      = "<a href=\""
-	AMid      = "\">"
-	AEnd      = "</a>"
-	DivEnd    = "</div>\n"
+	DivEnd    = "</div>"
 	UlBeg     = "<ul>"
 	UlEnd     = "</ul>"
 	LiBeg     = "<li>"
@@ -35,13 +32,13 @@ func Title(title string) string {
 }
 
 //A returns a hyperlink with link set to href and text to content
-func A(href, content string) string {
-	return ABeg + href + AMid + content + AEnd
+func A(href, content, class string) string {
+	return "<a href=\"" + href + "\" class=\"" + class + "\">" + content + "</a>"
 }
 
 //Body returns a body enclosed by opening and closing body tag
 func Body(body string) string {
-	return BodyBeg + NL + body + NL + BodyEnd
+	return BodyBeg + body + BodyEnd
 }
 
 //Div returns a div with class and content specified enclosed in div tags
