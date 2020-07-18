@@ -9,7 +9,7 @@ const (
 )
 
 //AddHighlightJsToHTML adds highlightjs to html
-func AddHighlightJsToHTML(h *html.Html) {
+func AddHighlightJsToHTML(h *html.HTML) {
 	h.AddLink("stylesheet", HljsCSS)
 	h.AddScriptSrc(HljsJS)
 	h.AddScript("hljs.initHighlightingOnLoad();")

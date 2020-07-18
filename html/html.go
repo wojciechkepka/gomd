@@ -2,18 +2,18 @@ package html
 
 import "strings"
 
-//Html is a struct responsible for creating an HTML page.
+//HTML is a struct responsible for creating an HTML page.
 //On rendering it automatically adds all the html tags
 //except for the elements inside of body.
-type Html struct {
+type HTML struct {
 	charset                                      string
 	meta                                         map[string]string
 	styles, scripts, bodyItems, links, scriptSrc []string
 }
 
 //New creates a new empty Html struct with default 'utf-8' charset
-func New() Html {
-	return Html{
+func New() HTML {
+	return HTML{
 		charset:   "utf-8",
 		meta:      make(map[string]string),
 		styles:    []string{},
@@ -25,43 +25,43 @@ func New() Html {
 }
 
 //SetCharset sets meta charset
-func (h *Html) SetCharset(charset string) {
+func (h *HTML) SetCharset(charset string) {
 	h.charset = charset
 }
 
 //AddMeta adds a meta line to this page
-func (h *Html) AddMeta(name, content string) {
+func (h *HTML) AddMeta(name, content string) {
 	h.meta[name] = content
 }
 
 //AddStyle adds a style to this page.
-func (h *Html) AddStyle(style string) {
+func (h *HTML) AddStyle(style string) {
 	h.styles = append(h.styles, style)
 }
 
 //AddScript adds a cript to this page.
-func (h *Html) AddScript(script string) {
+func (h *HTML) AddScript(script string) {
 	h.scripts = append(h.scripts, script)
 }
 
 //AddBodyItem adds item to this page's body.
-func (h *Html) AddBodyItem(item string) {
+func (h *HTML) AddBodyItem(item string) {
 	h.bodyItems = append(h.bodyItems, item)
 }
 
 //AddLink adds a link tag to this page's head.
-func (h *Html) AddLink(rel, href string) {
+func (h *HTML) AddLink(rel, href string) {
 	h.links = append(h.links, Link(rel, href))
 }
 
 //AddScriptSrc adds a script with src attribute set to
 //argument of this func.
-func (h *Html) AddScriptSrc(src string) {
+func (h *HTML) AddScriptSrc(src string) {
 	h.scriptSrc = append(h.scriptSrc, src)
 }
 
 //Render renders the whole page adding all elements together.
-func (h *Html) Render() string {
+func (h *HTML) Render() string {
 	s := strings.Builder{}
 	s.WriteString(Doctype + HTMLBeg + HeadBeg)
 
