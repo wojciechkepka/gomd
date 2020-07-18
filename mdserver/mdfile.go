@@ -89,6 +89,7 @@ func (f *MdFile) AsHTML(isDarkMode bool, theme, bindAddr string) string {
 	h.AddStyle(assets.MdFileStyle(isDarkMode, theme))
 	h.AddScript(assets.ReloadJs(bindAddr))
 	h.AddScript(assets.JS)
+	assets.AddHighlightJsToHTML(&h)
 	h.AddBodyItem(html.Div("wrapper", assets.TopBar(isDarkMode)+string(markdown.ToHTML(f.Content, nil, nil))))
 	return h.Render()
 }
