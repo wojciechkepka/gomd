@@ -72,3 +72,13 @@ func HTML(title, style, body string) string {
 func Div(class, content string) string {
 	return "<div class=\"" + class + "\">" + content + DivEnd
 }
+
+//Script returns content enclosed in <script> tags
+func Script(content string) string {
+	return ScriptBeg + content + ScriptEnd
+}
+
+//Style returns content enclosed in <style> tags
+func Style(content string) string {
+	return StyleBeg + content + StyleEnd
+}
