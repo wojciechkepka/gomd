@@ -39,7 +39,7 @@ func ThemeDropdown(themes []string) string {
 	for _, theme := range themes {
 		links += fmt.Sprintf(themeAOnClick, theme)
 	}
-	return themeDropdown + links + h.DivEnd + h.DivEnd
+	return h.Div("dropdown", h.A("", "Themes", "bbut")+h.Div("dropdown-content", links))
 }
 
 //TopBar returns a TopBar with theme slider, back button and dropdown theme chooser

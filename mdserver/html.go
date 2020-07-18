@@ -14,7 +14,7 @@ func (md *MdServer) filesBody() string {
 		}
 		body += html.LiBeg
 		endPoint := fileviewEp + file.Path
-		body += html.A(endPoint, file.Path)
+		body += html.A(endPoint, file.Path, "")
 		body += html.LiEnd
 	}
 	body += html.UlEnd
