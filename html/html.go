@@ -2,41 +2,16 @@ package html
 
 import "strings"
 
-//################################################################################
-// HTML Elements
-const (
-	Doctype = "<!DOCTYPE html>"
-
-	HTMLBeg   = "<html>"
-	HTMLEnd   = "</html>"
-	BodyBeg   = "<body>"
-	BodyEnd   = "</body>"
-	HeadBeg   = "<head>"
-	HeadEnd   = "</head>"
-	TitleBeg  = "<title>"
-	TitleEnd  = "</title>"
-	ScriptBeg = "<script>"
-	ScriptEnd = "</script>"
-	ABeg      = "<a href=\""
-	AMid      = "\">"
-	AEnd      = "</a>"
-	DivEnd    = "</div>\n"
-	UlBeg     = "<ul>"
-	UlEnd     = "</ul>"
-	LiBeg     = "<li>"
-	LiEnd     = "</li>"
-	StyleBeg  = "<style>"
-	StyleEnd  = "</style>"
-
-	NL = "\n"
-)
-
+//Html is a struct responsible for creating an HTML page.
+//On rendering it automatically adds all the html tags
+//except for the elements inside of body.
 type Html struct {
 	charset                                      string
 	meta                                         map[string]string
 	styles, scripts, bodyItems, links, scriptSrc []string
 }
 
+//New creates a new empty Html struct with default 'utf-8' charset
 func New() Html {
 	return Html{
 		charset:   "utf-8",
@@ -49,26 +24,43 @@ func New() Html {
 	}
 }
 
+//SetCharset sets meta charset
 func (h *Html) SetCharset(charset string) {
 	h.charset = charset
 }
 
+//AddMeta adds a meta line to this page
 func (h *Html) AddMeta(name, content string) {
 	h.meta[name] = content
 }
 
+//AddStyle adds a style to this page.
 func (h *Html) AddStyle(style string) {
 	h.styles = append(h.styles, style)
 }
 
+//AddScript adds a cript to this page.
 func (h *Html) AddScript(script string) {
 	h.scripts = append(h.scripts, script)
 }
 
+//AddBodyItem adds item to this page's body.
 func (h *Html) AddBodyItem(item string) {
 	h.bodyItems = append(h.bodyItems, item)
 }
 
+//AddLink adds a link tag to this page's head.
+func (h *Html) AddLink(rel, href string) {
+	h.links = append(h.links, Link(rel, href))
+}
+
+//AddScriptSrc adds a script with src attribute set to
+//argument of this func.
+func (h *Html) AddScriptSrc(src string) {
+	h.scriptSrc = append(h.scriptSrc, src)
+}
+
+//Render renders the whole page adding all elements together.
 func (h *Html) Render() string {
 	s := strings.Builder{}
 	s.WriteString(Doctype + HTMLBeg + HeadBeg)
@@ -100,61 +92,4 @@ func (h *Html) Render() string {
 	s.WriteString(BodyEnd + HTMLEnd)
 
 	return s.String()
-}
-
-func (h *Html) AddLink(rel, href string) {
-	h.links = append(h.links, Link(rel, href))
-}
-
-func (h *Html) AddScriptSrc(src string) {
-	h.scriptSrc = append(h.scriptSrc, src)
-}
-
-//################################################################################
-// Funcs
-
-//Title returns a title string enclosed in title tags
-func Title(title string) string {
-	return TitleBeg + title + TitleEnd
-}
-
-//A returns a hyperlink with link set to href and text to content
-func A(href, content string) string {
-	return ABeg + href + AMid + content + AEnd
-}
-
-//Body returns a body enclosed by opening and closing body tag
-func Body(body string) string {
-	return BodyBeg + NL + body + NL + BodyEnd
-}
-
-//Div returns a div with class and content specified enclosed in div tags
-func Div(class, content string) string {
-	return "<div class=\"" + class + "\">" + content + DivEnd
-}
-
-//Script returns content enclosed in <script> tags
-func Script(content string) string {
-	return ScriptBeg + content + ScriptEnd
-}
-
-func ScriptSrc(src string) string {
-	return "<script src=\"" + src + "\"></script>"
-}
-
-//Style returns content enclosed in <style> tags
-func Style(content string) string {
-	return StyleBeg + content + StyleEnd
-}
-
-func MetaCharset(charset string) string {
-	return "<meta charset=\"" + charset + "\">"
-}
-
-func Meta(name, content string) string {
-	return "<meta name=\"" + name + "\" content=\"" + content + "\">"
-}
-
-func Link(rel, href string) string {
-	return "<link rel=\"" + rel + "\" href=\"" + href + "\">"
 }
