@@ -6,8 +6,6 @@ import "strings"
 // HTML Elements
 const (
 	Doctype = "<!DOCTYPE html>"
-	// MetaCharset  = "<meta charset=\"utf-8\">"
-	MetaViewport = "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">"
 
 	HTMLBeg   = "<html>"
 	HTMLEnd   = "</html>"
@@ -34,9 +32,9 @@ const (
 )
 
 type Html struct {
-	charset                    string
-	meta                       map[string]string
-	styles, scripts, bodyItems []string
+	charset                                      string
+	meta                                         map[string]string
+	styles, scripts, bodyItems, links, scriptSrc []string
 }
 
 func New() Html {
@@ -45,7 +43,9 @@ func New() Html {
 		meta:      make(map[string]string),
 		styles:    []string{},
 		scripts:   []string{},
+		scriptSrc: []string{},
 		bodyItems: []string{},
+		links:     []string{},
 	}
 }
 
@@ -78,11 +78,17 @@ func (h *Html) Render() string {
 	for name, content := range h.meta {
 		s.WriteString(Meta(name, content))
 	}
+	for _, link := range h.links {
+		s.WriteString(link)
+	}
 	for _, style := range h.styles {
 		s.WriteString(Style(style))
 	}
 	for _, script := range h.scripts {
 		s.WriteString(Script(script))
+	}
+	for _, src := range h.scriptSrc {
+		s.WriteString(ScriptSrc(src))
 	}
 	s.WriteString(HeadEnd)
 
@@ -94,6 +100,14 @@ func (h *Html) Render() string {
 	s.WriteString(BodyEnd + HTMLEnd)
 
 	return s.String()
+}
+
+func (h *Html) AddLink(rel, href string) {
+	h.links = append(h.links, Link(rel, href))
+}
+
+func (h *Html) AddScriptSrc(src string) {
+	h.scriptSrc = append(h.scriptSrc, src)
 }
 
 //################################################################################
@@ -124,6 +138,10 @@ func Script(content string) string {
 	return ScriptBeg + content + ScriptEnd
 }
 
+func ScriptSrc(src string) string {
+	return "<script src=\"" + src + "\"></script>"
+}
+
 //Style returns content enclosed in <style> tags
 func Style(content string) string {
 	return StyleBeg + content + StyleEnd
@@ -135,4 +153,8 @@ func MetaCharset(charset string) string {
 
 func Meta(name, content string) string {
 	return "<meta name=\"" + name + "\" content=\"" + content + "\">"
+}
+
+func Link(rel, href string) string {
+	return "<link rel=\"" + rel + "\" href=\"" + href + "\">"
 }
