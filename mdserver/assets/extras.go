@@ -7,24 +7,10 @@ import (
 
 //Custom html elements
 const (
-	backButton  = `<a href="%v" class="bbut">%v</a>`
-	themeSlider = `
-	<label class="switch">
-		<input type="checkbox" onclick="themeChange(this);">
-		<span class="slider"></span>
-	</label>
-`
-	themeSliderChecked = `
-	<label class="switch">
-		<input type="checkbox" checked="checked" onclick="themeChange(this);">
-		<span class="slider"></span>
-	</label>
-`
-	themeDropdown = `
-	<div class="dropdown">
-	  <a class="bbut">Themes</a>
-	  <div class="dropdown-content">
-`
+	backButton         = `<a href="%v" class="bbut">%v</a>`
+	themeSlider        = `<label class="switch"><input type="checkbox" onclick="themeChange(this);"><span class="slider"></span></label>`
+	themeSliderChecked = `<label class="switch"><input type="checkbox" checked="checked" onclick="themeChange(this);"><span class="slider"></span></label>`
+
 	themeAOnClick = `<a onclick="codeHlChange(this);" >%v</a>`
 )
 

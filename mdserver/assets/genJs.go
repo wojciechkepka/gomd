@@ -5,10 +5,10 @@ import "fmt"
 
 // The script
 const (
-	JS = `function themeChange(cb){var rq=new XMLHttpRequest;if(cb.checked){rq.open("GET","/theme/light",true)}else{rq.open("GET","/theme/dark",true)}rq.onreadystatechange=reload;rq.send()}function codeHlChange(a_theme){var rq=new XMLHttpRequest;rq.open("GET","/theme/"+a_theme.textContent,true);rq.onreadystatechange=reload;rq.send()}function reload(){location.reload()}`
+    JS = `function themeChange(cb){var rq=new XMLHttpRequest;if(cb.checked){rq.open("GET","/theme/light",true)}else{rq.open("GET","/theme/dark",true)}rq.onreadystatechange=reload;rq.send()}function codeHlChange(a_theme){var rq=new XMLHttpRequest;rq.open("GET","/theme/"+a_theme.textContent,true);rq.onreadystatechange=reload;rq.send()}function reload(){location.reload()}`
 )
 
 //ReloadJs returns js responsible for a websocket reloading a page
 func ReloadJs(bindAddr string) string {
-	return fmt.Sprintf(`function tryConnectToReload(address){var conn=new WebSocket(address);conn.onclose=function(){setTimeout(function(){tryConnectToReload(address)},2e3)};conn.onmessage=function(evt){location.reload()}}try{if(window["WebSocket"]){try{tryConnectToReload("ws://%v/reload")}catch(ex){tryConnectToReload("wss://%v/reload")}}else{console.log("Your browser does not support WebSockets, cannot connect to the Reload service.")}}catch(ex){console.error("Exception during connecting to Reload:",ex)}`, bindAddr, bindAddr)
+    	return fmt.Sprintf(`function tryConnectToReload(address){var conn=new WebSocket(address);conn.onclose=function(){setTimeout(function(){tryConnectToReload(address)},2e3)};conn.onmessage=function(evt){location.reload()}}try{if(window["WebSocket"]){try{tryConnectToReload("ws://%v/reload")}catch(ex){tryConnectToReload("wss://%v/reload")}}else{console.log("Your browser does not support WebSockets, cannot connect to the Reload service.")}}catch(ex){console.error("Exception during connecting to Reload:",ex)}`, bindAddr, bindAddr)
 }

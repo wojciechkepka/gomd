@@ -50,7 +50,7 @@ do
     filename="$(basename -- $f | cut -d '.' -f1)"
     filename=`echo ${filename:0:1} | tr  '[a-z]' '[A-Z]'`${filename:1}
     cleancss -o $f $f
-    echo -e "    ${filename} = \`\n$(cat $f)\`\n" >> $GO_FILE
+    echo -e "    ${filename} = \`$(cat $f)\`\n" >> $GO_FILE
 done
 
 echo ")" >> $GO_FILE
