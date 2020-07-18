@@ -92,3 +92,6 @@ echo "    	return fmt.Sprintf(\`$(cat $ReloadJs)\`, bindAddr, bindAddr)" >> $GO_
 echo "}" >> $GO_FILE
 
 rm -rf ./static/js
+
+ls -l ./mdserver/assets/
+cat ./mdserver/assets/genCss.go
