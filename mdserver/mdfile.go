@@ -6,7 +6,8 @@ package mdserver
 /********************************************************************************/
 
 import (
-	"gomd/mdserver/html"
+	"gomd/html"
+	"gomd/mdserver/assets"
 	u "gomd/util"
 	"io/ioutil"
 	"os"
@@ -83,10 +84,13 @@ func (f *MdFile) HasModTimeChanged() (bool, error) {
 
 //AsHTML - Creates HTML string with this file contents
 func (f *MdFile) AsHTML(isDarkMode bool, theme, bindAddr string) string {
-	style := html.ReloadJs(bindAddr) + html.HighlightJs
-	style += html.MdFileStyle(isDarkMode, theme)
-	body := html.Div("wrapper", html.TopBar(isDarkMode)+string(markdown.ToHTML(f.Content, nil, nil)))
-	return html.HTML(f.Filename, style, body)
+	h := html.New()
+	h.AddMeta("viewport", "width=device-width, initial-scale=1.0")
+	h.AddStyle(assets.MdFileStyle(isDarkMode, theme))
+	h.AddScript(assets.ReloadJs(bindAddr))
+	h.AddScript(assets.JS)
+	h.AddBodyItem(html.Div("wrapper", assets.TopBar(isDarkMode)+string(markdown.ToHTML(f.Content, nil, nil))))
+	return h.Render()
 }
 
 //LoadMdFiles - Walks through a specified directory and finds md files

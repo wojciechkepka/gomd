@@ -1,10 +1,13 @@
 package mdserver
 
-import "gomd/mdserver/html"
+import (
+	"gomd/html"
+	"gomd/mdserver/assets"
+)
 
 // Prepares FileListView body html
 func (md *MdServer) filesBody() string {
-	body := html.UlBeg + html.NL
+	body := html.UlBeg
 	for _, file := range md.Files {
 		if file.IsHidden() && !md.showHidden {
 			continue
@@ -12,7 +15,7 @@ func (md *MdServer) filesBody() string {
 		body += html.LiBeg
 		endPoint := fileviewEp + file.Path
 		body += html.A(endPoint, file.Path)
-		body += html.LiEnd + html.NL
+		body += html.LiEnd
 	}
 	body += html.UlEnd
 	return html.Div("files", body)
@@ -20,10 +23,14 @@ func (md *MdServer) filesBody() string {
 
 // Prepares full FileListView html
 func (md *MdServer) filesHTML() string {
-	body, style := html.TopBarSliderDropdown(md.IsDarkMode()), html.FileListViewStyle(md.IsDarkMode())
-	body += md.filesBody()
-	style += html.ReloadJs(md.BindAddr())
-	return html.HTML(filesTitle, style, body)
+	h := html.New()
+	h.AddMeta("viewport", "width=device-width, initial-scale=1.0")
+	h.AddStyle(assets.FileListViewStyle(md.IsDarkMode()))
+	h.AddScript(assets.ReloadJs(md.BindAddr()))
+	h.AddScript(assets.JS)
+	h.AddBodyItem(assets.TopBarSliderDropdown(md.IsDarkMode()))
+	h.AddBodyItem(md.filesBody())
+	return h.Render()
 }
 
 // Serves markdown file as html

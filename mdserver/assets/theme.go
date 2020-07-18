@@ -1,4 +1,4 @@
-package html
+package assets
 
 //Themes - available themes in mdserver
 func Themes() []string {

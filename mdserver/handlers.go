@@ -7,7 +7,7 @@ package mdserver
 
 import (
 	"fmt"
-	"gomd/mdserver/html"
+	"gomd/mdserver/assets"
 	"gomd/mdserver/ws"
 	u "gomd/util"
 	"net/http"
@@ -34,7 +34,7 @@ func (md *MdServer) themeHandler(w http.ResponseWriter, r *http.Request) {
 		md.SetDarkMode(false)
 	} else {
 		_, theme := filepath.Split(url)
-		if html.IsInThemes(theme) {
+		if assets.IsInThemes(theme) {
 			u.Logf(u.Info, "Changing theme to %v", theme)
 			md.SetTheme(theme)
 		}

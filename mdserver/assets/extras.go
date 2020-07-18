@@ -1,6 +1,9 @@
-package html
+package assets
 
-import "fmt"
+import (
+	"fmt"
+	h "gomd/html"
+)
 
 //Custom html elements
 const (
@@ -36,23 +39,23 @@ func ThemeDropdown(themes []string) string {
 	for _, theme := range themes {
 		links += fmt.Sprintf(themeAOnClick, theme)
 	}
-	return themeDropdown + links + DivEnd + DivEnd
+	return themeDropdown + links + h.DivEnd + h.DivEnd
 }
 
 //TopBar returns a TopBar with theme slider, back button and dropdown theme chooser
 func TopBar(isDarkMode bool) string {
 	if isDarkMode {
-		return Div("top-bar", themeSlider+BackButton("/", "<<")+ThemeDropdown(Themes()))
+		return h.Div("top-bar", themeSlider+BackButton("/", "<<")+ThemeDropdown(Themes()))
 	}
 
-	return Div("top-bar", themeSliderChecked+BackButton("/", "<<")+ThemeDropdown(Themes()))
+	return h.Div("top-bar", themeSliderChecked+BackButton("/", "<<")+ThemeDropdown(Themes()))
 }
 
 //TopBarSliderDropdown returns a div with theme slider and theme dropdown menu
 func TopBarSliderDropdown(isDarkMode bool) string {
 	if isDarkMode {
-		return Div("top-bar", themeSlider+ThemeDropdown(Themes()))
+		return h.Div("top-bar", themeSlider+ThemeDropdown(Themes()))
 	}
 
-	return Div("top-bar", themeSliderChecked+ThemeDropdown(Themes()))
+	return h.Div("top-bar", themeSliderChecked+ThemeDropdown(Themes()))
 }
