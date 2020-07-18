@@ -32,7 +32,7 @@ done
 
 ################################################################################
 # Write to .go file
-GO_FILE="./mdserver/assets/css.go"
+GO_FILE="./mdserver/assets/genCss.go"
 
 command -v cleancss >/dev/null
 if [ $? != 0 ]
@@ -61,7 +61,7 @@ rm -rf ./static/css
 # Add js
 echo "Adding the script"
 
-GO_FILE="./mdserver/assets/js.go"
+GO_FILE="./mdserver/assets/genJs.go"
 JS="./assets/js/JS.js"
 ReloadJs="./assets/js/ReloadJs.js"
 
