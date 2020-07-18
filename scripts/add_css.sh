@@ -48,8 +48,9 @@ echo -e "package html\n\n// Stylesheets\nconst (\n" > $GO_FILE
 for f in ./static/css/*
 do
     filename="$(basename -- $f | cut -d '.' -f1)"
+    filename=`echo ${filename:0:1} | tr  '[a-z]' '[A-Z]'`${filename:1}
     cleancss -o $f $f
-    echo -e "    ${filename^} = \`\n$(cat $f)\`\n" >> $GO_FILE
+    echo -e "    ${filename} = \`\n$(cat $f)\`\n" >> $GO_FILE
     rm $f
 done
 
