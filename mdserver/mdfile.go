@@ -83,7 +83,7 @@ func (f *MdFile) HasModTimeChanged() (bool, error) {
 
 //AsHTML - Creates HTML string with this file contents
 func (f *MdFile) AsHTML(isDarkMode bool, theme, bindAddr string) string {
-	style := html.ReloadJs(bindAddr)
+	style := html.ReloadJs(bindAddr) + html.HighlightJs
 	style += html.MdFileStyle(isDarkMode, theme)
 	body := html.Div("wrapper", html.TopBar(isDarkMode)+string(markdown.ToHTML(f.Content, nil, nil)))
 	return html.HTML(f.Filename, style, body)

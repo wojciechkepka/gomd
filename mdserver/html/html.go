@@ -49,7 +49,6 @@ func Head(title, extra string) string {
 	return HeadBeg + NL +
 		MetaCharset + MetaViewport + NL +
 		Title(title) + NL +
-		HighlightJs +
 		ScriptBeg + JS + ScriptEnd + NL +
 		extra + NL +
 		HeadEnd
