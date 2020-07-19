@@ -1,10 +1,25 @@
 package html
 
+//Tag is an enum with all allowed HTML tags.
+type Tag string
+
 //################################################################################
 // HTML Elements
 const (
-	Doctype = "<!DOCTYPE html>"
+	HTMLTag   Tag = "html"
+	HeadTag   Tag = "head"
+	TitleTag  Tag = "title"
+	ScriptTag Tag = "script"
+	StyleTag  Tag = "style"
+	BodyTag   Tag = "body"
+	ATag      Tag = "a"
+	DivTag    Tag = "div"
+	UlTag     Tag = "ul"
+	LiTag     Tag = "li"
+	LabelTag  Tag = "label"
+	SpanTag   Tag = "span"
 
+	Doctype   = "<!DOCTYPE html>"
 	HTMLBeg   = "<html>"
 	HTMLEnd   = "</html>"
 	BodyBeg   = "<body>"
