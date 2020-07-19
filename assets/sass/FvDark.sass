@@ -1,0 +1,35 @@
+@import "vars"
+
+body
+  background: $black_gray
+  display: flex
+  flex-direction: column
+  height: 100vh
+  padding-top: 30px
+
+a
+  &.bbut
+    border: 0.15em solid $gray
+    color: $warm_white
+    &:hover
+      color: black
+      background-color: $warm_white
+
+
+li a
+  color: $lighter_gray
+  text-decoration: none
+  font: 25px/1 $font
+
+  -webkit-transition: all 0.5s ease
+  -moz-transition: all 0.5s ease
+  -o-transition: all 0.5s ease
+  -ms-transition: all 0.5s ease
+  transition: all 0.5s ease
+
+li a:hover
+  color: $gray
+
+li.active a
+  font-weight: bold
+  color: $dark_gray

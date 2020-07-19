@@ -50,7 +50,6 @@ for f in ./static/css/*
 do
     echo "    Adding $f"
     filename="$(basename -- $f | cut -d '.' -f1)"
-    filename=`echo ${filename:0:1} | tr  '[a-z]' '[A-Z]'`${filename:1}
     cleancss -o $f $f
     echo -e "    ${filename} = \`$(cat $f)\`\n" >> $GO_FILE
 done
@@ -92,6 +91,3 @@ echo "    	return fmt.Sprintf(\`$(cat $ReloadJs)\`, bindAddr, bindAddr)" >> $GO_
 echo "}" >> $GO_FILE
 
 rm -rf ./static/js
-
-ls -l ./mdserver/assets/
-cat ./mdserver/assets/genCss.go
