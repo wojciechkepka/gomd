@@ -51,7 +51,7 @@ func (h *HTML) AddBodyItem(item string) {
 
 //AddLink adds a link tag to this page's head.
 func (h *HTML) AddLink(rel, href string) {
-	h.links = append(h.links, Link(rel, href))
+	h.links = append(h.links, Render(Link(rel, href)))
 }
 
 //AddScriptSrc adds a script with src attribute set to
@@ -66,21 +66,21 @@ func (h *HTML) Render() string {
 	s.WriteString(Doctype + HTMLBeg + HeadBeg)
 
 	//Head
-	s.WriteString(MetaCharset(h.charset))
+	s.WriteString(Render(MetaCharset(h.charset)))
 	for name, content := range h.meta {
-		s.WriteString(Meta(name, content))
+		s.WriteString(Render(Meta(name, content)))
 	}
 	for _, link := range h.links {
 		s.WriteString(link)
 	}
 	for _, style := range h.styles {
-		s.WriteString(Style(style))
+		s.WriteString(Render(Style(style)))
 	}
 	for _, script := range h.scripts {
-		s.WriteString(Script(script))
+		s.WriteString(Render(Script(script)))
 	}
 	for _, src := range h.scriptSrc {
-		s.WriteString(ScriptSrc(src))
+		s.WriteString(Render(ScriptSrc(src)))
 	}
 	s.WriteString(HeadEnd)
 

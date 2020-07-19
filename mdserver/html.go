@@ -14,11 +14,12 @@ func (md *MdServer) filesBody() string {
 		}
 		body += html.LiBeg
 		endPoint := fileviewEp + file.Path
-		body += html.A(endPoint, file.Path, "")
+		link := html.A(endPoint, file.Path)
+		body += link.Render()
 		body += html.LiEnd
 	}
 	body += html.UlEnd
-	return html.Div("files", body)
+	return html.Render(html.Div("files", body))
 }
 
 // Prepares full FileListView html

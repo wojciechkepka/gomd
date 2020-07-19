@@ -37,9 +37,9 @@ func (t *Tag) SetContent(content string) {
 	t.content = content
 }
 
-//AsHTML renders this tag as html adding all attributes and content
+//Render renders this tag as html adding all attributes and content
 //and enclosing it in tags.
-func (t *Tag) AsHTML() string {
+func (t *Tag) Render() string {
 	s := strings.Builder{}
 	s.WriteRune('<')
 	s.WriteString(string(t.Type))
@@ -60,4 +60,8 @@ func (t *Tag) AsHTML() string {
 	}
 
 	return s.String()
+}
+
+func Render(t Tag) string {
+	return t.Render()
 }
