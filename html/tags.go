@@ -1,23 +1,25 @@
 package html
 
-//Tag is an enum with all allowed HTML tags.
-type Tag string
+//TagName is an enum with all allowed HTML tags.
+type TagName string
 
 //################################################################################
 // HTML Elements
 const (
-	HTMLTag   Tag = "html"
-	HeadTag   Tag = "head"
-	TitleTag  Tag = "title"
-	ScriptTag Tag = "script"
-	StyleTag  Tag = "style"
-	BodyTag   Tag = "body"
-	ATag      Tag = "a"
-	DivTag    Tag = "div"
-	UlTag     Tag = "ul"
-	LiTag     Tag = "li"
-	LabelTag  Tag = "label"
-	SpanTag   Tag = "span"
+	HTMLTag   TagName = "html"
+	HeadTag   TagName = "head"
+	MetaTag   TagName = "meta"
+	LinkTag   TagName = "link"
+	TitleTag  TagName = "title"
+	ScriptTag TagName = "script"
+	StyleTag  TagName = "style"
+	BodyTag   TagName = "body"
+	ATag      TagName = "a"
+	DivTag    TagName = "div"
+	UlTag     TagName = "ul"
+	LiTag     TagName = "li"
+	LabelTag  TagName = "label"
+	SpanTag   TagName = "span"
 
 	Doctype   = "<!DOCTYPE html>"
 	HTMLBeg   = "<html>"
@@ -42,51 +44,78 @@ const (
 )
 
 //Title returns a title string enclosed in title tags
-func Title(title string) string {
-	return TitleBeg + title + TitleEnd
+func Title(title string) Tag {
+	tag := NewTag(TitleTag)
+	tag.SetContent(title)
+	return tag
 }
 
 //A returns a hyperlink with link set to href and text to content
-func A(href, content, class string) string {
-	return "<a href=\"" + href + "\" class=\"" + class + "\">" + content + "</a>"
+func A(href, content string) Tag {
+	tag := NewTag(ATag)
+	tag.AddAttr("href", href)
+	tag.SetContent(content)
+	return tag
 }
 
 //Body returns a body enclosed by opening and closing body tag
-func Body(body string) string {
-	return BodyBeg + body + BodyEnd
+func Body(body string) Tag {
+	tag := NewTag(BodyTag)
+	tag.SetContent(body)
+	return tag
 }
 
 //Div returns a div with class and content specified enclosed in div tags
-func Div(class, content string) string {
-	return "<div class=\"" + class + "\">" + content + DivEnd
+func Div(class, content string) Tag {
+	tag := NewTag(DivTag)
+	tag.AddAttr("class", class)
+	tag.SetContent(content)
+	return tag
 }
 
-//Script returns content enclosed in <script> tags
-func Script(content string) string {
-	return ScriptBeg + content + ScriptEnd
+//Script returns a script tag with content set.
+func Script(content string) Tag {
+	tag := NewTag(ScriptTag)
+	tag.SetContent(content)
+	return tag
 }
 
 //ScriptSrc returns a script tag with src attribute set to src.
-func ScriptSrc(src string) string {
-	return "<script src=\"" + src + "\"></script>"
+func ScriptSrc(src string) Tag {
+	tag := NewTag(ScriptTag)
+	tag.AddAttr("src", src)
+	return tag
 }
 
-//Style returns content enclosed in <style> tags
-func Style(content string) string {
-	return StyleBeg + content + StyleEnd
+//Style returns a style tag wit content set.
+func Style(content string) Tag {
+	tag := NewTag(StyleTag)
+	tag.SetContent(content)
+	return tag
 }
 
 //MetaCharset returns a meta charset tag.
-func MetaCharset(charset string) string {
-	return "<meta charset=\"" + charset + "\">"
+func MetaCharset(charset string) Tag {
+	tag := NewTag(MetaTag)
+	tag.AddAttr("charset", charset)
+	tag.HasClosingTag(false)
+	return tag
 }
 
 //Meta returns a meta tag with name and conent attributes.
-func Meta(name, content string) string {
-	return "<meta name=\"" + name + "\" content=\"" + content + "\">"
+func Meta(name, content string) Tag {
+	tag := NewTag(MetaTag)
+	tag.AddAttr("name", name)
+	tag.AddAttr("content", content)
+	tag.HasClosingTag(false)
+	return tag
 }
 
 //Link returns a link tag with rel and href attributes.
-func Link(rel, href string) string {
-	return "<link rel=\"" + rel + "\" href=\"" + href + "\">"
+func Link(rel, href string) Tag {
+	tag := NewTag(LinkTag)
+	tag.AddAttr("rel", rel)
+	tag.AddAttr("href", href)
+	tag.HasClosingTag(false)
+	return tag
 }
