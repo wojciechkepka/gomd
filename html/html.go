@@ -63,33 +63,37 @@ func (h *HTML) AddScriptSrc(src string) {
 //Render renders the whole page adding all elements together.
 func (h *HTML) Render() string {
 	s := strings.Builder{}
-	s.WriteString(Doctype + HTMLBeg + HeadBeg)
+	s.WriteString(Doctype)
+	html := NewTag(HTMLTag)
 
 	//Head
-	s.WriteString(Render(MetaCharset(h.charset)))
+	head, headContent := NewTag(HeadTag), strings.Builder{}
+	headContent.WriteString(Render(MetaCharset(h.charset)))
 	for name, content := range h.meta {
-		s.WriteString(Render(Meta(name, content)))
+		headContent.WriteString(Render(Meta(name, content)))
 	}
 	for _, link := range h.links {
-		s.WriteString(link)
+		headContent.WriteString(link)
 	}
 	for _, style := range h.styles {
-		s.WriteString(Render(Style(style)))
+		headContent.WriteString(Render(Style(style)))
 	}
 	for _, script := range h.scripts {
-		s.WriteString(Render(Script(script)))
+		headContent.WriteString(Render(Script(script)))
 	}
 	for _, src := range h.scriptSrc {
-		s.WriteString(Render(ScriptSrc(src)))
+		headContent.WriteString(Render(ScriptSrc(src)))
 	}
-	s.WriteString(HeadEnd)
+	head.SetContent(headContent.String())
 
 	//Body
-	s.WriteString(BodyBeg)
+	body, bodyContent := NewTag(BodyTag), strings.Builder{}
 	for _, item := range h.bodyItems {
-		s.WriteString(item)
+		bodyContent.WriteString(item)
 	}
-	s.WriteString(BodyEnd + HTMLEnd)
+	body.SetContent(bodyContent.String())
 
+	html.SetContent(head.Render() + body.Render())
+	s.WriteString(html.Render())
 	return s.String()
 }

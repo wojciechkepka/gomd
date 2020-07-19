@@ -1,30 +1,31 @@
 package mdserver
 
 import (
-	"gomd/html"
+	h "gomd/html"
 	"gomd/mdserver/assets"
 )
 
 // Prepares FileListView body html
 func (md *MdServer) filesBody() string {
-	body := html.UlBeg
+	ul := h.NewTag(h.UlTag)
+	ulContent := ""
 	for _, file := range md.Files {
 		if file.IsHidden() && !md.showHidden {
 			continue
 		}
-		body += html.LiBeg
+		li := h.NewTag(h.LiTag)
 		endPoint := fileviewEp + file.Path
-		link := html.A(endPoint, file.Path)
-		body += link.Render()
-		body += html.LiEnd
+		link := h.A(endPoint, file.Path)
+		li.SetContent(link.Render())
+		ulContent += li.Render()
 	}
-	body += html.UlEnd
-	return html.Render(html.Div("files", body))
+	ul.SetContent(ulContent)
+	return h.Render(h.Div("files", ul.Render()))
 }
 
 // Prepares full FileListView html
 func (md *MdServer) filesHTML() string {
-	h := html.New()
+	h := h.New()
 	h.AddMeta("viewport", "width=device-width, initial-scale=1.0")
 	h.AddStyle(assets.FileListViewStyle(md.IsDarkMode()))
 	h.AddScript(assets.ReloadJs(md.BindAddr()))

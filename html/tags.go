@@ -21,26 +21,7 @@ const (
 	LabelTag  TagName = "label"
 	SpanTag   TagName = "span"
 
-	Doctype   = "<!DOCTYPE html>"
-	HTMLBeg   = "<html>"
-	HTMLEnd   = "</html>"
-	BodyBeg   = "<body>"
-	BodyEnd   = "</body>"
-	HeadBeg   = "<head>"
-	HeadEnd   = "</head>"
-	TitleBeg  = "<title>"
-	TitleEnd  = "</title>"
-	ScriptBeg = "<script>"
-	ScriptEnd = "</script>"
-	DivEnd    = "</div>"
-	UlBeg     = "<ul>"
-	UlEnd     = "</ul>"
-	LiBeg     = "<li>"
-	LiEnd     = "</li>"
-	StyleBeg  = "<style>"
-	StyleEnd  = "</style>"
-
-	NL = "\n"
+	Doctype = "<!DOCTYPE html>"
 )
 
 //Title returns a title string enclosed in title tags
