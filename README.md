@@ -23,8 +23,6 @@ Quickly display formatted markdown files in your browser.
     - `solarized`, `monokai`, `paraiso` available in dark and light versions
     - `dracula`, `github`, `vs`, `xcode`
 
-![highlight-demo](https://raw.githubusercontent.com/wojciechkepka/gomd/master/assets/highlight.gif)
-
 ## Installing
  - **AUR**
    - Available in package `gomd-git`.
