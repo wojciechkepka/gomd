@@ -3,8 +3,13 @@ package assets
 //Themes - available themes in mdserver
 func Themes() []string {
 	return []string{
-		"gruvbox",
+		"dracula",
+		"paraiso",
+		"monokai",
 		"solarized",
+		"github",
+		"vs",
+		"xcode",
 	}
 }
 
@@ -19,22 +24,25 @@ func IsInThemes(theme string) bool {
 	return false
 }
 
-//ThemeCSS - returns style of specified theme
-func ThemeCSS(isDarkMode bool, theme string) string {
+//ChromaName returns a theme name compatible with chroma based on isDarkMode
+func ChromaName(theme string, isDarkMode bool) string {
 	switch theme {
-	case "gruvbox":
+	case "paraiso":
 		if isDarkMode {
-			return GruvboxDarkHljs
+			return "paraiso-dark"
 		}
-
-		return GruvboxLightHljs
+		return "paraiso-light"
+	case "monokai":
+		if isDarkMode {
+			return "monokai"
+		}
+		return "monokailight"
 	case "solarized":
 		if isDarkMode {
-			return SolarizedDarkHljs
+			return "solarized-dark"
 		}
-
-		return SolarizedLightHljs
+		return "solarized-light"
 	default:
-		return ""
+		return theme
 	}
 }
