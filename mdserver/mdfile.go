@@ -90,7 +90,7 @@ func (f *MdFile) AsHTML(isDarkMode bool, theme, bindAddr string) string {
 	h.AddScript(assets.ReloadJs(bindAddr))
 	h.AddScript(assets.JS)
 	h.AddBodyItem(html.Render(html.Div("wrapper", assets.TopBar(isDarkMode)+string(markdown.ToHTML(f.Content, nil, nil)))))
-	return HighlightHtml(h.Render(), assets.ChromaName(theme, isDarkMode))
+	return HighlightHTML(h.Render(), assets.ChromaName(theme, isDarkMode))
 }
 
 //LoadMdFiles - Walks through a specified directory and finds md files

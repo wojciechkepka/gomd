@@ -117,10 +117,12 @@ func extractCodeBlocks(html, style string) []string {
 	return finalBlocks
 }
 
-func HighlightHtml(html, style string) string {
+//HighlightHTML extracts parsed markdown blocks from html and
+//replaces them with highlighted with specified style html code
+//with inlined style
+func HighlightHTML(html, style string) string {
 	out := strings.Builder{}
 	blocks := extractCodeBlocks(html, style)
-	util.Logln(util.Info, blocks)
 	blockIdx := 0
 	push := true
 	for i, r := range html {
