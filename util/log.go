@@ -25,18 +25,18 @@ func Logf(level LogLevel, f string, args ...interface{}) {
 	switch level {
 	case Debug:
 		if isVerbose {
-			log.Debugf(f, args)
+			log.Debugf(f, args...)
 		}
 	case Info:
 		if isVerbose {
-			log.Infof(f, args)
+			log.Infof(f, args...)
 		}
 	case Warn:
 		if isVerbose {
-			log.Warnf(f, args)
+			log.Warnf(f, args...)
 		}
 	case Error:
-		log.Errorf(f, args)
+		log.Errorf(f, args...)
 	}
 }
 
@@ -45,26 +45,26 @@ func Logln(level LogLevel, args ...interface{}) {
 	switch level {
 	case Debug:
 		if isVerbose {
-			log.Debugln(args)
+			log.Debugln(args...)
 		}
 	case Info:
 		if isVerbose {
-			log.Infoln(args)
+			log.Infoln(args...)
 		}
 	case Warn:
 		if isVerbose {
-			log.Warnln(args)
+			log.Warnln(args...)
 		}
 	case Error:
-		log.Errorln(args)
+		log.Errorln(args...)
 	case Fatal:
-		log.Fatalln(args)
+		log.Fatalln(args...)
 	}
 }
 
 //LogFatal - log.Fatal interface
 func LogFatal(args ...interface{}) {
-	log.Fatal(args)
+	log.Fatal(args...)
 }
 
 //LogEnabled decide if informational log should be logged

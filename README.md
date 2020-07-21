@@ -17,11 +17,11 @@ Quickly display formatted markdown files in your browser.
 - **Hot reloading**
   - Whenever a file is updated `gomd` will trigger a reload of tab in browser.
 - **Code Highlight**
-  - All blocks of code in most common languages will be color highlighted using [highlight.js](https://github.com/highlightjs/highlight.js).
+  - All blocks of code in most common languages will be color highlighted.
 - **Selectable themes**
-  - Choose from available code themes: `solarized`, `gruvbox`
-
-![highlight-demo](https://raw.githubusercontent.com/wojciechkepka/gomd/master/assets/highlight.gif)
+  - Choose from available code themes: 
+    - `solarized`, `monokai`, `paraiso` available in dark and light versions
+    - `dracula`, `github`, `vs`, `xcode`
 
 ## Installing
  - **AUR**
@@ -49,9 +49,6 @@ To view a different directory use:
 
 You can view the files in dark and light mode.
 
-
-## TODO
-- [ ] Add more themes
 
 ## License
 [MIT](https://github.com/wojciechkepka/gomd/blob/master/LICENSE)

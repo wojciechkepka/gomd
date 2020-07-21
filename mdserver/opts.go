@@ -11,7 +11,7 @@ const (
 	DefAddr       = "127.0.0.1"
 	DefPort       = "5001"
 	DefDir        = "."
-	DefTheme      = "gruvbox"
+	DefTheme      = "solarized"
 	DefShowHidden = false
 	DefQuiet      = false
 	DefHelp       = false
@@ -31,7 +31,7 @@ func ParseMdOpts() MdOpts {
 		BindAddr:   flag.String("bind-addr", DefAddr, "Binding address"),
 		BindPort:   flag.String("bind-port", DefPort, "Binding port"),
 		Dir:        flag.String("dir", DefDir, "The directory to serve"),
-		Theme:      flag.String("theme", DefTheme, "Available gruvbox/solarized"),
+		Theme:      flag.String("theme", DefTheme, "Available dracula/paraiso/monokai/solarized/github/vs/xcode"),
 		ShowHidden: flag.Bool("hidden", DefShowHidden, "Display hidden files"),
 		Quiet:      flag.Bool("quiet", DefQuiet, "Hide info output. Only errors are displayed"),
 		help:       flag.Bool("help", DefHelp, "Print help"),
