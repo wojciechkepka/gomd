@@ -1,7 +1,6 @@
 package mdserver
 
 import (
-	"bufio"
 	"bytes"
 	"gomd/util"
 	"strings"
@@ -34,19 +33,17 @@ func (cb *codeBlock) highlightBlock(style string) (string, error) {
 	if s == nil {
 		s = styles.Fallback
 	}
-	formatter := h.New()
+	formatter := h.New(h.LineNumbersInTable(true))
 
 	iterator, err := lexer.Tokenise(nil, string(cb.code))
 	if err != nil {
 		return "", err
 	}
 	buf := bytes.Buffer{}
-	writer := bufio.NewWriter(&buf)
-	err = formatter.Format(writer, s, iterator)
+	err = formatter.Format(&buf, s, iterator)
 	if err != nil {
 		return "", err
 	}
-	writer.Flush()
 	return buf.String(), nil
 }
 
