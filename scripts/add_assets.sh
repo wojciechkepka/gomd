@@ -37,9 +37,9 @@ GO_FILE="./mdserver/assets/genCss.go"
 command -v cleancss >/dev/null
 if [ $? != 0 ]
 then
-    echo "Build failed. No cleancss in \$PATH"
-    echo "Run 'npm install clean-css-cli -g'"
-    exit 1
+    CLEANCSS=0
+else
+    CLEANCSS=1
 fi
 
 rm -v $GO_FILE
@@ -50,7 +50,7 @@ for f in ./static/css/*
 do
     echo "    Adding $f"
     filename="$(basename -- $f | cut -d '.' -f1)"
-    cleancss -o $f $f
+    [ $CLEANCSS != 0 ] && cleancss -o $f $f
     echo -e "    ${filename} = \`$(cat $f)\`\n" >> $GO_FILE
 done
 
@@ -68,15 +68,21 @@ mkdir -vp ./static/js 2>/dev/null || true
 command -v uglifyjs >/dev/null
 if [ $? != 0 ]
 then
-    echo "Build failed. No uglifyjs in \$PATH"
-    echo "Run 'npm install uglify-js -g'"
-    exit 1
+    UGLIFYJS=0
+else
+    UGLIFYJS=1
 fi
 
 for f in ./assets/js/*
 do
     filename="$(basename -- $f | cut -d '.' -f1)"
-    uglifyjs $f > ./static/js/$filename.js
+    if [ $UGLIFYJS == 1 ]
+    then
+        uglifyjs $f > ./static/js/$filename.js
+    else
+        cat $f > ./static/js/$filename.js
+    fi
+
 done
 
 JS="./static/js/JS.js"
