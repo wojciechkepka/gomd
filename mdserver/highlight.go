@@ -24,11 +24,7 @@ type codeBlock struct {
 	code, lang string
 }
 
-//TODO:
-//  * Check why the output is truncated. Formatted code in buf after Format call
-//	  is is cut differently based on the options passed to h.New().
 func (cb *codeBlock) highlightBlock(style string) (string, error) {
-	util.Logf(util.Info, "LANG: %v\nCODE: '%v'\n\n", cb.lang, cb.code)
 	lexer := lexers.Get(cb.lang)
 	if lexer == nil {
 		lexer = lexers.Fallback
@@ -50,7 +46,7 @@ func (cb *codeBlock) highlightBlock(style string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	util.Logf(util.Info, "OUT: '%v'\n\n\n\n", buf.String())
+	writer.Flush()
 	return buf.String(), nil
 }
 
