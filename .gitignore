@@ -2,4 +2,4 @@ go.sum
 gomd
 .idea
 .vscode
-
+.sass-cache

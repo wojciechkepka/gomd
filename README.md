@@ -1,4 +1,4 @@
-# gomd 📘 
+# gomd 📘
 
 [![Build Status](https://travis-ci.org/wojciechkepka/gomd.svg?branch=master)](https://travis-ci.org/wojciechkepka/gomd)
 
@@ -19,7 +19,7 @@ Quickly display formatted markdown files in your browser.
 - **Code Highlight**
   - All blocks of code in most common languages will be color highlighted.
 - **Selectable themes**
-  - Choose from available code themes: 
+  - Choose from available code themes:
     - `solarized`, `monokai`, `paraiso` available in dark and light versions
     - `dracula`, `github`, `vs`, `xcode`
 
@@ -27,7 +27,7 @@ Quickly display formatted markdown files in your browser.
  - **AUR**
    - Available in package `gomd-git`.
  - **Build from source**
-   - Requires 
+   - Requires
      - sassc or sass
      - make
      - (optional) clean-css-cli (`npm install clean-css-cli -g`)
@@ -35,7 +35,8 @@ Quickly display formatted markdown files in your browser.
      - go
    - `git clone https://github.com/wojciechkepka/gomd`
    - `cd ./gomd`
-   - `make && sudo cp gomd /usr/bin/`
+   - Linux: `make && sudo cp gomd /usr/bin/`
+   - macOS: `make && sudo cp gomd /usr/local/bin`
 
 ## Configuration
 By default when running `gomd` it will look for files in `.` and bind to `127.0.0.1:5001`.
