@@ -42,8 +42,17 @@ func (md *MdServer) serveFileAsHTML(path string) string {
 	}
 	for _, file := range md.Files {
 		if file.Path == path {
-			return file.AsHTML(md.IsDarkMode(), md.theme, md.BindAddr())
+			return file.AsHTML(md.IsDarkMode(), md.theme, md.BindAddr(), md.sidebarHTML())
 		}
 	}
 	return ""
+}
+
+func (md *MdServer) sidebarHTML() string {
+	links := make(map[string]string)
+	for _, f := range md.Files {
+		links[f.Filename] = f.Path
+	}
+
+	return assets.Sidebar(links)
 }

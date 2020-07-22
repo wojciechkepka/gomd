@@ -18,3 +18,4 @@ function codeHlChange(a_theme) {
 function reload() {
 	location.reload();
 }
+

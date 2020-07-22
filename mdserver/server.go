@@ -28,18 +28,23 @@ const (
 	themeDarkEp    = "/theme/dark"
 	reloadEp       = "/reload"
 	pingEp         = "/ping"
+	sidebarEp      = "/sidebar/"
+	sidebarOpenEp  = "/sidebar/open"
+	sidebarCloseEp = "/sidebar/close"
+	sidebarCheckEp = "/sidebar/check"
 )
 
 //MdServer - http server used for displaying rendered markdown files
 type MdServer struct {
-	bindHost   string
-	bindPort   int
-	path       string
-	Files      []MdFile
-	theme      string
-	darkMode   bool
-	showHidden bool
-	hub        *ws.Hub
+	bindHost      string
+	bindPort      int
+	path          string
+	Files         []MdFile
+	theme         string
+	darkMode      bool
+	showHidden    bool
+	isSidebarOpen bool
+	hub           *ws.Hub
 }
 
 //New - Initializes MdServer
@@ -56,14 +61,15 @@ func New(bindHost string, bindPort int, path, theme string, showHidden, quiet bo
 	files := LoadMdFiles(path)
 
 	return MdServer{
-		bindHost:   bindHost,
-		bindPort:   bindPort,
-		path:       path,
-		Files:      files,
-		theme:      theme,
-		darkMode:   true,
-		showHidden: showHidden,
-		hub:        ws.NewHub(),
+		bindHost:      bindHost,
+		bindPort:      bindPort,
+		path:          path,
+		Files:         files,
+		theme:         theme,
+		darkMode:      true,
+		isSidebarOpen: false,
+		showHidden:    showHidden,
+		hub:           ws.NewHub(),
 	}
 }
 
@@ -130,6 +136,7 @@ func (md *MdServer) Serve() {
 	http.HandleFunc(themeEp, md.themeHandler)
 	http.HandleFunc(reloadEp, md.watchHandler)
 	http.HandleFunc(pingEp, md.pingHandler)
+	http.HandleFunc(sidebarEp, md.sidebarHandler)
 	go md.watchFiles()
 	go md.OpenURL()
 	u.LogFatal(http.ListenAndServe(md.BindAddr(), nil))

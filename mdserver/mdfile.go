@@ -83,13 +83,15 @@ func (f *MdFile) HasModTimeChanged() (bool, error) {
 }
 
 //AsHTML - Creates HTML string with this file contents
-func (f *MdFile) AsHTML(isDarkMode bool, theme, bindAddr string) string {
+func (f *MdFile) AsHTML(isDarkMode bool, theme, bindAddr string, sidebar string) string {
 	h := html.New()
 	h.AddMeta("viewport", "width=device-width, initial-scale=1.0")
 	h.AddStyle(assets.MdFileStyle(isDarkMode, theme))
 	h.AddScript(assets.ReloadJs(bindAddr))
 	h.AddScript(assets.JS)
-	h.AddBodyItem(html.Render(html.Div("wrapper", assets.TopBar(isDarkMode)+string(markdown.ToHTML(f.Content, nil, nil)))))
+	sb := html.Div("mySidebar", sidebar)
+	main := html.Div("main", assets.TopBar(isDarkMode)+string(markdown.ToHTML(f.Content, nil, nil)))
+	h.AddBodyItem(html.Render(html.Div("wrapper", html.Render(sb)+html.Render(main))))
 	return HighlightHTML(h.Render(), assets.ChromaName(theme, isDarkMode))
 }
 

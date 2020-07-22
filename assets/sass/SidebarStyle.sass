@@ -1,0 +1,45 @@
+@import "vars"
+    
+.sidebar 
+	height: 100% 
+	width: 0 
+	position: fixed 
+	z-index: 1 
+	top: 0 
+	left: 0 
+	background-color: $warm_white
+	overflow-x: hidden 
+	transition: 0.5s 
+	padding-top: 60px 
+	a 
+		padding: 8px 8px 8px 32px 
+		text-decoration: none 
+		font-size: 25px 
+		color: $gray 
+		display: block 
+		transition: 0.3s 
+		font-size: 18px 
+		&:hover 
+			color: $dark_gray 
+	.closebtn 
+		position: absolute 
+		top: 0 
+		right: 25px 
+		font-size: 36px 
+		margin-left: 50px 
+.openbtn
+	width: 64px
+    height: 34px
+	line-height: 1.6px
+	background-color: rgba(0,0,0,0)
+	margin: 0 5px
+	cursor: pointer 
+	color: white
+	font-size: 25px
+	padding: 10px 15px 
+#main 
+	transition: margin-left .5s 
+	padding: 16px 
+@media screen and (max-height:450px) 
+	.sidebar 
+        padding-top: 15px 

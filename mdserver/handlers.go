@@ -49,3 +49,18 @@ func (md *MdServer) pingHandler(w http.ResponseWriter, r *http.Request) {
 	u.Logln(u.Info, "Ping")
 	fmt.Fprintln(w, "pong")
 }
+
+func (md *MdServer) sidebarHandler(w http.ResponseWriter, r *http.Request) {
+	url := r.URL.RequestURI()
+	if url == sidebarCloseEp {
+		md.isSidebarOpen = false
+	} else if url == sidebarOpenEp {
+		md.isSidebarOpen = true
+	} else if url == sidebarCheckEp {
+		if md.isSidebarOpen {
+			fmt.Fprintln(w, "open")
+		} else {
+			fmt.Fprintln(w, "close")
+		}
+	}
+}
