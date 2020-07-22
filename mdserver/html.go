@@ -15,7 +15,7 @@ func (md *MdServer) filesBody() string {
 		}
 		li := h.NewTag(h.LiTag)
 		endPoint := fileviewEp + file.Path
-		link := h.A(endPoint, file.Path)
+		link := h.A(endPoint, file.Filename)
 		li.SetContent(link.Render())
 		ulContent += li.Render()
 	}
