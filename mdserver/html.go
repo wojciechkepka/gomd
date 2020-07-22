@@ -51,7 +51,7 @@ func (md *MdServer) serveFileAsHTML(path string) string {
 func (md *MdServer) sidebarHTML() string {
 	links := make(map[string]string)
 	for _, f := range md.Files {
-		links[f.Filename] = f.Path
+		links[f.Filename] = "/file/" + f.Path
 	}
 
 	return assets.Sidebar(links)
