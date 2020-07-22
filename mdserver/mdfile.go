@@ -97,20 +97,29 @@ func (f *MdFile) AsHTML(isDarkMode bool, theme, bindAddr string, sidebar string)
 
 //LoadMdFiles - Walks through a specified directory and finds md files
 func LoadMdFiles(path string) []MdFile {
-	var files []MdFile
-	err := filepath.Walk(path, func(p string, info os.FileInfo, err error) error {
-		if !info.IsDir() && !u.IsSubDirPath(path, p) {
+	files := []MdFile{}
+
+	paths, err := filepath.Glob(path + "/*")
+	if err != nil {
+		return files
+	}
+	for _, p := range paths {
+		f, err := os.Open(p)
+		if err != nil {
+			continue
+		}
+		info, err := f.Stat()
+		if err != nil {
+			continue
+		}
+		if !info.IsDir() {
 			file, err := LoadMdFile(p)
 			if err != nil {
-				u.Logf(u.Error, "Failed to load file - %v", err)
-				return nil
+				u.Logln(u.Error, "Failed to load file - ", err)
+				continue
 			}
 			files = append(files, file)
 		}
-		return nil
-	})
-	if err != nil {
-		u.Logf(u.Error, "Error: failed to read file - %v", err)
 	}
 	return files
 }

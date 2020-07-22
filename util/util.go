@@ -24,11 +24,6 @@ func URLOpen(url string) error {
 	return cmd.Run()
 }
 
-//IsSubDirPath - checks if given path contains any '/'
-func IsSubDirPath(basePath, path string) bool {
-	return CountChInStr('/', path) > 0
-}
-
 //CountChInStr - counts ch character occurances in str string
 func CountChInStr(ch rune, str string) int {
 	count := 0
