@@ -24,7 +24,7 @@ const (
 
     SidebarStyleDark = `.openbtn{display:inline-block;box-sizing:border-box;text-decoration:none;font-family:FiraCode-Regular,monospace,sans-serif;font-weight:500;text-align:center;line-height:2.2em;margin:0 5px;transition:all .2s;width:64px;height:34px;border:1.8px solid #666;color:#f8efe1;line-height:1em}.openbtn:hover{color:#000;background-color:#f8efe1}`
 
-    SidebarStyleLight = `.openbtn{display:inline-block;box-sizing:border-box;text-decoration:none;font-family:FiraCode-Regular,monospace,sans-serif;font-weight:500;text-align:center;line-height:2.2em;margin:0 5px;transition:all .2s;width:64px;height:34px;border:1.8px solid #1c1c1c;color:#1c1c1c}.openbtn:hover{color:#ccc;background-color:#1c1c1c}.sidebar{background-color:#1c1c1c;color:#ccc}.sidebar a:hover{color:#f8efe1}`
+    SidebarStyleLight = `.openbtn{display:inline-block;box-sizing:border-box;text-decoration:none;font-family:FiraCode-Regular,monospace,sans-serif;font-weight:500;text-align:center;line-height:2.2em;margin:0 5px;transition:all .2s;width:64px;height:34px;border:1.8px solid #1c1c1c;color:#1c1c1c;line-height:1em}.openbtn:hover{color:#ccc;background-color:#1c1c1c}.sidebar{background-color:#1c1c1c;color:#ccc}.sidebar a:hover{color:#f8efe1}`
 
     TopBarDark = `.dropdown-content{background-color:#f8efe1}.dropdown-content a:hover{background-color:#ccc}`
 
