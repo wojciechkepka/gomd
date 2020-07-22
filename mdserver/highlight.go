@@ -127,6 +127,9 @@ func HighlightHTML(html, style string) string {
 			push = false
 		}
 		if util.IsSubStrAtIdx(html, codeTagEnd, i) {
+			if blockIdx >= len(blocks) {
+				break
+			}
 			out.WriteString(blocks[blockIdx])
 			i += len(codeTagEnd) + 5
 			blockIdx++
