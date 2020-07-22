@@ -1,4 +1,6 @@
 @import "vars"
+@import "elements"
+
 
 body
   background: $black_gray
@@ -9,11 +11,7 @@ body
 
 a
   &.bbut
-    border: 1.8px solid $gray
-    color: $warm_white
-    &:hover
-      color: black
-      background-color: $warm_white
+    +darkbtn
 
 
 li a
