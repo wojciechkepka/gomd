@@ -15,7 +15,7 @@ compile() {
 if [ -z $1 ]
 then
     echo "USAGE:"
-    echo "\tbuild.sh <version>"
+    echo -e "\tbuild.sh <version>"
     exit 1
 fi
 

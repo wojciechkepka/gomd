@@ -4,3 +4,6 @@ this:
 
 styles:
 	./scripts/add_assets.sh
+
+buildall:
+	./scripts/build.sh $(VER)
