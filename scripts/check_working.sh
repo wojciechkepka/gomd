@@ -1,6 +1,6 @@
 #!/bin/bash
 
-./gomd &
+./build/gomd &
 
 sleep 2
 PING="$(curl http://localhost:5001/ping)"
