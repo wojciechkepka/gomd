@@ -3,17 +3,17 @@ package assets
 //MdFileStyle returns style for markdown file
 func MdFileStyle(isDarkMode bool, theme string) string {
 	if isDarkMode {
-		return Fonts + Ghmd + GhmdDark + CSS + TopBarDark + SidebarStyle + SidebarStyleDark
+		return Ghmd + GhmdDark + CSS
 	}
 
-	return Fonts + Ghmd + GhmdLight + CSS + TopBarLight + SidebarStyle + SidebarStyleLight
+	return Ghmd + GhmdLight + CSS
 }
 
 //FileListViewStyle returns style for main file list view
 func FileListViewStyle(isDarkMode bool) string {
 	if isDarkMode {
-		return Fonts + FvCommon + FvDark + CSS + TopBarDark
+		return FvCommon + FvDark + CSS
 	}
 
-	return Fonts + FvCommon + FvLight + CSS + TopBarLight
+	return FvCommon + FvLight + CSS
 }

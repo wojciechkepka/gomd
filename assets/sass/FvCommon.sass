@@ -7,6 +7,12 @@
   margin: 0
   padding: 0
 
+body
+  display: flex
+  flex-direction: column
+  height: 100vh
+  padding-top: 30px
+
 nav
   margin: 50px
 
@@ -17,6 +23,20 @@ li
   height: 25px
   margin-right: 0px
   padding: 0 20px
+
+  &.active a
+    font-weight: bold
+
+  a
+    text-decoration: none
+    font: 25px/1 $font
+
+    -webkit-transition: all 0.5s ease
+    -moz-transition: all 0.5s ease
+    -o-transition: all 0.5s ease
+    -ms-transition: all 0.5s ease
+    transition: all 0.5s ease
+
 
 
 //################################################################################
