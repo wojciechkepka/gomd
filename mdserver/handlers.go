@@ -11,13 +11,20 @@ import (
 	"gomd/mdserver/ws"
 	u "gomd/util"
 	"net/http"
+	"net/url"
 	"path/filepath"
 )
 
 func (md *MdServer) fileViewHandler(w http.ResponseWriter, r *http.Request) {
 	filePath := r.RequestURI[len(fileviewEp)-1:]
-	u.Logf(u.Info, "Serving file %v", filePath)
-	fmt.Fprintln(w, string(md.serveFileAsHTML(filePath)))
+	path, err := url.QueryUnescape(filePath)
+	if err != nil {
+		u.Logln(u.Error, err)
+		fmt.Fprintln(w, "Invalid path -", filePath)
+		return
+	}
+	u.Logf(u.Info, "Serving file %v", path)
+	fmt.Fprintln(w, string(md.serveFileAsHTML(path)))
 }
 
 func (md *MdServer) fileListViewHandler(w http.ResponseWriter, r *http.Request) {
