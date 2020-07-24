@@ -2,8 +2,8 @@
 
 compile() {
     local version="$1"
-    GOOS="$2"
-    GOARCH="$3"
+    export GOOS="$2"
+    export GOARCH="$3"
     echo "Compiling $version-$GOOS-$GOARCH"
     go build -o build/gomd .
     cd build
