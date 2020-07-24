@@ -1,0 +1,31 @@
+#!/bin/bash
+
+compile() {
+    local version="$1"
+    GOOS="$2"
+    GOARCH="$3"
+    echo "Compiling $version-$GOOS-$GOARCH"
+    go build -o build/gomd .
+    cd build
+    tar -zcvf gomd-$version-$GOOS-$GOARCH.tgz gomd
+    rm gomd
+    cd ..
+}
+
+if [ -z $1 ]
+then
+    echo "USAGE:"
+    echo "\tbuild.sh <version>"
+    exit 1
+fi
+
+VERSION="$1"
+
+rm -rf build
+
+make styles
+compile $VERSION "linux" "arm"
+compile $VERSION "linux" "amd64"
+compile $VERSION "linux" "386"
+compile $VERSION "darwin" "amd64"
+compile $VERSION "windows" "amd64"
