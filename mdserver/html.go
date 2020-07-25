@@ -54,7 +54,7 @@ func (md *MdServer) sidebarHTML() string {
 		if f.IsHidden() && !md.showHidden {
 			continue
 		}
-		links[f.Filename] = "/file/" + f.Path
+		links[f.Filename] = fileviewEp + f.Path
 	}
 
 	return assets.Sidebar(links)
