@@ -51,6 +51,9 @@ func (md *MdServer) serveFileAsHTML(path string) string {
 func (md *MdServer) sidebarHTML() string {
 	links := make(map[string]string)
 	for _, f := range md.Files {
+		if f.IsHidden() && !md.showHidden {
+			continue
+		}
 		links[f.Filename] = "/file/" + f.Path
 	}
 
