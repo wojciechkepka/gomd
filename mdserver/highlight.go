@@ -4,19 +4,10 @@ import (
 	"bytes"
 	"gomd/util"
 	"regexp"
-	"strings"
 
 	h "github.com/alecthomas/chroma/formatters/html"
 	"github.com/alecthomas/chroma/lexers"
 	"github.com/alecthomas/chroma/styles"
-)
-
-const (
-	codeTagLangStart = "<pre><code class=\"language-"
-	codeTagStart     = "<pre><code"
-	codeTagEnd       = "</code></pre>"
-	styleStart       = "<style type=\"text/css\">"
-	bodyBegin        = "<body class=\"chroma\">"
 )
 
 //codeBlock represents code block with specified programming language
@@ -50,15 +41,6 @@ func (cb *codeBlock) highlightBlock(style string) (string, error) {
 	return buf.String(), nil
 }
 
-func unescapeHTML(text string) string {
-	text = strings.ReplaceAll(text, "&quot;", "\"")
-	text = strings.ReplaceAll(text, "&gt;", ">")
-	text = strings.ReplaceAll(text, "&lt;", "<")
-	text = strings.ReplaceAll(text, "&amp;", "&")
-	text = strings.ReplaceAll(text, "&apos;", "'")
-	return text
-}
-
 func findBlocks(html string) []codeBlock {
 	blocks := []codeBlock{}
 
@@ -66,7 +48,14 @@ func findBlocks(html string) []codeBlock {
 	idxs := reg.FindAllStringSubmatchIndex(html, -1)
 	blks := reg.FindAllStringSubmatch(html, -1)
 	for i := 0; i < len(blks); i++ {
-		blocks = append(blocks, codeBlock{code: unescapeHTML(blks[i][2]), lang: blks[i][1], codeStartIdx: idxs[i][4], codeEndIdx: idxs[i][5]})
+		blocks = append(blocks,
+			codeBlock{
+				code:         util.UnescapeHTML(blks[i][2]),
+				lang:         blks[i][1],
+				codeStartIdx: idxs[i][4],
+				codeEndIdx:   idxs[i][5],
+			},
+		)
 	}
 
 	return blocks
@@ -86,9 +75,8 @@ func highlightBlocks(html, style string, blocks []codeBlock) string {
 	return html
 }
 
-//HighlightHTML extracts parsed markdown blocks from html and
-//replaces them with highlighted with specified style html code
-//with inlined style
+//HighlightHTML finds code blocks in html with language specified as class
+//and replaces them with highlighted html.
 func HighlightHTML(html, style string) string {
 	blocks := findBlocks(html)
 	return highlightBlocks(html, style, blocks)
