@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"gomd/util"
 	"regexp"
+	"strings"
 
 	h "github.com/alecthomas/chroma/formatters/html"
 	"github.com/alecthomas/chroma/lexers"
@@ -49,6 +50,15 @@ func (cb *codeBlock) highlightBlock(style string) (string, error) {
 	return buf.String(), nil
 }
 
+func unescapeHTML(text string) string {
+	text = strings.ReplaceAll(text, "&quot;", "\"")
+	text = strings.ReplaceAll(text, "&gt;", ">")
+	text = strings.ReplaceAll(text, "&lt;", "<")
+	text = strings.ReplaceAll(text, "&amp;", "&")
+	text = strings.ReplaceAll(text, "&apos;", "'")
+	return text
+}
+
 func findBlocks(html string) []codeBlock {
 	blocks := []codeBlock{}
 
@@ -56,7 +66,7 @@ func findBlocks(html string) []codeBlock {
 	idxs := reg.FindAllStringSubmatchIndex(html, -1)
 	blks := reg.FindAllStringSubmatch(html, -1)
 	for i := 0; i < len(blks); i++ {
-		blocks = append(blocks, codeBlock{code: blks[i][2], lang: blks[i][1], codeStartIdx: idxs[i][4], codeEndIdx: idxs[i][5]})
+		blocks = append(blocks, codeBlock{code: unescapeHTML(blks[i][2]), lang: blks[i][1], codeStartIdx: idxs[i][4], codeEndIdx: idxs[i][5]})
 	}
 
 	return blocks
@@ -71,7 +81,7 @@ func highlightBlocks(html, style string, blocks []codeBlock) string {
 		}
 
 		html = util.StrReplace(html, highlighted, block.codeStartIdx+diff, block.codeEndIdx+diff)
-		diff += len(highlighted) - len(block.code)
+		diff += len(highlighted) - (block.codeEndIdx - block.codeStartIdx)
 	}
 	return html
 }
