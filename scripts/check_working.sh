@@ -1,5 +1,6 @@
 #!/bin/bash
 
+go test -v
 ./build/gomd &
 
 sleep 2
