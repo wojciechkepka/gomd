@@ -91,7 +91,8 @@ func (f *MdFile) AsHTML(isDarkMode bool, theme, bindAddr string, sidebar string)
 	h.AddScript(assets.JS)
 	sb := html.Div("mySidebar", sidebar)
 	main := html.Div("main", assets.TopBar(isDarkMode)+string(markdown.ToHTML(f.Content, nil, nil)))
-	h.AddBodyItem(html.Render(html.Div("wrapper", html.Render(sb)+html.Render(main))))
+	wrapper := html.Div("wrapper", sb.Render()+main.Render())
+	h.AddBodyItem(wrapper.Render())
 	return HighlightHTML(h.Render(), assets.ChromaName(theme, isDarkMode))
 }
 
