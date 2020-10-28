@@ -73,7 +73,7 @@ func (t *Tag) Render() string {
 			s.WriteString(attr)
 			s.WriteString("=\"")
 			s.WriteString(val)
-			s.WriteString("\"")
+			s.WriteString("\" ")
 		}
 	}
 	s.WriteRune('>')
