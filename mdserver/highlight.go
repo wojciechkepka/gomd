@@ -2,6 +2,7 @@ package mdserver
 
 import (
 	"bytes"
+	"gomd/util"
 	"regexp"
 
 	h "github.com/alecthomas/chroma/formatters/html"
@@ -61,12 +62,6 @@ func findBlocks(html string) []codeBlock {
 	return blocks
 }
 
-func strReplace(str, newChunk string, chunkStart, chunkEnd int) string {
-	first := str[:chunkStart]
-	second := str[chunkEnd:]
-	return first + newChunk + second
-}
-
 func highlightBlocks(html, style string, blocks []codeBlock) string {
 	diff := 0
 	for _, block := range blocks {
@@ -75,7 +70,7 @@ func highlightBlocks(html, style string, blocks []codeBlock) string {
 			continue
 		}
 
-		html = strReplace(html, highlighted, block.codeStartIdx+diff, block.codeEndIdx+diff)
+		html = util.StrReplace(html, highlighted, block.codeStartIdx+diff, block.codeEndIdx+diff)
 		diff += len(highlighted) - len(block.code)
 	}
 	return html

@@ -48,3 +48,11 @@ func IsSubStrAtIdx(str, subStr string, idx int) bool {
 	}
 	return true
 }
+
+//StrReplace replaces a chunk of string str, starting at chunkStart
+//and ending at chunkEnd, with newChunk
+func StrReplace(str, newChunk string, chunkStart, chunkEnd int) string {
+	first := str[:chunkStart]
+	second := str[chunkEnd:]
+	return first + newChunk + second
+}
