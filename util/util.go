@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os/exec"
 	rt "runtime"
+	"strings"
 )
 
 //URLOpen - tries to open a url based on OS
@@ -55,4 +56,15 @@ func StrReplace(str, newChunk string, chunkStart, chunkEnd int) string {
 	first := str[:chunkStart]
 	second := str[chunkEnd:]
 	return first + newChunk + second
+}
+
+//UnescapeHTML replaces html escaped symbols with their
+//rendered equivalent like `&quot;` -> `"`
+func UnescapeHTML(text string) string {
+	text = strings.ReplaceAll(text, "&quot;", "\"")
+	text = strings.ReplaceAll(text, "&gt;", ">")
+	text = strings.ReplaceAll(text, "&lt;", "<")
+	text = strings.ReplaceAll(text, "&amp;", "&")
+	text = strings.ReplaceAll(text, "&apos;", "'")
+	return text
 }
