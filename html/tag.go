@@ -67,12 +67,14 @@ func (t *Tag) Render() string {
 	s := strings.Builder{}
 	s.WriteRune('<')
 	s.WriteString(string(t.Type))
-	s.WriteRune(' ')
-	for attr, val := range t.attributes {
-		s.WriteString(attr)
-		s.WriteString("=\"")
-		s.WriteString(val)
-		s.WriteString("\" ")
+	if len(t.attributes) > 0 {
+		s.WriteRune(' ')
+		for attr, val := range t.attributes {
+			s.WriteString(attr)
+			s.WriteString("=\"")
+			s.WriteString(val)
+			s.WriteString("\"")
+		}
 	}
 	s.WriteRune('>')
 
