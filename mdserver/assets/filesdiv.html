@@ -1,0 +1,9 @@
+<div class="files">
+  <ul>
+    {{range .Files}}
+      <li>
+        <a href="/file/{{.Path}}">{{.Filename}}</a>
+      </li>
+    {{end}}
+  </ul>
+</div>

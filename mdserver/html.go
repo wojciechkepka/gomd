@@ -1,26 +1,39 @@
 package mdserver
 
 import (
+	"bytes"
+	"github.com/gobuffalo/packr"
 	h "gomd/html"
 	"gomd/mdserver/assets"
+	"gomd/util"
+	"html/template"
 )
 
-// Prepares FileListView body html
-func (md *MdServer) filesBody() string {
-	ul := h.NewTag(h.UlTag)
-	ulContent := ""
-	for _, file := range md.Files {
-		if file.IsHidden() && !md.showHidden {
-			continue
-		}
-		li := h.NewTag(h.LiTag)
-		endPoint := fileviewEp + file.Path
-		link := h.A(endPoint, file.Filename)
-		li.SetContent(link.Render())
-		ulContent += li.Render()
+func templateFromBox(path, file, name string) (*template.Template, error) {
+	box := packr.NewBox(path)
+	f, err := box.FindString(file)
+	if err != nil {
+		return nil, err
 	}
-	ul.SetContent(ulContent)
-	return h.Render(h.Div("files", ul.Render()))
+	tmpl, err := template.New(name).Parse(f)
+	if err != nil {
+		return nil, err
+	}
+	return tmpl, nil
+}
+
+func (md *MdServer) filesBody() string {
+	tmpl, err := templateFromBox("./assets", "filesdiv.html", "filesBody")
+	if err != nil {
+		util.Logln(util.Error, err)
+	}
+	buf := []byte{}
+	w := bytes.NewBuffer(buf)
+	err = tmpl.Execute(w, md)
+	if err != nil {
+		util.Logln(util.Error, err)
+	}
+	return w.String()
 }
 
 // Prepares full FileListView html
