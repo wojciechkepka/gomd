@@ -2,7 +2,8 @@ package mdserver
 
 import "testing"
 
-const TestHTMLSingle = `
+const (
+	TestHTMLSingle = `
 <html>
 <head>
 </head>
@@ -17,8 +18,7 @@ sys.exit(1)
 This is just a codeblock</code></pre>
 </body>
 </html>`
-
-const TestHTMLSingleAfter = `
+	TestHTMLSingleAfter = `
 <html>
 <head>
 </head>
@@ -33,8 +33,7 @@ sys.exit(<span style="color:#ff0;font-weight:bold">1</span>)
 This is just a codeblock</code></pre>
 </body>
 </html>`
-
-const TestHTMLMultiple = `
+	TestHTMLMultiple = `
 <html>
 <head>
 </head>
@@ -54,8 +53,7 @@ fn main() {
 </code></pre>
 </body>
 </html>`
-
-const TestHTMLMultipleAfter = `
+	TestHTMLMultipleAfter = `
 <html>
 <head>
 </head>
@@ -75,6 +73,7 @@ fmt.Printf(<span style="color:#0ff;font-weight:bold">&#34;%v&#34;</span>, x)</pr
 </pre></code></pre>
 </body>
 </html>`
+)
 
 func TestFindsCodeblock(t *testing.T) {
 	want := []codeBlock{
