@@ -1,0 +1,16 @@
+<div class="top-bar" >
+  {{ if .DisplayButtons }}
+    <button onclick="openNav();" class="bbtn" >&#9776;</button>
+    <a href="/" class="bbtn" >&#8592;</a>
+  {{ end }}
+
+  {{ .ThemeDropdown }}
+  <label class="switch">
+    {{ if .IsDarkMode }}
+      <input type="checkbox" onclick="themeChange(this);">
+    {{ else }}
+      <input type="checkbox" checked="checked" onclick="themeChange(this);">
+    {{ end }}
+    <span class="slider"></span>
+  </label>
+</div>

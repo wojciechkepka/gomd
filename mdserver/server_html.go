@@ -21,7 +21,7 @@ func (md *MdServer) serveFileAsHTML(path string) string {
 
 func (md *MdServer) FilesViewHTML() string {
 	fv := FilesView{Files: &md.Files}
-	return fv.Render()
+	return RenderString(&fv)
 }
 
 // Prepares full FileListView html
@@ -31,7 +31,13 @@ func (md *MdServer) MainViewHTML() string {
 	h.AddStyle(assets.FileListViewStyle(md.IsDarkMode()))
 	h.AddScript(assets.ReloadJs(md.BindAddr()))
 	h.AddScript(assets.JS)
-	h.AddBodyItem(assets.TopBarSliderDropdown(md.IsDarkMode()))
+	themes := assets.Themes()
+	tb := Topbar{
+		IsDarkMode:     md.IsDarkMode(),
+		Themes:         &themes,
+		DisplayButtons: false,
+	}
+	h.AddBodyItem(RenderString(&tb))
 	h.AddBodyItem(md.FilesViewHTML())
 	return h.Render()
 }
@@ -45,5 +51,5 @@ func (md *MdServer) SidebarHTML() string {
 		links[f.Filename] = fileviewEp + f.Path
 	}
 	sb := Sidebar{Links: &links}
-	return sb.Render()
+	return RenderString(&sb)
 }
