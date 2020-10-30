@@ -22,18 +22,22 @@ func templateFromBox(path, file, name string) (*template.Template, error) {
 	return tmpl, nil
 }
 
-func (md *MdServer) filesBody() string {
-	tmpl, err := templateFromBox("./assets", "filesdiv.html", "filesBody")
+func RenderTemplate(path, file, name string, obj interface{}) string {
+	tmpl, err := templateFromBox(path, file, name)
 	if err != nil {
 		util.Logln(util.Error, err)
 	}
 	buf := []byte{}
 	w := bytes.NewBuffer(buf)
-	err = tmpl.Execute(w, md)
+	err = tmpl.Execute(w, obj)
 	if err != nil {
 		util.Logln(util.Error, err)
 	}
 	return w.String()
+}
+
+func (md *MdServer) filesBody() string {
+	return RenderTemplate("./assets", "filesdiv.html", "filesList", md)
 }
 
 // Prepares full FileListView html
