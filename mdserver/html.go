@@ -52,6 +52,26 @@ func (md *MdServer) filesHTML() string {
 	return h.Render()
 }
 
+func (md *MdServer) sidebarHTML() string {
+	links := make(map[string]string)
+	for _, f := range md.Files {
+		if f.IsHidden() && !md.showHidden {
+			continue
+		}
+		links[f.Filename] = fileviewEp + f.Path
+	}
+	sb := Sidebar{Links: links}
+	return sb.Render()
+}
+
+type Sidebar struct {
+	Links map[string]string
+}
+
+func (sb *Sidebar) Render() string {
+	return RenderTemplate("./assets", "sidebar.html", "sidebar", sb)
+}
+
 // Serves markdown file as html
 func (md *MdServer) serveFileAsHTML(path string) string {
 	if md.path == "." {
@@ -63,16 +83,4 @@ func (md *MdServer) serveFileAsHTML(path string) string {
 		}
 	}
 	return ""
-}
-
-func (md *MdServer) sidebarHTML() string {
-	links := make(map[string]string)
-	for _, f := range md.Files {
-		if f.IsHidden() && !md.showHidden {
-			continue
-		}
-		links[f.Filename] = fileviewEp + f.Path
-	}
-
-	return assets.Sidebar(links)
 }

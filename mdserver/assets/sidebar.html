@@ -1,0 +1,7 @@
+<div class="sidebar">
+  <a href="javascript:void(0)" onclick="closeNav()" class="closebtn">x</a>
+  {{ range $key, $value := .Links }}
+  <a href="{{$value}}">{{$key}}</a>
+  {{ end }}
+</div>
+

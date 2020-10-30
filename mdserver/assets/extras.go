@@ -2,8 +2,6 @@ package assets
 
 import (
 	h "gomd/html"
-	"sort"
-	"strings"
 )
 
 //Custom html elements
@@ -60,24 +58,4 @@ func openSidebarBtn() string {
 	btn.AddAttr("onclick", "openNav();")
 	btn.SetContent("&#9776;")
 	return h.Render(btn)
-}
-
-// Sidebar returns a div with class 'sidebar'. Values are hrefs
-// and keys are displayed strings. The map is sorted by keys alphabeticaly.
-func Sidebar(links map[string]string) string {
-	as := strings.Builder{}
-	closeBtn := h.A("javascript:void(0)", "x")
-	closeBtn.AddAttr("onclick", "closeNav()")
-	closeBtn.AddAttr("class", "closebtn")
-	as.WriteString(h.Render(closeBtn))
-
-	keys := make([]string, 0, len(links))
-	for k := range links {
-		keys = append(keys, k)
-	}
-	sort.Strings(keys)
-	for _, name := range keys {
-		as.WriteString(h.Render(h.A(links[name], name)))
-	}
-	return h.Render(h.Div("sidebar", as.String()))
 }
