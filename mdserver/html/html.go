@@ -3,6 +3,7 @@ package html
 import (
 	"bytes"
 	"github.com/gobuffalo/packr"
+	. "gomd/mdserver/mdfile"
 	"gomd/util"
 	"html/template"
 )
@@ -35,9 +36,17 @@ func RenderTemplate(path, file, name string, obj interface{}) string {
 }
 
 type Sidebar struct {
-	Links map[string]string
+	Links *map[string]string
 }
 
 func (sb *Sidebar) Render() string {
 	return RenderTemplate("./assets", "sidebar.html", "sidebar", sb)
+}
+
+type FilesView struct {
+	Files *[]MdFile
+}
+
+func (fv *FilesView) Render() string {
+	return RenderTemplate("./assets", "filesdiv.html", "fileview", fv)
 }
