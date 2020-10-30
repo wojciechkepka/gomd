@@ -1,9 +1,10 @@
 package mdserver
 
 import (
-	h "gomd/html"
 	"gomd/mdserver/assets"
 	. "gomd/mdserver/html"
+	"gomd/util"
+	"html/template"
 )
 
 // Serves markdown file as html
@@ -19,27 +20,38 @@ func (md *MdServer) serveFileAsHTML(path string) string {
 	return ""
 }
 
-func (md *MdServer) FilesViewHTML() string {
+func (md *MdServer) FilesViewHTML() template.HTML {
 	fv := FilesView{Files: &md.Files}
-	return RenderString(&fv)
+	return RenderHTML(&fv)
 }
 
-// Prepares full FileListView html
-func (md *MdServer) MainViewHTML() string {
-	h := h.New()
-	h.AddMeta("viewport", "width=device-width, initial-scale=1.0")
-	h.AddStyle(assets.FileListViewStyle(md.IsDarkMode()))
-	h.AddScript(assets.ReloadJs(md.BindAddr()))
-	h.AddScript(assets.JS)
+func (md *MdServer) TopbarHTML() template.HTML {
 	themes := assets.Themes()
 	tb := Topbar{
 		IsDarkMode:     md.IsDarkMode(),
 		Themes:         &themes,
 		DisplayButtons: false,
 	}
-	h.AddBodyItem(RenderString(&tb))
-	h.AddBodyItem(md.FilesViewHTML())
-	return h.Render()
+	return RenderHTML(&tb)
+}
+
+func (md *MdServer) MainStyle() template.HTML {
+	return template.HTML("<style>" + assets.FileListViewStyle(md.IsDarkMode()) + "</style>")
+}
+
+func (md *MdServer) MainScripts() template.HTML {
+	return template.HTML(
+		"<script>" + assets.ReloadJs(md.BindAddr()) + "</script>" +
+			"<script>" + assets.JS + "</script>")
+}
+
+// Prepares full FileListView html
+func (md *MdServer) MainViewHTML() string {
+	tmpl, err := TemplateFromBox("./assets", "main.html", "main")
+	if err != nil {
+		util.Logln(util.Error, err)
+	}
+	return RenderTemplate(tmpl, md)
 }
 
 func (md *MdServer) SidebarHTML() string {
