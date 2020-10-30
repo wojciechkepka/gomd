@@ -1,4 +1,4 @@
-package mdserver
+package highlight
 
 import (
 	"bytes"

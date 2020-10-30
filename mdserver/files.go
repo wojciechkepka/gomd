@@ -1,6 +1,7 @@
 package mdserver
 
 import (
+	. "gomd/mdserver/mdfile"
 	u "gomd/util"
 	"os"
 	"path/filepath"

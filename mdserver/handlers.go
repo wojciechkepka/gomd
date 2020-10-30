@@ -28,7 +28,7 @@ func (md *MdServer) fileViewHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (md *MdServer) fileListViewHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, md.filesHTML())
+	fmt.Fprintln(w, md.FilesViewHTML())
 }
 
 func (md *MdServer) themeHandler(w http.ResponseWriter, r *http.Request) {

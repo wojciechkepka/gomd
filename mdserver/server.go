@@ -8,6 +8,7 @@ package mdserver
 import (
 	"bytes"
 	"fmt"
+	. "gomd/mdserver/mdfile"
 	"gomd/mdserver/ws"
 	u "gomd/util"
 	"net/http"

@@ -1,4 +1,4 @@
-package mdserver
+package mdfile
 
 /********************************************************************************/
 /*                                  MdFile                                      */
@@ -8,6 +8,7 @@ package mdserver
 import (
 	"gomd/html"
 	"gomd/mdserver/assets"
+	. "gomd/mdserver/highlight"
 	u "gomd/util"
 	"io/ioutil"
 	"os"
