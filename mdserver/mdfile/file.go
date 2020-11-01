@@ -6,16 +6,11 @@ package mdfile
 /********************************************************************************/
 
 import (
-	"gomd/html"
-	"gomd/mdserver/assets"
-	. "gomd/mdserver/highlight"
 	u "gomd/util"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"time"
-
-	"github.com/gomarkdown/markdown"
 )
 
 // MdFile - structure representing a markdown file
@@ -81,20 +76,6 @@ func (f *MdFile) HasModTimeChanged() (bool, error) {
 	}
 
 	return false, nil
-}
-
-//AsHTML - Creates HTML string with this file contents
-func (f *MdFile) AsHTML(isDarkMode bool, theme, bindAddr string, sidebar string) string {
-	h := html.New()
-	h.AddMeta("viewport", "width=device-width, initial-scale=1.0")
-	h.AddStyle(assets.MdFileStyle(isDarkMode, theme))
-	h.AddScript(assets.ReloadJs(bindAddr))
-	h.AddScript(assets.JS)
-	sb := html.Div("mySidebar", sidebar)
-	main := html.Div("main", assets.TopBar(isDarkMode)+string(markdown.ToHTML(f.Content, nil, nil)))
-	wrapper := html.Div("wrapper", sb.Render()+main.Render())
-	h.AddBodyItem(wrapper.Render())
-	return HighlightHTML(h.Render(), assets.ChromaName(theme, isDarkMode))
 }
 
 //LoadMdFiles - Walks through a specified directory and finds md files

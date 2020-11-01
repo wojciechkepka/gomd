@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {{ .FileDisplayStyle }}
+    {{ .FileDisplayScripts }}
+  </head>
+  <body>
+    <div class="wrapper">
+      {{ .SidebarHTML }}
+      <div class="main">
+        {{ .TopbarHTML }}
+        {{ .RenderedContent }}
+      </div>
+    </div>
+  </body>
+</html>
+

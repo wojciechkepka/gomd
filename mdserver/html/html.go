@@ -3,6 +3,9 @@ package html
 import (
 	"bytes"
 	"github.com/gobuffalo/packr"
+	"github.com/gomarkdown/markdown"
+	"gomd/mdserver/assets"
+	h "gomd/mdserver/highlight"
 	. "gomd/mdserver/mdfile"
 	"gomd/util"
 	"html/template"
@@ -84,4 +87,46 @@ func (tb *Topbar) ThemeDropdown() template.HTML {
 
 func (tb *Topbar) Template() (*template.Template, error) {
 	return TemplateFromBox("./assets", "top_bar.html", "topbar")
+}
+
+type RenderedFileView struct {
+	IsDarkMode      bool
+	BindAddr, Theme string
+	Links           *map[string]string
+	File            *MdFile
+}
+
+func (tb *RenderedFileView) Template() (*template.Template, error) {
+	return TemplateFromBox("./assets", "file.html", "rendered_file")
+}
+
+func (f *RenderedFileView) SidebarHTML() template.HTML {
+	sb := Sidebar{Links: f.Links}
+	return RenderHTML(&sb)
+}
+func (f *RenderedFileView) TopbarHTML() template.HTML {
+	themes := assets.Themes()
+	tb := Topbar{DisplayButtons: true, IsDarkMode: f.IsDarkMode, Themes: &themes}
+	return RenderHTML(&tb)
+}
+func (f *RenderedFileView) RenderedContent() template.HTML {
+	return template.HTML(h.HighlightHTML(string(markdown.ToHTML(f.File.Content, nil, nil)), assets.ChromaName(f.Theme, f.IsDarkMode)))
+}
+func (f *RenderedFileView) FileDisplayStyle() template.HTML {
+	return template.HTML("<style>" + assets.MdFileStyle(f.IsDarkMode, f.Theme) + "</style>")
+}
+func (f *RenderedFileView) FileDisplayScripts() template.HTML {
+	return template.HTML("<script>" + assets.ReloadJs(f.BindAddr) + "</script>" +
+		"<script>" + assets.JS + "</script>")
+}
+
+func RenderMdFile(f *MdFile, isDarkMode bool, bindAddr, theme string, links *map[string]string) string {
+	rendered := RenderedFileView{
+		IsDarkMode: isDarkMode,
+		BindAddr:   bindAddr,
+		Theme:      theme,
+		Links:      links,
+		File:       f,
+	}
+	return RenderString(&rendered)
 }

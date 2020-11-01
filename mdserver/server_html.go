@@ -12,9 +12,10 @@ func (md *MdServer) serveFileAsHTML(path string) string {
 	if md.path == "." {
 		path = path[1:]
 	}
+	links := md.Links()
 	for _, file := range md.Files {
 		if file.Path == path {
-			return file.AsHTML(md.IsDarkMode(), md.theme, md.BindAddr(), md.SidebarHTML())
+			return RenderMdFile(&file, md.IsDarkMode(), md.theme, md.BindAddr(), &links)
 		}
 	}
 	return ""
@@ -55,13 +56,7 @@ func (md *MdServer) MainViewHTML() string {
 }
 
 func (md *MdServer) SidebarHTML() string {
-	links := make(map[string]string)
-	for _, f := range md.Files {
-		if f.IsHidden() && !md.showHidden {
-			continue
-		}
-		links[f.Filename] = fileviewEp + f.Path
-	}
+	links := md.Links()
 	sb := Sidebar{Links: &links}
 	return RenderString(&sb)
 }

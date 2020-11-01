@@ -118,6 +118,17 @@ func (md *MdServer) OpenURL() {
 	u.URLOpen(md.URL())
 }
 
+func (md *MdServer) Links() map[string]string {
+	links := make(map[string]string)
+	for _, f := range md.Files {
+		if f.IsHidden() && !md.showHidden {
+			continue
+		}
+		links[f.Filename] = fileviewEp + f.Path
+	}
+	return links
+}
+
 //sendReload sends a "reload" message that is then broadcasted to a websocket which
 //reloads a webpage
 func (md *MdServer) sendReload() {
