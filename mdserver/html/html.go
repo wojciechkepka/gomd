@@ -59,11 +59,11 @@ func (sb *Sidebar) Template() (*template.Template, error) {
 	return TemplateFromBox("./assets", "sidebar.html", "sidebar")
 }
 
-type FilesView struct {
+type FilesList struct {
 	Files *[]MdFile
 }
 
-func (fv *FilesView) Template() (*template.Template, error) {
+func (fv *FilesList) Template() (*template.Template, error) {
 	return TemplateFromBox("./assets", "filesdiv.html", "fileview")
 }
 
@@ -105,12 +105,12 @@ func (f *RenderedFileView) SidebarHTML() template.HTML {
 	return RenderHTML(&sb)
 }
 func (f *RenderedFileView) TopbarHTML() template.HTML {
-	themes := assets.Themes()
+	themes := h.Themes()
 	tb := Topbar{DisplayButtons: true, IsDarkMode: f.IsDarkMode, Themes: &themes}
 	return RenderHTML(&tb)
 }
 func (f *RenderedFileView) RenderedContent() template.HTML {
-	return template.HTML(h.HighlightHTML(string(markdown.ToHTML(f.File.Content, nil, nil)), assets.ChromaName(f.Theme, f.IsDarkMode)))
+	return template.HTML(h.HighlightHTML(string(markdown.ToHTML(f.File.Content, nil, nil)), h.ChromaName(f.Theme, f.IsDarkMode)))
 }
 func (f *RenderedFileView) FileDisplayStyle() template.HTML {
 	return template.HTML("<style>" + assets.MdFileStyle(f.IsDarkMode, f.Theme) + "</style>")

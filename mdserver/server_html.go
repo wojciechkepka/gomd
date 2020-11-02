@@ -2,6 +2,7 @@ package mdserver
 
 import (
 	"gomd/mdserver/assets"
+	"gomd/mdserver/highlight"
 	. "gomd/mdserver/html"
 	"gomd/util"
 	"html/template"
@@ -22,12 +23,12 @@ func (md *MdServer) serveFileAsHTML(path string) string {
 }
 
 func (md *MdServer) FilesViewHTML() template.HTML {
-	fv := FilesView{Files: &md.Files}
+	fv := FilesList{Files: &md.Files}
 	return RenderHTML(&fv)
 }
 
 func (md *MdServer) TopbarHTML() template.HTML {
-	themes := assets.Themes()
+	themes := highlight.Themes()
 	tb := Topbar{
 		IsDarkMode:     md.IsDarkMode(),
 		Themes:         &themes,
