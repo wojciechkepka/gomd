@@ -30,8 +30,7 @@ Quickly display formatted markdown files in your browser.
    - Requires
      - sassc or sass
      - make
-     - (optional) clean-css-cli (`npm install clean-css-cli -g`)
-     - (optional) uglifyjs (`npm install uglify-js -g`)
+     - clean-css-cli (`npm install clean-css-cli -g`)
      - go
    - `git clone https://github.com/wojciechkepka/gomd`
    - `cd ./gomd`
