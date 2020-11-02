@@ -17,7 +17,7 @@ func (md *MdServer) serveFileAsHTML(path string) string {
 	links := md.Links()
 	for _, file := range md.Files {
 		if file.Path == path {
-			return RenderMdFile(&file, md.IsDarkMode(), md.theme, md.BindAddr(), &links)
+			return RenderMdFile(&file, md.IsDarkMode(), md.BindAddr(), md.theme, &links)
 		}
 	}
 	return ""
