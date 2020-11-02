@@ -49,7 +49,7 @@ func (md *MdServer) MainScripts() template.HTML {
 
 // Prepares full FileListView html
 func (md *MdServer) MainViewHTML() string {
-	tmpl, err := TemplateFromBox("./assets", "main.html", "main")
+	tmpl, err := TemplateFromBox("../../assets/html", "main.html", "main")
 	if err != nil {
 		util.Logln(util.Error, err)
 	}

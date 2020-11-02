@@ -56,7 +56,7 @@ type Sidebar struct {
 }
 
 func (sb *Sidebar) Template() (*template.Template, error) {
-	return TemplateFromBox("./assets", "sidebar.html", "sidebar")
+	return TemplateFromBox("../../assets/html", "sidebar.html", "sidebar")
 }
 
 type FilesList struct {
@@ -64,7 +64,7 @@ type FilesList struct {
 }
 
 func (fv *FilesList) Template() (*template.Template, error) {
-	return TemplateFromBox("./assets", "filesdiv.html", "fileview")
+	return TemplateFromBox("../../assets/html", "filesdiv.html", "fileview")
 }
 
 type ThemeDropdown struct {
@@ -72,7 +72,7 @@ type ThemeDropdown struct {
 }
 
 func (td *ThemeDropdown) Template() (*template.Template, error) {
-	return TemplateFromBox("./assets", "theme_dropdown.html", "theme_dropdown")
+	return TemplateFromBox("../../assets/html", "theme_dropdown.html", "theme_dropdown")
 }
 
 type Topbar struct {
@@ -86,7 +86,7 @@ func (tb *Topbar) ThemeDropdown() template.HTML {
 }
 
 func (tb *Topbar) Template() (*template.Template, error) {
-	return TemplateFromBox("./assets", "top_bar.html", "topbar")
+	return TemplateFromBox("../../assets/html", "top_bar.html", "topbar")
 }
 
 type RenderedFileView struct {
@@ -97,7 +97,7 @@ type RenderedFileView struct {
 }
 
 func (tb *RenderedFileView) Template() (*template.Template, error) {
-	return TemplateFromBox("./assets", "file.html", "rendered_file")
+	return TemplateFromBox("../../assets/html", "file.html", "rendered_file")
 }
 
 func (f *RenderedFileView) SidebarHTML() template.HTML {
