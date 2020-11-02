@@ -19,7 +19,7 @@ import (
 
 const sleepDuration = 1000
 
-//MdServer - http server used for displaying rendered markdown files
+//MdServer is an http server used for displaying rendered markdown files
 type MdServer struct {
 	server        *http.Server
 	bindHost      string
@@ -33,8 +33,8 @@ type MdServer struct {
 	hub           *ws.Hub
 }
 
-//New - Initializes MdServer
-func New(bindHost string, bindPort int, path, theme string, showHidden, quiet, debug bool) MdServer {
+//NewMdServer initializes MdServer
+func NewMdServer(bindHost string, bindPort int, path, theme string, showHidden, quiet, debug bool) MdServer {
 	u.InitLog(!quiet, debug)
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		u.Logln(u.Warn, "Specified path doesn't exist. Using default.")
@@ -77,7 +77,7 @@ func FromOpts(opts MdOpts) MdServer {
 		u.Logln(u.Warn, "Invalid port '", port, "' using default", DefPort)
 		port, _ = strconv.Atoi(DefPort)
 	}
-	md := New(
+	md := NewMdServer(
 		*opts.BindAddr,
 		port,
 		*opts.Dir,
@@ -90,22 +90,21 @@ func FromOpts(opts MdOpts) MdServer {
 	return md
 }
 
-//BindAddr - Returns binding address of this server.
+//BindAddr returns binding address of this server.
 func (md *MdServer) BindAddr() string {
 	return fmt.Sprintf("%v:%v", md.bindHost, md.bindPort)
 }
 
-//URL - Returns a url of mdserver
+//URL returns a url of mdserver
 func (md *MdServer) URL() string {
 	return "http://" + md.BindAddr()
 }
 
-//IsDarkMode - Returns true if dark mode is on
+//IsDarkMode returns true if dark mode is on
 func (md *MdServer) IsDarkMode() bool {
 	return md.darkMode
 }
 
-//SetDarkMode - Set value of md.darkMode field
 func (md *MdServer) SetDarkMode(on bool) {
 	md.darkMode = on
 }
@@ -115,7 +114,7 @@ func (md *MdServer) SetTheme(theme string) {
 	md.theme = theme
 }
 
-//OpenURL - opens server's url in default web browser
+//OpenURL opens server's url in default web browser
 func (md *MdServer) OpenURL() {
 	u.URLOpen(md.URL())
 }
@@ -140,7 +139,7 @@ func (md *MdServer) sendReload() {
 	md.hub.Broadcast <- message
 }
 
-// Serve - Mount all endpoints and serve...
+// Serve starts up MdServer
 func (md *MdServer) Serve() {
 	u.Logf(u.Info, "Listening at %v", md.URL())
 	u.Logf(u.Info, "Directory: %v", md.path)
