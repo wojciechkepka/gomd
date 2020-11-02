@@ -4,27 +4,32 @@ import (
 	"bytes"
 	"github.com/gobuffalo/packr"
 	"gomd/util"
-	tmpl "html/template"
+	htmpl "html/template"
+	ttmpl "text/template"
 )
 
-type ITemplate interface {
-	Template() (*tmpl.Template, error)
+type HTemplate interface {
+	Template() (*htmpl.Template, error)
 }
 
-func TemplateFromBox(path, file, name string) (*tmpl.Template, error) {
+type TTemplate interface {
+	Template() (*ttmpl.Template, error)
+}
+
+func HTemplateFromBox(path, file, name string) (*htmpl.Template, error) {
 	box := packr.NewBox(path)
 	f, err := box.FindString(file)
 	if err != nil {
 		return nil, err
 	}
-	tmpl, err := tmpl.New(name).Parse(f)
+	tmpl, err := htmpl.New(name).Parse(f)
 	if err != nil {
 		return nil, err
 	}
 	return tmpl, nil
 }
 
-func RenderTemplate(tmpl *tmpl.Template, obj interface{}) string {
+func RenderHTemplate(tmpl *htmpl.Template, obj interface{}) string {
 	buf := []byte{}
 	w := bytes.NewBuffer(buf)
 	err := tmpl.Execute(w, obj)
@@ -34,19 +39,47 @@ func RenderTemplate(tmpl *tmpl.Template, obj interface{}) string {
 	return w.String()
 }
 
-func RenderString(templ ITemplate) string {
+func RenderHString(templ HTemplate) string {
 	tmpl, err := templ.Template()
 	if err != nil {
 		return ""
 	}
-	return RenderTemplate(tmpl, templ)
+	return RenderHTemplate(tmpl, templ)
 
 }
 
-func RenderHTML(templ ITemplate) tmpl.HTML {
-	return tmpl.HTML(RenderString(templ))
+func RenderHTML(templ HTemplate) htmpl.HTML {
+	return htmpl.HTML(RenderHString(templ))
 }
 
-func RenderJS(templ ITemplate) tmpl.JS {
-	return tmpl.JS(RenderString(templ))
+func TTemplateFromBox(path, file, name string) (*ttmpl.Template, error) {
+	box := packr.NewBox(path)
+	f, err := box.FindString(file)
+	if err != nil {
+		return nil, err
+	}
+	tmpl, err := ttmpl.New(name).Parse(f)
+	if err != nil {
+		return nil, err
+	}
+	return tmpl, nil
+}
+
+func RenderTTemplate(tmpl *ttmpl.Template, obj interface{}) string {
+	buf := []byte{}
+	w := bytes.NewBuffer(buf)
+	err := tmpl.Execute(w, obj)
+	if err != nil {
+		util.Logln(util.Error, err)
+	}
+	return w.String()
+}
+
+func RenderTString(templ TTemplate) string {
+	tmpl, err := templ.Template()
+	if err != nil {
+		return ""
+	}
+	return RenderTTemplate(tmpl, templ)
+
 }

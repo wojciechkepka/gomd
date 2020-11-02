@@ -50,15 +50,15 @@ func (md *MdServer) MainScripts() template.HTML {
 
 // Prepares full FileListView html
 func (md *MdServer) MainViewHTML() string {
-	templ, err := tmpl.TemplateFromBox("../../assets/html", "main.html", "main")
+	templ, err := tmpl.HTemplateFromBox("../../assets/html", "main.html", "main")
 	if err != nil {
 		util.Logln(util.Error, err)
 	}
-	return tmpl.RenderTemplate(templ, md)
+	return tmpl.RenderHTemplate(templ, md)
 }
 
 func (md *MdServer) SidebarHTML() string {
 	links := md.Links()
 	sb := Sidebar{Links: &links}
-	return tmpl.RenderString(&sb)
+	return tmpl.RenderHString(&sb)
 }
