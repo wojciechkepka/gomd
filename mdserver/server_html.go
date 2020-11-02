@@ -15,17 +15,17 @@ func (md *MdServer) serveFileAsHTML(path string) string {
 	if md.path == "." {
 		path = path[1:]
 	}
-	links := md.Links()
-	for _, file := range md.Files {
+	links := &md.Files.Links
+	for _, file := range md.Files.Files {
 		if file.Path == path {
-			return RenderMdFile(&file, md.IsDarkMode(), md.BindAddr(), md.theme, &links)
+			return RenderMdFile(&file, md.IsDarkMode(), md.BindAddr(), md.theme, links)
 		}
 	}
 	return ""
 }
 
 func (md *MdServer) FilesViewHTML() template.HTML {
-	fv := FilesList{Files: &md.Files}
+	fv := FilesList{Files: &md.Files.Files}
 	return tmpl.RenderHTML(&fv)
 }
 
@@ -60,7 +60,7 @@ func (md *MdServer) MainViewHTML() string {
 }
 
 func (md *MdServer) SidebarHTML() string {
-	links := md.Links()
-	sb := Sidebar{Links: &links}
+	links := &md.Files.Links
+	sb := Sidebar{Links: links}
 	return tmpl.RenderHString(&sb)
 }

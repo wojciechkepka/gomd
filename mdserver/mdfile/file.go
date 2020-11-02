@@ -6,7 +6,7 @@ package mdfile
 /********************************************************************************/
 
 import (
-	u "gomd/util"
+	"gomd/util"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -70,41 +70,14 @@ func (f *MdFile) HasModTimeChanged() (bool, error) {
 	if err != nil {
 		return false, err
 	}
-
-	if f.ModTime != info.ModTime() {
+	first := f.ModTime
+	second := info.ModTime()
+	if first != second {
+		util.Logf(util.Debug, "Modtime changed from '%v' to '%v'", first, second)
 		return true, nil
 	}
 
 	return false, nil
-}
-
-//LoadMdFiles - Walks through a specified directory and finds md files
-func LoadMdFiles(path string) []MdFile {
-	files := []MdFile{}
-
-	paths, err := filepath.Glob(path + "/*")
-	if err != nil {
-		return files
-	}
-	for _, p := range paths {
-		f, err := os.Open(p)
-		if err != nil {
-			continue
-		}
-		info, err := f.Stat()
-		if err != nil {
-			continue
-		}
-		if !info.IsDir() {
-			file, err := LoadMdFile(p)
-			if err != nil {
-				u.Logln(u.Error, "Failed to load file - ", err)
-				continue
-			}
-			files = append(files, file)
-		}
-	}
-	return files
 }
 
 //IsHidden check whether this file is hidden

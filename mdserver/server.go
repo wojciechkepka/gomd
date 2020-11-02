@@ -8,7 +8,6 @@ package mdserver
 import (
 	"bytes"
 	"fmt"
-	. "gomd/mdserver/mdfile"
 	"gomd/mdserver/ws"
 	u "gomd/util"
 	"net/http"
@@ -25,7 +24,7 @@ type MdServer struct {
 	bindHost      string
 	bindPort      int
 	path          string
-	Files         []MdFile
+	Files         *MdFiles
 	theme         string
 	darkMode      bool
 	showHidden    bool
@@ -41,14 +40,14 @@ func NewMdServer(bindHost string, bindPort int, path, theme string, showHidden, 
 		path = "./"
 	}
 
-	files := LoadMdFiles(path)
+	files := NewMdFiles(path, showHidden)
 
 	md := MdServer{
 		server:        nil,
 		bindHost:      bindHost,
 		bindPort:      bindPort,
 		path:          path,
-		Files:         files,
+		Files:         &files,
 		theme:         theme,
 		darkMode:      true,
 		isSidebarOpen: false,
@@ -119,19 +118,6 @@ func (md *MdServer) OpenURL() {
 	u.URLOpen(md.URL())
 }
 
-//Links returns a map of mdfile names as keys and their
-//coresponding full path as values
-func (md *MdServer) Links() map[string]string {
-	links := make(map[string]string)
-	for _, f := range md.Files {
-		if f.IsHidden() && !md.showHidden {
-			continue
-		}
-		links[f.Filename] = fileviewEp + f.Path
-	}
-	return links
-}
-
 //sendReload sends a "reload" message that is then broadcasted to a websocket which
 //reloads a webpage
 func (md *MdServer) sendReload() {
@@ -145,10 +131,28 @@ func (md *MdServer) Serve() {
 	u.Logf(u.Info, "Directory: %v", md.path)
 	u.Logf(u.Info, "Theme: %v", md.theme)
 
+	changed := make(chan bool)
+	newFound := make(chan bool)
+
 	go md.hub.Run()
-	go md.watchFiles()
+	go md.listenForReload(changed)
+	go md.listenForReload(newFound)
+	go md.Files.Watch(changed, newFound)
 	go md.OpenURL()
 	u.LogFatal(md.server.ListenAndServe())
+}
+
+//listenForReload on receiveing true message sends a reload to websocket
+//responsible for page reload.
+func (md *MdServer) listenForReload(c chan bool) {
+	for {
+		v := <-c
+		if v {
+			u.Logln(u.Debug, "Sending reload")
+			md.sendReload()
+			md.Files.RegenerateLinks()
+		}
+	}
 }
 
 //Run parses commandline opts and prints help if necessary otherwise starts mdserver with
