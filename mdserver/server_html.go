@@ -1,7 +1,7 @@
 package mdserver
 
 import (
-	"gomd/mdserver/assets"
+	"gomd/mdserver/gen"
 	"gomd/mdserver/highlight"
 	. "gomd/mdserver/html"
 	"gomd/util"
@@ -38,13 +38,13 @@ func (md *MdServer) TopbarHTML() template.HTML {
 }
 
 func (md *MdServer) MainStyle() template.HTML {
-	return template.HTML("<style>" + assets.FileListViewStyle(md.IsDarkMode()) + "</style>")
+	return template.HTML("<style>" + gen.FileListViewStyle(md.IsDarkMode()) + "</style>")
 }
 
 func (md *MdServer) MainScripts() template.HTML {
 	return template.HTML(
-		"<script>" + assets.ReloadJs(md.BindAddr()) + "</script>" +
-			"<script>" + assets.JS + "</script>")
+		"<script>" + gen.ReloadJs(md.BindAddr()) + "</script>" +
+			"<script>" + gen.JS + "</script>")
 }
 
 // Prepares full FileListView html

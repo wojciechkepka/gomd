@@ -1,4 +1,4 @@
-package assets
+package gen
 
 //MdFileStyle returns style for markdown file
 func MdFileStyle(isDarkMode bool, theme string) string {

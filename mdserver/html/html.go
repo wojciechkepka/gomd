@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"github.com/gobuffalo/packr"
 	"github.com/gomarkdown/markdown"
-	"gomd/mdserver/assets"
+	"gomd/mdserver/gen"
 	h "gomd/mdserver/highlight"
 	. "gomd/mdserver/mdfile"
 	"gomd/util"
@@ -113,11 +113,11 @@ func (f *RenderedFileView) RenderedContent() template.HTML {
 	return template.HTML(h.HighlightHTML(string(markdown.ToHTML(f.File.Content, nil, nil)), h.ChromaName(f.Theme, f.IsDarkMode)))
 }
 func (f *RenderedFileView) FileDisplayStyle() template.HTML {
-	return template.HTML("<style>" + assets.MdFileStyle(f.IsDarkMode, f.Theme) + "</style>")
+	return template.HTML("<style>" + gen.MdFileStyle(f.IsDarkMode, f.Theme) + "</style>")
 }
 func (f *RenderedFileView) FileDisplayScripts() template.HTML {
-	return template.HTML("<script>" + assets.ReloadJs(f.BindAddr) + "</script>" +
-		"<script>" + assets.JS + "</script>")
+	return template.HTML("<script>" + gen.ReloadJs(f.BindAddr) + "</script>" +
+		"<script>" + gen.JS + "</script>")
 }
 
 func RenderMdFile(f *MdFile, isDarkMode bool, bindAddr, theme string, links *map[string]string) string {
