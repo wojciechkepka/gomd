@@ -167,3 +167,11 @@ func TestHighlightsMultipleCodeblocks(t *testing.T) {
 		t.Errorf("Error: want \n`%v`\n, got \n`%v`\n", TestHTMLMultipleAfter, got)
 	}
 }
+
+func TestHighlightsHTML(t *testing.T) {
+	got := HighlightHTML(TestHTMLMultiple, "solarized")
+
+	if got != TestHTMLMultipleAfter {
+		t.Errorf("Error: want \n`%v`\n, got \n`%v`\n", TestHTMLMultipleAfter, got)
+	}
+}
