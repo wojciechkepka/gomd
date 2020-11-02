@@ -8,8 +8,8 @@ import (
 	"time"
 )
 
-//checkIfFilesChanged loops over all current files and checks if modification time changed
-//if it changed sends a reload message to a hub
+//checkIfFilesChanged loops over all current files and checks if modification
+//time changed if it changed sends a reload message to a hub
 func (md *MdServer) checkIfFilesChanged() {
 	for i := 0; i < len(md.Files); i++ {
 		f := &md.Files[i]
@@ -24,8 +24,8 @@ func (md *MdServer) checkIfFilesChanged() {
 	}
 }
 
-//findNewFiles checks for new files in md.Path. If it finds a new file sends a reload message
-//to a hub
+//findNewFiles checks for new files in md.Path.
+//If it finds a new file a reload message is sent to the hub.
 func (md *MdServer) findNewFiles() error {
 	paths, err := filepath.Glob(md.path + "/*")
 	if err != nil {
@@ -58,8 +58,8 @@ func (md *MdServer) findNewFiles() error {
 	return nil
 }
 
-//watchFiles - Loops endlessly checking all md.Files whether they changed
-//also runs findNewFiles on each loop
+//watchFiles loops endlessly checking whether any mdfile changed
+//and looking for new files on each loop
 func (md *MdServer) watchFiles() {
 	for {
 		md.checkIfFilesChanged()
@@ -68,6 +68,7 @@ func (md *MdServer) watchFiles() {
 	}
 }
 
+//isFileInFiles checks if specified path is part of this server's files
 func (md *MdServer) isFileInFiles(path string) bool {
 	for _, f := range md.Files {
 		if f.Path == path {

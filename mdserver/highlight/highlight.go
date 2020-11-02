@@ -17,6 +17,7 @@ type codeBlock struct {
 	codeStartIdx, codeEndIdx int
 }
 
+//highlightBlock highlight this codeBlock with specified style.
 func (cb *codeBlock) highlightBlock(style string) (string, error) {
 	lexer := lexers.Get(cb.lang)
 	if lexer == nil {
@@ -41,6 +42,18 @@ func (cb *codeBlock) highlightBlock(style string) (string, error) {
 	return buf.String(), nil
 }
 
+//findBlocks finds code blocks in html.
+//A code block looks like this:
+//`
+//<pre><code class="language-python">
+//import sys
+//
+//print("Hello world")
+//sys.exit(1)
+//</code></pre>
+//`
+//It has to have a code tag, with language class specified,
+//encapsulated in a pre tag
 func findBlocks(html string) []codeBlock {
 	blocks := []codeBlock{}
 
@@ -61,6 +74,8 @@ func findBlocks(html string) []codeBlock {
 	return blocks
 }
 
+//highlightBlocks returns html with blocks replaced by highlighted
+//with specified style code.
 func highlightBlocks(html, style string, blocks []codeBlock) string {
 	diff := 0
 	for _, block := range blocks {

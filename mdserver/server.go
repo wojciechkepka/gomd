@@ -118,6 +118,8 @@ func (md *MdServer) OpenURL() {
 	u.URLOpen(md.URL())
 }
 
+//Links returns a map of mdfile names as keys and their
+//coresponding full path as values
 func (md *MdServer) Links() map[string]string {
 	links := make(map[string]string)
 	for _, f := range md.Files {
