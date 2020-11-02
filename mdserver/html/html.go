@@ -4,6 +4,7 @@ import (
 	"github.com/gomarkdown/markdown"
 	"gomd/mdserver/gen"
 	h "gomd/mdserver/highlight"
+	"gomd/mdserver/js"
 	. "gomd/mdserver/mdfile"
 	tmpl "gomd/mdserver/template"
 	"html/template"
@@ -74,8 +75,10 @@ func (f *RenderedFileView) FileDisplayStyle() template.HTML {
 	return template.HTML("<style>" + gen.MdFileStyle(f.IsDarkMode, f.Theme) + "</style>")
 }
 func (f *RenderedFileView) FileDisplayScripts() template.HTML {
-	return template.HTML("<script>" + gen.ReloadJs(f.BindAddr) + "</script>" +
-		"<script>" + gen.JS + "</script>")
+	reload := js.ReloadJS{BindAddr: f.BindAddr}
+	js := js.JS{}
+	return template.HTML("<script>" + tmpl.RenderTString(&reload) + "</script>" +
+		"<script>" + tmpl.RenderTString(&js) + "</script>")
 }
 
 func RenderMdFile(f *MdFile, isDarkMode bool, bindAddr, theme string, links *map[string]string) string {

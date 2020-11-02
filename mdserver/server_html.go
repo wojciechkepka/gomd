@@ -4,6 +4,7 @@ import (
 	"gomd/mdserver/gen"
 	"gomd/mdserver/highlight"
 	. "gomd/mdserver/html"
+	"gomd/mdserver/js"
 	tmpl "gomd/mdserver/template"
 	"gomd/util"
 	"html/template"
@@ -43,9 +44,10 @@ func (md *MdServer) MainStyle() template.HTML {
 }
 
 func (md *MdServer) MainScripts() template.HTML {
-	return template.HTML(
-		"<script>" + gen.ReloadJs(md.BindAddr()) + "</script>" +
-			"<script>" + gen.JS + "</script>")
+	reload := js.ReloadJS{BindAddr: md.BindAddr()}
+	js := js.JS{}
+	return template.HTML("<script>" + tmpl.RenderTString(&reload) + "</script>" +
+		"<script>" + tmpl.RenderTString(&js) + "</script>")
 }
 
 // Prepares full FileListView html

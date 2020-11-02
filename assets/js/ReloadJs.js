@@ -57,12 +57,12 @@ try {
   if (window["WebSocket"]) {
     // The reload endpoint is hosted on a statically defined port.
     try {
-      tryConnectToReload("ws://%v/reload");
+      tryConnectToReload("ws://{{.BindAddr}}/reload");
     }
     catch (ex) {
       // If an exception is thrown, that means that we couldn't connect to to WebSockets because of mixed content
       // security restrictions, so we try to connect using wss.
-      tryConnectToReload("wss://%v/reload");
+      tryConnectToReload("wss://{{.BindAddr}}/reload");
 
     }
   } else {
