@@ -1,62 +1,20 @@
 package html
 
 import (
-	"bytes"
-	"github.com/gobuffalo/packr"
 	"github.com/gomarkdown/markdown"
 	"gomd/mdserver/gen"
 	h "gomd/mdserver/highlight"
 	. "gomd/mdserver/mdfile"
-	"gomd/util"
+	tmpl "gomd/mdserver/template"
 	"html/template"
 )
-
-func TemplateFromBox(path, file, name string) (*template.Template, error) {
-	box := packr.NewBox(path)
-	f, err := box.FindString(file)
-	if err != nil {
-		return nil, err
-	}
-	tmpl, err := template.New(name).Parse(f)
-	if err != nil {
-		return nil, err
-	}
-	return tmpl, nil
-}
-
-func RenderTemplate(tmpl *template.Template, obj interface{}) string {
-	buf := []byte{}
-	w := bytes.NewBuffer(buf)
-	err := tmpl.Execute(w, obj)
-	if err != nil {
-		util.Logln(util.Error, err)
-	}
-	return w.String()
-}
-
-type ITemplate interface {
-	Template() (*template.Template, error)
-}
-
-func RenderString(templ ITemplate) string {
-	tmpl, err := templ.Template()
-	if err != nil {
-		return ""
-	}
-	return RenderTemplate(tmpl, templ)
-
-}
-
-func RenderHTML(tmpl ITemplate) template.HTML {
-	return template.HTML(RenderString(tmpl))
-}
 
 type Sidebar struct {
 	Links *map[string]string
 }
 
 func (sb *Sidebar) Template() (*template.Template, error) {
-	return TemplateFromBox("../../assets/html", "sidebar.html", "sidebar")
+	return tmpl.TemplateFromBox("../../assets/html", "sidebar.html", "sidebar")
 }
 
 type FilesList struct {
@@ -64,7 +22,7 @@ type FilesList struct {
 }
 
 func (fv *FilesList) Template() (*template.Template, error) {
-	return TemplateFromBox("../../assets/html", "filesdiv.html", "fileview")
+	return tmpl.TemplateFromBox("../../assets/html", "filesdiv.html", "fileview")
 }
 
 type ThemeDropdown struct {
@@ -72,7 +30,7 @@ type ThemeDropdown struct {
 }
 
 func (td *ThemeDropdown) Template() (*template.Template, error) {
-	return TemplateFromBox("../../assets/html", "theme_dropdown.html", "theme_dropdown")
+	return tmpl.TemplateFromBox("../../assets/html", "theme_dropdown.html", "theme_dropdown")
 }
 
 type Topbar struct {
@@ -82,11 +40,11 @@ type Topbar struct {
 
 func (tb *Topbar) ThemeDropdown() template.HTML {
 	td := ThemeDropdown{Themes: tb.Themes}
-	return RenderHTML(&td)
+	return tmpl.RenderHTML(&td)
 }
 
 func (tb *Topbar) Template() (*template.Template, error) {
-	return TemplateFromBox("../../assets/html", "top_bar.html", "topbar")
+	return tmpl.TemplateFromBox("../../assets/html", "top_bar.html", "topbar")
 }
 
 type RenderedFileView struct {
@@ -97,17 +55,17 @@ type RenderedFileView struct {
 }
 
 func (tb *RenderedFileView) Template() (*template.Template, error) {
-	return TemplateFromBox("../../assets/html", "file.html", "rendered_file")
+	return tmpl.TemplateFromBox("../../assets/html", "file.html", "rendered_file")
 }
 
 func (f *RenderedFileView) SidebarHTML() template.HTML {
 	sb := Sidebar{Links: f.Links}
-	return RenderHTML(&sb)
+	return tmpl.RenderHTML(&sb)
 }
 func (f *RenderedFileView) TopbarHTML() template.HTML {
 	themes := h.Themes()
 	tb := Topbar{DisplayButtons: true, IsDarkMode: f.IsDarkMode, Themes: &themes}
-	return RenderHTML(&tb)
+	return tmpl.RenderHTML(&tb)
 }
 func (f *RenderedFileView) RenderedContent() template.HTML {
 	return template.HTML(h.HighlightHTML(string(markdown.ToHTML(f.File.Content, nil, nil)), h.ChromaName(f.Theme, f.IsDarkMode)))
@@ -128,5 +86,5 @@ func RenderMdFile(f *MdFile, isDarkMode bool, bindAddr, theme string, links *map
 		Links:      links,
 		File:       f,
 	}
-	return RenderString(&rendered)
+	return tmpl.RenderString(&rendered)
 }

@@ -4,6 +4,7 @@ import (
 	"gomd/mdserver/gen"
 	"gomd/mdserver/highlight"
 	. "gomd/mdserver/html"
+	tmpl "gomd/mdserver/template"
 	"gomd/util"
 	"html/template"
 )
@@ -24,7 +25,7 @@ func (md *MdServer) serveFileAsHTML(path string) string {
 
 func (md *MdServer) FilesViewHTML() template.HTML {
 	fv := FilesList{Files: &md.Files}
-	return RenderHTML(&fv)
+	return tmpl.RenderHTML(&fv)
 }
 
 func (md *MdServer) TopbarHTML() template.HTML {
@@ -34,7 +35,7 @@ func (md *MdServer) TopbarHTML() template.HTML {
 		Themes:         &themes,
 		DisplayButtons: false,
 	}
-	return RenderHTML(&tb)
+	return tmpl.RenderHTML(&tb)
 }
 
 func (md *MdServer) MainStyle() template.HTML {
@@ -49,15 +50,15 @@ func (md *MdServer) MainScripts() template.HTML {
 
 // Prepares full FileListView html
 func (md *MdServer) MainViewHTML() string {
-	tmpl, err := TemplateFromBox("../../assets/html", "main.html", "main")
+	templ, err := tmpl.TemplateFromBox("../../assets/html", "main.html", "main")
 	if err != nil {
 		util.Logln(util.Error, err)
 	}
-	return RenderTemplate(tmpl, md)
+	return tmpl.RenderTemplate(templ, md)
 }
 
 func (md *MdServer) SidebarHTML() string {
 	links := md.Links()
 	sb := Sidebar{Links: &links}
-	return RenderString(&sb)
+	return tmpl.RenderString(&sb)
 }
