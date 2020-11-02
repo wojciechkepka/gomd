@@ -1,7 +1,7 @@
 package mdserver
 
 import (
-	"gomd/mdserver/gen"
+	"gomd/mdserver/css"
 	"gomd/mdserver/highlight"
 	. "gomd/mdserver/html"
 	"gomd/mdserver/js"
@@ -40,7 +40,7 @@ func (md *MdServer) TopbarHTML() template.HTML {
 }
 
 func (md *MdServer) MainStyle() template.HTML {
-	return template.HTML("<style>" + gen.FileListViewStyle(md.IsDarkMode()) + "</style>")
+	return template.HTML("<style>" + css.FileListViewStyle(md.IsDarkMode()) + "</style>")
 }
 
 func (md *MdServer) MainScripts() template.HTML {

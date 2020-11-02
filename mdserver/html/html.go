@@ -2,7 +2,7 @@ package html
 
 import (
 	"github.com/gomarkdown/markdown"
-	"gomd/mdserver/gen"
+	"gomd/mdserver/css"
 	h "gomd/mdserver/highlight"
 	"gomd/mdserver/js"
 	. "gomd/mdserver/mdfile"
@@ -72,7 +72,7 @@ func (f *RenderedFileView) RenderedContent() template.HTML {
 	return template.HTML(h.HighlightHTML(string(markdown.ToHTML(f.File.Content, nil, nil)), h.ChromaName(f.Theme, f.IsDarkMode)))
 }
 func (f *RenderedFileView) FileDisplayStyle() template.HTML {
-	return template.HTML("<style>" + gen.MdFileStyle(f.IsDarkMode, f.Theme) + "</style>")
+	return template.HTML("<style>" + css.MdFileStyle(f.IsDarkMode, f.Theme) + "</style>")
 }
 func (f *RenderedFileView) FileDisplayScripts() template.HTML {
 	reload := js.ReloadJS{BindAddr: f.BindAddr}
