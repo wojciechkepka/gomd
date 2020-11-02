@@ -71,3 +71,15 @@ func (md *MdServer) sidebarHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 }
+
+// MdServerMuxHandler returns a ServeMux with all endpoint handlers attached
+func (md *MdServer) ServeMuxHandler() http.ServeMux {
+	sm := http.NewServeMux()
+	sm.HandleFunc(filelistviewEp, md.fileListViewHandler)
+	sm.HandleFunc(fileviewEp, md.fileViewHandler)
+	sm.HandleFunc(themeEp, md.themeHandler)
+	sm.HandleFunc(reloadEp, md.watchHandler)
+	sm.HandleFunc(pingEp, md.pingHandler)
+	sm.HandleFunc(sidebarEp, md.sidebarHandler)
+	return sm
+}

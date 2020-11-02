@@ -14,6 +14,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"time"
 )
 
 const (
@@ -37,6 +38,7 @@ const (
 
 //MdServer - http server used for displaying rendered markdown files
 type MdServer struct {
+	server        *http.Server
 	bindHost      string
 	bindPort      int
 	path          string
@@ -61,7 +63,8 @@ func New(bindHost string, bindPort int, path, theme string, showHidden, quiet bo
 
 	files := LoadMdFiles(path)
 
-	return MdServer{
+	md := MdServer{
+		server:        nil,
 		bindHost:      bindHost,
 		bindPort:      bindPort,
 		path:          path,
@@ -72,6 +75,17 @@ func New(bindHost string, bindPort int, path, theme string, showHidden, quiet bo
 		showHidden:    showHidden,
 		hub:           ws.NewHub(),
 	}
+
+	s := &http.Server{
+		Handler:      md.ServeMuxHandler(),
+		Addr:         md.BindAddr(),
+		ReadTimeout:  10 * time.Second,
+		WriteTimeout: 10 * time.Second,
+	}
+
+	md.server = s
+
+	return md
 }
 
 //FromOpts creates MdServer instance from MdOpts
@@ -145,15 +159,9 @@ func (md *MdServer) Serve() {
 	u.Logf(u.Info, "Theme: %v", md.theme)
 
 	go md.hub.Run()
-	http.HandleFunc(filelistviewEp, md.fileListViewHandler)
-	http.HandleFunc(fileviewEp, md.fileViewHandler)
-	http.HandleFunc(themeEp, md.themeHandler)
-	http.HandleFunc(reloadEp, md.watchHandler)
-	http.HandleFunc(pingEp, md.pingHandler)
-	http.HandleFunc(sidebarEp, md.sidebarHandler)
 	go md.watchFiles()
 	go md.OpenURL()
-	u.LogFatal(http.ListenAndServe(md.BindAddr(), nil))
+	u.LogFatal(md.server.ListenAndServe())
 }
 
 //Run parses commandline opts and prints help if necessary otherwise starts mdserver with
