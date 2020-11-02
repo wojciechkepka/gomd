@@ -15,7 +15,7 @@ const (
 	DefShowHidden = false
 	DefQuiet      = false
 	DefHelp       = false
-	Version       = "1.3.3"
+	Version       = "1.0.0"
 )
 
 /*MdOpts Options for running MdServer*/
