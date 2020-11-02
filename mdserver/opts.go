@@ -10,6 +10,7 @@ import (
 const (
 	DefAddr       = "127.0.0.1"
 	DefPort       = "5001"
+	DefDebug      = false
 	DefDir        = "."
 	DefTheme      = "solarized"
 	DefShowHidden = false
@@ -21,7 +22,7 @@ const (
 /*MdOpts Options for running MdServer*/
 type MdOpts struct {
 	BindAddr, BindPort, Dir, Theme *string
-	ShowHidden, Quiet, help        *bool
+	Debug, ShowHidden, Quiet, help *bool
 }
 
 //ParseMdOpts parses provided commandline options returning MdOpts
@@ -30,6 +31,7 @@ func ParseMdOpts() MdOpts {
 	return MdOpts{
 		BindAddr:   flag.String("bind-addr", DefAddr, "Binding address"),
 		BindPort:   flag.String("bind-port", DefPort, "Binding port"),
+		Debug:      flag.Bool("debug", DefDebug, "Display debug output. Overrides all other flags"),
 		Dir:        flag.String("dir", DefDir, "The directory to serve"),
 		Theme:      flag.String("theme", DefTheme, "Available dracula/paraiso/monokai/solarized/github/vs/xcode"),
 		ShowHidden: flag.Bool("hidden", DefShowHidden, "Display hidden files"),

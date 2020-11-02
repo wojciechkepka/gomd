@@ -19,25 +19,15 @@ const (
 	Fatal LogLevel = "fatal"
 )
 
-var (
-	isVerbose bool = true
-)
-
 //Logf - logs a formated string if IsVerbose is set to true at specified LogLevel
 func Logf(level LogLevel, f string, args ...interface{}) {
 	switch level {
 	case Debug:
-		if isVerbose {
-			logger.Debugf(f, args...)
-		}
+		logger.Debugf(f, args...)
 	case Info:
-		if isVerbose {
-			logger.Infof(f, args...)
-		}
+		logger.Infof(f, args...)
 	case Warn:
-		if isVerbose {
-			logger.Warnf(f, args...)
-		}
+		logger.Warnf(f, args...)
 	case Error:
 		logger.Errorf(f, args...)
 	}
@@ -47,17 +37,11 @@ func Logf(level LogLevel, f string, args ...interface{}) {
 func Logln(level LogLevel, args ...interface{}) {
 	switch level {
 	case Debug:
-		if isVerbose {
-			logger.Debugln(args...)
-		}
+		logger.Debugln(args...)
 	case Info:
-		if isVerbose {
-			logger.Infoln(args...)
-		}
+		logger.Infoln(args...)
 	case Warn:
-		if isVerbose {
-			logger.Warnln(args...)
-		}
+		logger.Warnln(args...)
 	case Error:
 		logger.Errorln(args...)
 	case Fatal:
@@ -70,19 +54,17 @@ func LogFatal(args ...interface{}) {
 	logger.Fatal(args...)
 }
 
-//LogEnabled decide if informational log should be logged
-func LogEnabled(isLogEnabled bool) {
-	isVerbose = isLogEnabled
-}
-
-func InitLog() {
+func InitLog(isVerbose, isDebug bool) {
 	logger = &log.Logger{
 		Out:       os.Stderr,
 		Formatter: new(log.TextFormatter),
 		Hooks:     make(log.LevelHooks),
-		Level:     log.InfoLevel,
+		Level:     log.ErrorLevel,
 	}
 	if isVerbose {
+		logger.SetLevel(log.InfoLevel)
+	}
+	if isDebug {
 		logger.SetLevel(log.DebugLevel)
 	}
 }

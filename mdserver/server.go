@@ -51,14 +51,11 @@ type MdServer struct {
 }
 
 //New - Initializes MdServer
-func New(bindHost string, bindPort int, path, theme string, showHidden, quiet bool) MdServer {
+func New(bindHost string, bindPort int, path, theme string, showHidden, quiet, debug bool) MdServer {
+	u.InitLog(!quiet, debug)
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		u.Logln(u.Warn, "Specified path doesn't exist. Using default.")
 		path = "./"
-	}
-
-	if quiet {
-		u.LogEnabled(false)
 	}
 
 	files := LoadMdFiles(path)
@@ -97,7 +94,15 @@ func FromOpts(opts MdOpts) MdServer {
 		u.Logln(u.Warn, "Invalid port '", port, "' using default", DefPort)
 		port, _ = strconv.Atoi(DefPort)
 	}
-	md := New(*opts.BindAddr, port, *opts.Dir, *opts.Theme, *opts.ShowHidden, *opts.Quiet)
+	md := New(
+		*opts.BindAddr,
+		port,
+		*opts.Dir,
+		*opts.Theme,
+		*opts.ShowHidden,
+		*opts.Quiet,
+		*opts.Debug,
+	)
 
 	return md
 }
@@ -170,6 +175,5 @@ func Run() {
 	opts := ParseMdOpts()
 	opts.CheckHelp()
 	md := FromOpts(opts)
-	u.InitLog()
 	md.Serve()
 }
