@@ -2,10 +2,13 @@ package util
 
 import (
 	log "github.com/sirupsen/logrus"
+	"os"
 )
 
 //LogLevel - specifies at what level to log
 type LogLevel string
+
+var logger *log.Logger
 
 // Log levels
 const (
@@ -25,18 +28,18 @@ func Logf(level LogLevel, f string, args ...interface{}) {
 	switch level {
 	case Debug:
 		if isVerbose {
-			log.Debugf(f, args...)
+			logger.Debugf(f, args...)
 		}
 	case Info:
 		if isVerbose {
-			log.Infof(f, args...)
+			logger.Infof(f, args...)
 		}
 	case Warn:
 		if isVerbose {
-			log.Warnf(f, args...)
+			logger.Warnf(f, args...)
 		}
 	case Error:
-		log.Errorf(f, args...)
+		logger.Errorf(f, args...)
 	}
 }
 
@@ -45,29 +48,41 @@ func Logln(level LogLevel, args ...interface{}) {
 	switch level {
 	case Debug:
 		if isVerbose {
-			log.Debugln(args...)
+			logger.Debugln(args...)
 		}
 	case Info:
 		if isVerbose {
-			log.Infoln(args...)
+			logger.Infoln(args...)
 		}
 	case Warn:
 		if isVerbose {
-			log.Warnln(args...)
+			logger.Warnln(args...)
 		}
 	case Error:
-		log.Errorln(args...)
+		logger.Errorln(args...)
 	case Fatal:
-		log.Fatalln(args...)
+		logger.Fatalln(args...)
 	}
 }
 
-//LogFatal - log.Fatal interface
+//LogFatal - logger.Fatal interface
 func LogFatal(args ...interface{}) {
-	log.Fatal(args...)
+	logger.Fatal(args...)
 }
 
 //LogEnabled decide if informational log should be logged
 func LogEnabled(isLogEnabled bool) {
 	isVerbose = isLogEnabled
+}
+
+func InitLog() {
+	logger = &log.Logger{
+		Out:       os.Stderr,
+		Formatter: new(log.TextFormatter),
+		Hooks:     make(log.LevelHooks),
+		Level:     log.InfoLevel,
+	}
+	if isVerbose {
+		logger.SetLevel(log.DebugLevel)
+	}
 }

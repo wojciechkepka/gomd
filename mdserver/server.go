@@ -170,5 +170,6 @@ func Run() {
 	opts := ParseMdOpts()
 	opts.CheckHelp()
 	md := FromOpts(opts)
+	u.InitLog()
 	md.Serve()
 }
