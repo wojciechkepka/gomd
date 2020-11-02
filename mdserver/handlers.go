@@ -15,6 +15,21 @@ import (
 	"path/filepath"
 )
 
+const (
+	// Endpoints
+	filelistviewEp = "/"
+	fileviewEp     = "/file/"
+	themeEp        = "/theme/"
+	themeLightEp   = "/theme/light"
+	themeDarkEp    = "/theme/dark"
+	reloadEp       = "/reload"
+	pingEp         = "/ping"
+	sidebarEp      = "/sidebar/"
+	sidebarOpenEp  = "/sidebar/open"
+	sidebarCloseEp = "/sidebar/close"
+	sidebarCheckEp = "/sidebar/check"
+)
+
 func (md *MdServer) fileViewHandler(w http.ResponseWriter, r *http.Request) {
 	filePath := r.RequestURI[len(fileviewEp)-1:]
 	path, err := url.QueryUnescape(filePath)

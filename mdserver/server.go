@@ -17,24 +17,7 @@ import (
 	"time"
 )
 
-const (
-	sleepDuration = 1000
-	httpPrefix    = "http://"
-	filesTitle    = "gomd - Files"
-
-	// Endpoints
-	filelistviewEp = "/"
-	fileviewEp     = "/file/"
-	themeEp        = "/theme/"
-	themeLightEp   = "/theme/light"
-	themeDarkEp    = "/theme/dark"
-	reloadEp       = "/reload"
-	pingEp         = "/ping"
-	sidebarEp      = "/sidebar/"
-	sidebarOpenEp  = "/sidebar/open"
-	sidebarCloseEp = "/sidebar/close"
-	sidebarCheckEp = "/sidebar/check"
-)
+const sleepDuration = 1000
 
 //MdServer - http server used for displaying rendered markdown files
 type MdServer struct {
@@ -114,7 +97,7 @@ func (md *MdServer) BindAddr() string {
 
 //URL - Returns a url of mdserver
 func (md *MdServer) URL() string {
-	return httpPrefix + md.BindAddr()
+	return "http://" + md.BindAddr()
 }
 
 //IsDarkMode - Returns true if dark mode is on
