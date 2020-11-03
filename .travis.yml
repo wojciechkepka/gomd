@@ -17,14 +17,14 @@ before_deploy:
 - make buildall VER="$(cat VERSION)"
 deploy:
   provider: releases
-  user: wojciechkepka
-  password:
-    secure: u9kWSZg7IjaB+mWUe4jFpuwKR+N8pAgoVJ/S3+E4RcJXX7hVr/n/lF9tteoRe6ovgcsdPnxYXmdoM9Tdac3e8sUjlZTwbO4W+hmMuAxp/nIvqGu478qoZlyLZ+10o5E9Mn4hyuKyCf9oO2jtl3dkOBRMrVg5CyyzdCojxNuEhLLEebe0H8H3v6SbmeiBIziVgU6DcuCYv5BK3otPr5JG7N7NiIPAZa3GFDrMiJXoIf7X20qh8RThk4leWQtwTR1H3vLwW26tGal6McMbEU/8NpMsQOC6729/jw+hUa2hVHcHmvvApLez1g1tZbhoRhn/x7hLPVDJ7AxVA3fWiwUrsxgD/P/xPVw2Vh023S2YkvlhMym9BfMv7dJS6E9HCbUIKjuDQZtxsAS3lZ/EunqXMMkX9fPONG7i6NX5O1rLfjBVhGBBFQLEHW7zvOgI99/i9/uhSAj8ZpiP2HHi3YKear8Fpr1HetwEWD8p4S1dEMq1fDNj0ghoJgFTpFrB0DnbmDUhoseQwPWIoK7j2uA+K66gI8fDYqN8zXET4WqjcwjD5TYUbVg/KXIXNy9adZmj1a6Je7dXqFiGkpAyOgJrbevSFWZJ4McSGY1/s1uFrX1Y0LufjWhv+YQxz3S7cDaU4DC3gQ8ANqo4r0RZtRMU5jnttgvhy13fNhr+yFPq3AU=
+  api_key:
+    secure: Z60rzyqdwZc5rJO0F7LhSrtAELQN81fE0OfQrWmdeusKD+8lhMQD2bgIlsJ1cUGrWhZVgHAtVC3M/6G1sGt2AAqMiKzGn4r8pUQa+RCnk/DRvQTPy5r+1UoR+1NFbzsZTWN9kDYk2lNpw+wUG0niuLLongjOWYHjcorQSuVfR+52WKPPwoX+jscy3ZXxsZ3M0HyfbbuK40Wu+t8MdNNVOGz0MnZcmeSew7NW9kJCQyMNepw0gNdne9ws1f3p+Tq0Xwiu2jzvBBMbMiQ6Y5ppgtUE4inIkoLp5sn1e5P8pTOyXc+NZmZxkgG1cB2pTb0lUPQYJJmiDJdl/5klpzd54/uNEbqZ1ebMCQxWf4cniehS6/8wG3RlIUsAfSGO8JDGFnyr3pjb61NDaF+I2pheRlsUU1Zf1nbJ3GWwTYZmEzHrKeLsIlSbwo59NqGegj5YAw/wkj7s+uKOVRLY/O+2x6LEyI5fARvyg4eVv7eZGy4GGjSDGSOxbdckbgl3BRwTOWQcpEC8joYPcyhuFA5IRswX0tVsoVZBx80oP8lbMrNFtl7be3Rb/a2ZrwDmkJ3Np69TkGbnXiB7piXWeTuPuVz5FzpRVUkP7EpfrDdtqFYJHosnYNbSTFpE1hg++vHnT/R02+tgTAJzgD+UofxkeFZaCHS1x/z/3kC9Twyfh2g=
   file_glob: true
   file:
   - gomd-*-darwin-amd64.tgz
   - gomd-*-linux-amd64.tgz
   - gomd-*-windows-amd64.tgz
   on:
+    repo: wojciechkepka/gomd
     tags: true
   skip_cleanup: 'true'

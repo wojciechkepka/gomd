@@ -23,7 +23,6 @@ VERSION="$1"
 
 rm -rf build
 
-make styles
 compile $VERSION "linux" "arm"
 compile $VERSION "linux" "amd64"
 compile $VERSION "darwin" "amd64"
