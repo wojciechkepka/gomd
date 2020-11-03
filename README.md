@@ -1,5 +1,4 @@
 # gomd 📘
-s
 
 [![Build Status](https://travis-ci.org/wojciechkepka/gomd.svg?branch=master)](https://travis-ci.org/wojciechkepka/gomd)
 
@@ -27,16 +26,13 @@ Quickly display formatted markdown files in your browser.
 ## Installing
  - **AUR**
    - Available in package `gomd-git`.
- - **Build from source**
+ - **From source**
    - Requires
-     - sassc or sass
-     - make
-     - clean-css-cli (`npm install clean-css-cli -g`)
      - go
    - `git clone https://github.com/wojciechkepka/gomd`
    - `cd ./gomd`
-   - Linux: `make && sudo cp gomd /usr/bin/`
-   - macOS: `make && sudo cp gomd /usr/local/bin`
+   - Linux: `go build && sudo cp gomd /usr/bin/`
+   - macOS: `go build && sudo cp gomd /usr/local/bin`
 
 ## Configuration
 By default when running `gomd` it will look for files in `.` and bind to `127.0.0.1:5001`.
@@ -50,6 +46,18 @@ To view a different directory use:
 
 You can view the files in dark and light mode.
 
+
+## Contributing
+If you wish to contribute thanks! There are some things to keep in mind while editing the source.  
+When making any changes to sass files the whole project has to be built with make for it to 
+generate appropriate go files containing styles.  
+
+ - Build requirements
+   - go
+   - sassc or sass
+   - make
+   - clean-css-cli (`npm install clean-css-cli -g`)
+ - To build run `make`
 
 ## License
 [MIT](https://github.com/wojciechkepka/gomd/blob/master/LICENSE)
