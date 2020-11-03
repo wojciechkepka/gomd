@@ -26,6 +26,9 @@ Quickly display formatted markdown files locally in browser.
 ## Installing
  - **AUR**
    - Available in package `gomd-git`.
+ - **Prebuilt binaries**
+   - Available [here](https://github.com/wojciechkepka/gomd/releases)
+   - macOS, windows, linux
  - **From source**
    - Requires
      - go
