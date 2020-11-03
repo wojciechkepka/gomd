@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/wojciechkepka/gomd.svg?branch=master)](https://travis-ci.org/wojciechkepka/gomd)
 
-Quickly display formatted markdown files in your browser.  
+Quickly display formatted markdown files locally in browser.  
 
 ![working-app](https://raw.githubusercontent.com/wojciechkepka/gomd/master/assets/gomd.gif)
 
@@ -11,13 +11,13 @@ Quickly display formatted markdown files in your browser.
 
 ## Features
 - **Simple**
-  - No setup required. `gomd` comes with all the batteries included, no need for static assets etc.
+  - No setup required. `gomd` comes as a single binary with all the batteries included, no need for static assets etc.
 - **Monitoring files**
-  - `gomd` will monitor the directory for any changes and update the files whenever any file is modified or added.
+  - `gomd` will monitor the directory for any changes and update files whenever a file is modified or added.
 - **Hot reloading**
-  - Whenever a file is updated `gomd` will trigger a reload of tab in browser.
+  - On file update `gomd` will trigger a reload of the tab in the browser.
 - **Code Highlight**
-  - All blocks of code in most common languages will be color highlighted.
+  - Blocks of code in most common programming languages will automatically be color highlighted.
 - **Selectable themes**
   - Choose from available code themes:
     - `solarized`, `monokai`, `paraiso` available in dark and light versions
@@ -35,17 +35,16 @@ Quickly display formatted markdown files in your browser.
    - macOS: `go build && sudo cp gomd /usr/local/bin`
 
 ## Configuration
-By default when running `gomd` it will look for files in `.` and bind to `127.0.0.1:5001`.
+By default `gomd` will look for files in current working directory `.` and bind to `127.0.0.1:5001`.  
 
-To change default port and address use `--bind-port` and `--bind-addr`.
-For example:
-    `gomd --bind-port 1337 --bind-addr 192.168.0.1`
+To change default port and address use `--bind-port` and `--bind-addr`.  
+For example:  
+ - `gomd --bind-port 1337 --bind-addr 192.168.0.1`
 
-To view a different directory use:
-    `gomd --dir /some/different/directory`
+To view a different directory use:  
+ - `gomd --dir /some/different/directory`
 
-You can view the files in dark and light mode.
-
+You can view the files in dark and light mode by using the switch available on rendered file view.
 
 ## Contributing
 If you wish to contribute thanks! There are some things to keep in mind while editing the source.  
