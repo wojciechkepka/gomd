@@ -23,7 +23,6 @@ VERSION="$1"
 
 rm -rf build
 
-compile $VERSION "linux" "arm"
 compile $VERSION "linux" "amd64"
 compile $VERSION "darwin" "amd64"
 compile $VERSION "windows" "amd64"
