@@ -125,6 +125,7 @@ func (md *MdFiles) findNewFiles(newFound chan bool) error {
 	}
 	for _, p := range paths {
 		f, err := os.Open(p)
+		defer f.Close()
 		if err != nil {
 			u.Logln(u.Error, "Failed to open the file - ", err)
 			continue
