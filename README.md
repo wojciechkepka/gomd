@@ -57,7 +57,10 @@ generate appropriate go files containing styles.
    - sassc or sass
    - make
    - clean-css-cli (`npm install clean-css-cli -g`)
- - To build run `make`
+ - To run tests, recompile styles and build the project run `make`
+ - To build executables for multiple platforms run `make buildall`
+ - To run all tests execute `make tests`
+ - To recompile styles run `make styles`
 
 ## License
 [MIT](https://github.com/wojciechkepka/gomd/blob/master/LICENSE)
