@@ -5,5 +5,8 @@ this:
 styles:
 	./scripts/add_css.sh
 
+tests:
+	go test -v ./...
+
 buildall:
 	./scripts/build.sh $(VER)
