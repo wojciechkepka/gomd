@@ -17,13 +17,14 @@ before_deploy:
 - make buildall VER="$(cat VERSION)"
 deploy:
   provider: releases
-  api_key:
-    secure: JVtpSU6L3pWn21mWvmvyFJQcNm36HsVILKbPZ5YFj3boZTxrhMeGC+LC+AtUMVeil5XffkGwurJuJexM2N8imCtJ/IUL2lOtJx11PF8++f5/QWeAvlE1e20HaMgaHI0b1cHRxGNJsi5bg86wZD1gx8cjq1Vg1rCHAbA5vh01Y685NSVx5wHsMzYViITka/E1W0IPB/wv7PbEfu/SfNJBP07zcvG0cYdPjBJn+dmex95Rnc0O/ZUUKRsZU1l0VmZhqy6x3ILyuc9N05vPWd2C+QsBc94gE3Jj8OiUxkdvg6cn100AnOorbaGEbQgmJmfVG6LGG2d6ccOeU6xqQpgRSW5jw1Vsy5A1EzdC2+229rUWwbC0LSZ3sismyt1+3+JT80jviNvVD39XABSW5UXuSuM+oq/DSnsJNqLgeI0biM2keqrgKZxDz33dP9RPxgu8nRU6p3rXR8Q7Ou5s3TWUnOdSCgUo13q3i1YE4asRXPrd6UsWyOWzLB1mJ1a1ma6eZGiINfJpBnLYCy5Ghzovn8qFJJXRUNoRmJhwBjiDyazvESFy6HtCM4G6jtc/HDHlq76h89Tby36sNrWcnp+V68tiankZc/I/roI4m8SNajJLHxA0AXHit5xo2DlJj4kKyPQgOizW/0BK59jCITJaRlcfWnqC8qPBd1dAch7AMno=
+  user: wojciechkepka
+  password:
+    secure: u9kWSZg7IjaB+mWUe4jFpuwKR+N8pAgoVJ/S3+E4RcJXX7hVr/n/lF9tteoRe6ovgcsdPnxYXmdoM9Tdac3e8sUjlZTwbO4W+hmMuAxp/nIvqGu478qoZlyLZ+10o5E9Mn4hyuKyCf9oO2jtl3dkOBRMrVg5CyyzdCojxNuEhLLEebe0H8H3v6SbmeiBIziVgU6DcuCYv5BK3otPr5JG7N7NiIPAZa3GFDrMiJXoIf7X20qh8RThk4leWQtwTR1H3vLwW26tGal6McMbEU/8NpMsQOC6729/jw+hUa2hVHcHmvvApLez1g1tZbhoRhn/x7hLPVDJ7AxVA3fWiwUrsxgD/P/xPVw2Vh023S2YkvlhMym9BfMv7dJS6E9HCbUIKjuDQZtxsAS3lZ/EunqXMMkX9fPONG7i6NX5O1rLfjBVhGBBFQLEHW7zvOgI99/i9/uhSAj8ZpiP2HHi3YKear8Fpr1HetwEWD8p4S1dEMq1fDNj0ghoJgFTpFrB0DnbmDUhoseQwPWIoK7j2uA+K66gI8fDYqN8zXET4WqjcwjD5TYUbVg/KXIXNy9adZmj1a6Je7dXqFiGkpAyOgJrbevSFWZJ4McSGY1/s1uFrX1Y0LufjWhv+YQxz3S7cDaU4DC3gQ8ANqo4r0RZtRMU5jnttgvhy13fNhr+yFPq3AU=
   file_glob: true
   file:
-    - "gomd-*-darwin-amd64.tgz"
-    - "gomd-*-linux-amd64.tgz"
-    - "gomd-*-windows-amd64.tgz"
+  - gomd-*-darwin-amd64.tgz
+  - gomd-*-linux-amd64.tgz
+  - gomd-*-windows-amd64.tgz
   on:
     tags: true
   skip_cleanup: 'true'
