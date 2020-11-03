@@ -11,9 +11,10 @@ before_install:
 - sass-lint -v -c .sass-lint.yml ./assets/sass/*.sass
 install:
 - make
-- make buildall VER="$(cat VERSION)"
 script:
 - "./scripts/check_working.sh"
+before_deploy:
+- make buildall VER="$(cat VERSION)"
 deploy:
   provider: releases
   api_key:
