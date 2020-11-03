@@ -110,17 +110,20 @@ func (md *MdServer) SetDarkMode(on bool) {
 
 //SetTheme - Set theme of markdown code snippets
 func (md *MdServer) SetTheme(theme string) {
+	u.Logf(u.Debug, "Setting theme to '%v'", theme)
 	md.theme = theme
 }
 
 //OpenURL opens server's url in default web browser
 func (md *MdServer) OpenURL() {
+	u.Logf(u.Debug, "Opening '%v' in the browser", md.URL())
 	u.URLOpen(md.URL())
 }
 
 //sendReload sends a "reload" message that is then broadcasted to a websocket which
 //reloads a webpage
 func (md *MdServer) sendReload() {
+	u.Logln(u.Debug, "Sending reload to a hub")
 	message := bytes.TrimSpace([]byte("reload"))
 	md.hub.Broadcast <- message
 }
@@ -148,9 +151,7 @@ func (md *MdServer) listenForReload(c chan bool) {
 	for {
 		v := <-c
 		if v {
-			u.Logln(u.Debug, "Sending reload")
 			md.sendReload()
-			md.Files.RegenerateLinks()
 		}
 	}
 }

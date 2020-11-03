@@ -6,7 +6,7 @@ package mdfile
 /********************************************************************************/
 
 import (
-	"gomd/util"
+	u "gomd/util"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -47,6 +47,7 @@ func LoadMdFile(path string) (MdFile, error) {
 //ReloadMdFile - Reloads md file returning error if read failed or failed
 //to read metadata
 func (f *MdFile) ReloadMdFile() error {
+	u.Logf(u.Debug, "Reloading file '%v'", f.Filename)
 	content, err := ioutil.ReadFile(f.Path)
 	if err != nil {
 		return err
@@ -66,6 +67,7 @@ func (f *MdFile) ReloadMdFile() error {
 
 //HasModTimeChanged - Checks modification time. If changed updates ModTime
 func (f *MdFile) HasModTimeChanged() (bool, error) {
+	u.Logf(u.Debug, "Checking if file '%v' changed.", f.Filename)
 	info, err := os.Stat(f.Path)
 	if err != nil {
 		return false, err
@@ -73,7 +75,7 @@ func (f *MdFile) HasModTimeChanged() (bool, error) {
 	first := f.ModTime
 	second := info.ModTime()
 	if first != second {
-		util.Logf(util.Debug, "Modtime changed from '%v' to '%v'", first, second)
+		u.Logf(u.Debug, "Modtime changed from '%v' to '%v'", first, second)
 		return true, nil
 	}
 
