@@ -18,13 +18,13 @@ before_deploy:
 deploy:
   provider: releases
   api_key:
-    secure: Z60rzyqdwZc5rJO0F7LhSrtAELQN81fE0OfQrWmdeusKD+8lhMQD2bgIlsJ1cUGrWhZVgHAtVC3M/6G1sGt2AAqMiKzGn4r8pUQa+RCnk/DRvQTPy5r+1UoR+1NFbzsZTWN9kDYk2lNpw+wUG0niuLLongjOWYHjcorQSuVfR+52WKPPwoX+jscy3ZXxsZ3M0HyfbbuK40Wu+t8MdNNVOGz0MnZcmeSew7NW9kJCQyMNepw0gNdne9ws1f3p+Tq0Xwiu2jzvBBMbMiQ6Y5ppgtUE4inIkoLp5sn1e5P8pTOyXc+NZmZxkgG1cB2pTb0lUPQYJJmiDJdl/5klpzd54/uNEbqZ1ebMCQxWf4cniehS6/8wG3RlIUsAfSGO8JDGFnyr3pjb61NDaF+I2pheRlsUU1Zf1nbJ3GWwTYZmEzHrKeLsIlSbwo59NqGegj5YAw/wkj7s+uKOVRLY/O+2x6LEyI5fARvyg4eVv7eZGy4GGjSDGSOxbdckbgl3BRwTOWQcpEC8joYPcyhuFA5IRswX0tVsoVZBx80oP8lbMrNFtl7be3Rb/a2ZrwDmkJ3Np69TkGbnXiB7piXWeTuPuVz5FzpRVUkP7EpfrDdtqFYJHosnYNbSTFpE1hg++vHnT/R02+tgTAJzgD+UofxkeFZaCHS1x/z/3kC9Twyfh2g=
+    secure: yX0s24h9ZximoKTHOni0zl1gqbMDVxYV0Jevn4CAUNib7MbLrbBBgIpHdvbKJ8JJ6t/y/WGaavtoHdJf5tggmvFcOYTXy/IdNMpbQZBzu3gaemrad+uW/d93JpmM5FmV1qaPzDWiK74fQbdBOM9d+jeR7Rz3X5PDiNTyGC97QkG8FN/GSZMg+KFhvfB4ZeTX0PTS/Th+V6hrD9uciR6duGL9dwHuaeUjtyi9ykRoX3xezX5D4rdzZ0viLwPrYMkHpkn2hEShi0O6riKs2XLSkYYTREtOL5fEGNYNadb4dStEn/reC7WSIJYpJzMkW+LFazMDPaMAEB5wvP9UUeOqRGIALr9gD1UFO4RPBHtbmn6ViHAv0t9RnqkSOqoAD7OsQdaoJeI7We/iQonRF25vw6GeXkVYTqSJtQi7nXO496U/CRpXeY/SQ/oDHoOJ07AovjX8eaktgCwRnujwzZPCBrt9yYv6f5NgWnWDtxur70WGXrta4kWtXh6zlmdqeXj9EVuNAKcJ/pewiYKd960IV+1+Bg3Fyl0s9ZuaH2teL5RrtT0b6gAMOnqqjwSQBigsVZt6rIwXhsnWd3I/c93NMHeBNUujz1eJMhuTWR5aob/mth9aoGQqiE5iDWN46RiwvNN2ebVOoOSoD5ckk/j3cr89M1KSccXXFUsqnKTGE7Q=
   file_glob: true
   file:
   - gomd-*-darwin-amd64.tgz
   - gomd-*-linux-amd64.tgz
   - gomd-*-windows-amd64.tgz
   on:
-    repo: wojciechkepka/gomd
     tags: true
+    repo: wojciechkepka/gomd
   skip_cleanup: 'true'
