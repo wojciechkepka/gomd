@@ -21,9 +21,9 @@ deploy:
     secure: yX0s24h9ZximoKTHOni0zl1gqbMDVxYV0Jevn4CAUNib7MbLrbBBgIpHdvbKJ8JJ6t/y/WGaavtoHdJf5tggmvFcOYTXy/IdNMpbQZBzu3gaemrad+uW/d93JpmM5FmV1qaPzDWiK74fQbdBOM9d+jeR7Rz3X5PDiNTyGC97QkG8FN/GSZMg+KFhvfB4ZeTX0PTS/Th+V6hrD9uciR6duGL9dwHuaeUjtyi9ykRoX3xezX5D4rdzZ0viLwPrYMkHpkn2hEShi0O6riKs2XLSkYYTREtOL5fEGNYNadb4dStEn/reC7WSIJYpJzMkW+LFazMDPaMAEB5wvP9UUeOqRGIALr9gD1UFO4RPBHtbmn6ViHAv0t9RnqkSOqoAD7OsQdaoJeI7We/iQonRF25vw6GeXkVYTqSJtQi7nXO496U/CRpXeY/SQ/oDHoOJ07AovjX8eaktgCwRnujwzZPCBrt9yYv6f5NgWnWDtxur70WGXrta4kWtXh6zlmdqeXj9EVuNAKcJ/pewiYKd960IV+1+Bg3Fyl0s9ZuaH2teL5RrtT0b6gAMOnqqjwSQBigsVZt6rIwXhsnWd3I/c93NMHeBNUujz1eJMhuTWR5aob/mth9aoGQqiE5iDWN46RiwvNN2ebVOoOSoD5ckk/j3cr89M1KSccXXFUsqnKTGE7Q=
   file_glob: true
   file:
-  - gomd-*-darwin-amd64.tgz
-  - gomd-*-linux-amd64.tgz
-  - gomd-*-windows-amd64.tgz
+    - "gomd-*-darwin-amd64.tgz"
+    - "gomd-*-linux-amd64.tgz"
+    - "gomd-*-windows-amd64.tgz"
   on:
     tags: true
     repo: wojciechkepka/gomd
