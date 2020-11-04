@@ -1,4 +1,4 @@
-default: styles pack tests compile
+default: styles pack tests build
 
 styles:
 	./scripts/add_css.sh
