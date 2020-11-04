@@ -15,7 +15,7 @@ install:
 script:
 - "./scripts/check_working.sh"
 before_deploy:
-- make buildall VER="$(cat VERSION)"
+- make buildall VER="$(git describe --tags)"
 deploy:
   provider: releases
   api_key:
