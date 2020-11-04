@@ -28,12 +28,13 @@ type MdServer struct {
 	theme         string
 	darkMode      bool
 	showHidden    bool
+	noOpen        bool
 	isSidebarOpen bool
 	hub           *ws.Hub
 }
 
 //NewMdServer initializes MdServer
-func NewMdServer(bindHost string, bindPort int, path, theme string, showHidden, quiet, debug bool) MdServer {
+func NewMdServer(bindHost string, bindPort int, path, theme string, showHidden, quiet, debug, noOpen bool) MdServer {
 	u.InitLog(!quiet, debug)
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		u.Logln(u.Warn, "Specified path doesn't exist. Using default.")
@@ -52,6 +53,7 @@ func NewMdServer(bindHost string, bindPort int, path, theme string, showHidden, 
 		darkMode:      true,
 		isSidebarOpen: false,
 		showHidden:    showHidden,
+		noOpen:        noOpen,
 		hub:           ws.NewHub(),
 	}
 
@@ -84,6 +86,7 @@ func FromOpts(opts MdOpts) MdServer {
 		*opts.ShowHidden,
 		*opts.Quiet,
 		*opts.Debug,
+		*opts.NoOpen,
 	)
 
 	return md
@@ -141,7 +144,9 @@ func (md *MdServer) Serve() {
 	go md.listenForReload(changed)
 	go md.listenForReload(newFound)
 	go md.Files.Watch(changed, newFound)
-	go md.OpenURL()
+	if !md.noOpen {
+		go md.OpenURL()
+	}
 	u.LogFatal(md.server.ListenAndServe())
 }
 

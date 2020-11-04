@@ -15,14 +15,15 @@ const (
 	DefTheme      = "solarized"
 	DefShowHidden = false
 	DefQuiet      = false
+	DefNoOpen     = false
 	DefHelp       = false
 	Version       = "1.0.0"
 )
 
 /*MdOpts Options for running MdServer*/
 type MdOpts struct {
-	BindAddr, BindPort, Dir, Theme *string
-	Debug, ShowHidden, Quiet, help *bool
+	BindAddr, BindPort, Dir, Theme         *string
+	Debug, ShowHidden, Quiet, NoOpen, help *bool
 }
 
 //ParseMdOpts parses provided commandline options returning MdOpts
@@ -36,6 +37,7 @@ func ParseMdOpts() MdOpts {
 		Theme:      flag.String("theme", DefTheme, "Available dracula/paraiso/monokai/solarized/github/vs/xcode"),
 		ShowHidden: flag.Bool("hidden", DefShowHidden, "Display hidden files"),
 		Quiet:      flag.Bool("quiet", DefQuiet, "Hide info output. Only errors are displayed"),
+		NoOpen:     flag.Bool("no-open", DefNoOpen, "Don't open new browser tab."),
 		help:       flag.Bool("help", DefHelp, "Print help"),
 	}
 }
