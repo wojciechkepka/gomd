@@ -4,3 +4,4 @@ gomd
 .vscode
 .sass-cache
 build
+pkged.go

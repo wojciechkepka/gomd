@@ -8,6 +8,7 @@ before_install:
 - curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
 - sudo apt -y install sassc nodejs
 - npm install clean-css-cli sass-lint -g
+- go get github.com/markbates/pkger/cmd/pkger
 - sass-lint -v -c .sass-lint.yml ./assets/sass/*.sass
 install:
 - make
