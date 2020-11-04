@@ -1,4 +1,4 @@
-default: styles pack tests build
+default: styles pack tests compile
 
 styles:
 	./scripts/add_css.sh
@@ -9,13 +9,13 @@ tests:
 pack:
 	pkger -include /assets/html -include /assets/js
 
-build:
+compile:
 	go build -v -o build/gomd .
 
-run: pack build
+run: pack compile
 	./build/gomd
 
-dbg: pack build
+dbg: pack compile
 	./build/gomd --debug
 
 buildall:
