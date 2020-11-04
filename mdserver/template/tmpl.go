@@ -2,9 +2,10 @@ package template
 
 import (
 	"bytes"
-	"github.com/gobuffalo/packr"
+	"github.com/markbates/pkger"
 	"gomd/util"
 	htmpl "html/template"
+	"io/ioutil"
 	ttmpl "text/template"
 )
 
@@ -20,15 +21,18 @@ type TTemplate interface {
 	Template() (*ttmpl.Template, error)
 }
 
-// HTemplateFromBox returns a HTML template with name set to name,
+// HTemplateFromPath returns a HTML template with name set to name,
 // found in a file within a box specified by path
-func HTemplateFromBox(path, file, name string) (*htmpl.Template, error) {
-	box := packr.NewBox(path)
-	f, err := box.FindString(file)
+func HTemplateFromPath(path, name string) (*htmpl.Template, error) {
+	f, err := pkger.Open(path)
 	if err != nil {
 		return nil, err
 	}
-	tmpl, err := htmpl.New(name).Parse(f)
+	content, err := ioutil.ReadAll(f)
+	if err != nil {
+		return nil, err
+	}
+	tmpl, err := htmpl.New(name).Parse(string(content))
 	if err != nil {
 		return nil, err
 	}
@@ -63,15 +67,18 @@ func RenderHTML(templ HTemplate) htmpl.HTML {
 	return htmpl.HTML(RenderHString(templ))
 }
 
-// TTemplateFromBox returns a text template with name set to name,
+// TTemplateFromPath returns a text template with name set to name,
 // found in a file within a box specified by path
-func TTemplateFromBox(path, file, name string) (*ttmpl.Template, error) {
-	box := packr.NewBox(path)
-	f, err := box.FindString(file)
+func TTemplateFromPath(path, name string) (*ttmpl.Template, error) {
+	f, err := pkger.Open(path)
 	if err != nil {
 		return nil, err
 	}
-	tmpl, err := ttmpl.New(name).Parse(f)
+	content, err := ioutil.ReadAll(f)
+	if err != nil {
+		return nil, err
+	}
+	tmpl, err := ttmpl.New(name).Parse(string(content))
 	if err != nil {
 		return nil, err
 	}

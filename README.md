@@ -58,6 +58,7 @@ generate appropriate go files containing styles.
    - go
    - sassc or sass
    - make
+   - pkger (`go get github.com/markbates/pkger/cmd/pkger`)
    - clean-css-cli (`npm install clean-css-cli -g`)
  - To run tests, recompile styles and build the project run `make`
  - To build executables for multiple platforms run `make buildall`

@@ -13,12 +13,12 @@ type ReloadJS struct {
 }
 
 func (rjs *ReloadJS) Template() (*template.Template, error) {
-	return tmpl.TTemplateFromBox("../../assets/js", "ReloadJs.js", "ReloadJS")
+	return tmpl.TTemplateFromPath("/assets/js/ReloadJs.js", "ReloadJS")
 }
 
 //JS is all common javascript functionality groupped together
 type JS struct{}
 
 func (js *JS) Template() (*template.Template, error) {
-	return tmpl.TTemplateFromBox("../../assets/js", "JS.js", "JS")
+	return tmpl.TTemplateFromPath("/assets/js/JS.js", "JS")
 }

@@ -1,4 +1,4 @@
-default: tests styles compile
+default: styles pack compile
 
 compile:
 	go build -v -o build/gomd .
@@ -8,6 +8,9 @@ styles:
 
 tests:
 	go test -v ./...
+
+pack:
+	pkger -include /assets/html -include /assets/js
 
 buildall:
 	./scripts/build.sh $(VER)
