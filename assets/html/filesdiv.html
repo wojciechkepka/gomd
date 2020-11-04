@@ -1,9 +1,12 @@
 <div class="files">
   <ul>
-    {{range .Files}}
-      <li>
-        <a href="/file/{{.Path}}">{{.Filename}}</a>
-      </li>
-    {{end}}
+    {{ range .Files}}
+      {{ if and .IsHidden (not $.ShowHidden) }}
+      {{ else }}
+        <li>
+          <a href="/file/{{.Path}}">{{.Filename}}</a>
+        </li>
+      {{ end }}
+    {{ end }}
   </ul>
 </div>

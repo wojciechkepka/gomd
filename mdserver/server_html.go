@@ -25,7 +25,7 @@ func (md *MdServer) serveFileAsHTML(path string) string {
 }
 
 func (md *MdServer) FilesViewHTML() template.HTML {
-	fv := FilesList{Files: &md.Files.Files}
+	fv := FilesList{Files: &md.Files.Files, ShowHidden: md.showHidden}
 	return tmpl.RenderHTML(&fv)
 }
 

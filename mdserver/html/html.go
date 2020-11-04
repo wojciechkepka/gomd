@@ -19,7 +19,8 @@ func (sb *Sidebar) Template() (*template.Template, error) {
 }
 
 type FilesList struct {
-	Files *[]MdFile
+	Files      *[]MdFile
+	ShowHidden bool
 }
 
 func (fv *FilesList) Template() (*template.Template, error) {
