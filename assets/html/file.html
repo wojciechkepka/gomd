@@ -11,7 +11,9 @@
       {{ .SidebarHTML }}
       <div class="main">
         {{ .TopbarHTML }}
-        {{ .RenderedContent }}
+        <div class="content">
+          {{ .RenderedContent }}
+        </div>
       </div>
     </div>
   </body>

@@ -36,8 +36,8 @@ func (td *ThemeDropdown) Template() (*template.Template, error) {
 }
 
 type Topbar struct {
-	DisplayButtons, IsDarkMode bool
-	Themes                     *[]string
+	DisplayButtons, IsDarkMode, IsDiff bool
+	Themes                             *[]string
 }
 
 func (tb *Topbar) ThemeDropdown() template.HTML {
@@ -50,10 +50,10 @@ func (tb *Topbar) Template() (*template.Template, error) {
 }
 
 type RenderedFileView struct {
-	IsDarkMode      bool
-	BindAddr, Theme string
-	Links           *map[string]string
-	File            *MdFile
+	Diff, IsDarkMode bool
+	BindAddr, Theme  string
+	Links            *map[string]string
+	File             *MdFile
 }
 
 func (tb *RenderedFileView) Template() (*template.Template, error) {
@@ -66,11 +66,18 @@ func (f *RenderedFileView) SidebarHTML() template.HTML {
 }
 func (f *RenderedFileView) TopbarHTML() template.HTML {
 	themes := h.Themes()
-	tb := Topbar{DisplayButtons: true, IsDarkMode: f.IsDarkMode, Themes: &themes}
+	tb := Topbar{DisplayButtons: true, IsDarkMode: f.IsDarkMode, Themes: &themes, IsDiff: f.Diff}
 	return tmpl.RenderHTML(&tb)
 }
+func (f *RenderedFileView) HighlightedContent() string {
+	return h.HighlightHTML(string(markdown.ToHTML(f.File.Content, nil, nil)), h.ChromaName(f.Theme, f.IsDarkMode))
+}
 func (f *RenderedFileView) RenderedContent() template.HTML {
-	return template.HTML(h.HighlightHTML(string(markdown.ToHTML(f.File.Content, nil, nil)), h.ChromaName(f.Theme, f.IsDarkMode)))
+	if !f.Diff {
+		return template.HTML(f.HighlightedContent())
+	} else {
+		return template.HTML(`<pre>` + f.File.Diff() + `</pre>`)
+	}
 }
 func (f *RenderedFileView) FileDisplayStyle() template.HTML {
 	return template.HTML("<style>" + css.MdFileStyle(f.IsDarkMode, f.Theme) + "</style>")
@@ -82,13 +89,22 @@ func (f *RenderedFileView) FileDisplayScripts() template.HTML {
 		"<script>" + tmpl.RenderTString(&js) + "</script>")
 }
 
-func RenderMdFile(f *MdFile, isDarkMode bool, bindAddr, theme string, links *map[string]string) string {
+func RenderMdFile(f *MdFile, isDarkMode, diff, raw bool, bindAddr, theme string, links *map[string]string) string {
 	rendered := RenderedFileView{
 		IsDarkMode: isDarkMode,
 		BindAddr:   bindAddr,
 		Theme:      theme,
 		Links:      links,
 		File:       f,
+		Diff:       diff,
 	}
-	return tmpl.RenderHString(&rendered)
+	if raw {
+		if diff {
+			return `<pre>` + f.Diff() + `</pre>`
+		} else {
+			return rendered.HighlightedContent()
+		}
+	} else {
+		return tmpl.RenderHString(&rendered)
+	}
 }

@@ -11,14 +11,14 @@ import (
 )
 
 // Serves markdown file as html
-func (md *MdServer) serveFileAsHTML(path string) string {
+func (md *MdServer) serveFileAsHTML(path string, raw bool) string {
 	if md.path == "." {
 		path = path[1:]
 	}
 	links := &md.Files.Links
 	for _, file := range md.Files.Files {
 		if file.Path == path {
-			return RenderMdFile(&file, md.IsDarkMode(), md.BindAddr(), md.theme, links)
+			return RenderMdFile(&file, md.IsDarkMode(), md.isShowingDiff, raw, md.BindAddr(), md.theme, links)
 		}
 	}
 	return ""

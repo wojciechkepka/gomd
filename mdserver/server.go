@@ -30,6 +30,7 @@ type MdServer struct {
 	showHidden    bool
 	noOpen        bool
 	isSidebarOpen bool
+	isShowingDiff bool
 	hub           *ws.Hub
 }
 
@@ -52,6 +53,7 @@ func NewMdServer(bindHost string, bindPort int, path, theme string, showHidden, 
 		theme:         theme,
 		darkMode:      true,
 		isSidebarOpen: false,
+		isShowingDiff: false,
 		showHidden:    showHidden,
 		noOpen:        noOpen,
 		hub:           ws.NewHub(),

@@ -13,6 +13,7 @@ import (
 	"net/http"
 	"net/url"
 	"path/filepath"
+	"strings"
 )
 
 const (
@@ -39,7 +40,19 @@ func (md *MdServer) fileViewHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	u.Logf(u.Info, "Serving file %v", path)
-	fmt.Fprintln(w, string(md.serveFileAsHTML(path)))
+
+	raw := false
+	if strings.HasSuffix(path, "/diff") {
+		md.isShowingDiff = true
+		raw = true
+		path = strings.TrimSuffix(path, "/diff")
+	}
+	if strings.HasSuffix(path, "/content") {
+		md.isShowingDiff = false
+		raw = true
+		path = strings.TrimSuffix(path, "/content")
+	}
+	fmt.Fprintln(w, string(md.serveFileAsHTML(path, raw)))
 }
 
 func (md *MdServer) fileListViewHandler(w http.ResponseWriter, r *http.Request) {

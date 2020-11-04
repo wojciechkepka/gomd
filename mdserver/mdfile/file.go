@@ -6,6 +6,7 @@ package mdfile
 /********************************************************************************/
 
 import (
+	diff "github.com/sergi/go-diff/diffmatchpatch"
 	u "gomd/util"
 	"io/ioutil"
 	"os"
@@ -15,11 +16,12 @@ import (
 
 // MdFile - structure representing a markdown file
 type MdFile struct {
-	ModTime  time.Time
-	Path     string
-	Filename string
-	Size     int64
-	Content  []byte
+	ModTime        time.Time
+	Path           string
+	Filename       string
+	Size           int64
+	InitialContent string
+	Content        []byte
 }
 
 // LoadMdFile - Loads a markdown file from path loading all metadata and content
@@ -36,11 +38,12 @@ func LoadMdFile(path string) (MdFile, error) {
 	_, file := filepath.Split(path)
 
 	return MdFile{
-		ModTime:  info.ModTime(),
-		Path:     path,
-		Filename: file,
-		Size:     info.Size(),
-		Content:  content,
+		ModTime:        info.ModTime(),
+		Path:           path,
+		Filename:       file,
+		Size:           info.Size(),
+		InitialContent: string(content),
+		Content:        content,
 	}, nil
 }
 
@@ -85,4 +88,23 @@ func (f *MdFile) HasModTimeChanged() (bool, error) {
 //IsHidden check whether this file is hidden
 func (f *MdFile) IsHidden() bool {
 	return f.Path[0] == '.'
+}
+
+func (f *MdFile) Diff() string {
+	dmp := diff.New()
+	d := dmp.DiffMain(f.InitialContent, string(f.Content), false)
+
+	s := ""
+	for _, token := range d {
+		switch token.Type {
+		case diff.DiffEqual:
+			s += token.Text
+		case diff.DiffDelete:
+			s += `<span class="token-del">` + token.Text + `</span>`
+		case diff.DiffInsert:
+			s += `<span class="token-add">` + token.Text + `</span>`
+		}
+	}
+
+	return s
 }

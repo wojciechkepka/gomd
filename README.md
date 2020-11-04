@@ -22,6 +22,9 @@ Quickly display formatted markdown files locally in browser.
   - Choose from available code themes:
     - `solarized`, `monokai`, `paraiso` available in dark and light versions
     - `dracula`, `github`, `vs`, `xcode`
+- **Diff**
+  - Display diff with live reload 
+![Diff example](https://raw.githubusercontent.com/wojciechkepka/gomd/master/assets/diff.png)
 
 ## Installing
  - **AUR**
@@ -67,3 +70,4 @@ generate appropriate go files containing styles.
 
 ## License
 [MIT](https://github.com/wojciechkepka/gomd/blob/master/LICENSE)
+
