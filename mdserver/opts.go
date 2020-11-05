@@ -17,13 +17,14 @@ const (
 	DefQuiet      = false
 	DefNoOpen     = false
 	DefHelp       = false
+	DefDaemon     = false
 	Version       = "1.0.0"
 )
 
 /*MdOpts Options for running MdServer*/
 type MdOpts struct {
-	BindAddr, BindPort, Dir, Theme         *string
-	Debug, ShowHidden, Quiet, NoOpen, help *bool
+	BindAddr, BindPort, Dir, Theme                 *string
+	Debug, ShowHidden, Quiet, NoOpen, help, Daemon *bool
 }
 
 //ParseMdOpts parses provided commandline options returning MdOpts
@@ -38,6 +39,7 @@ func ParseMdOpts() MdOpts {
 		ShowHidden: flag.Bool("hidden", DefShowHidden, "Display hidden files"),
 		Quiet:      flag.Bool("quiet", DefQuiet, "Hide info output. Only errors are displayed"),
 		NoOpen:     flag.Bool("no-open", DefNoOpen, "Don't open new browser tab."),
+		Daemon:     flag.Bool("daemon", DefDaemon, "Start as a daemon (in background)."),
 		help:       flag.Bool("help", DefHelp, "Print help"),
 	}
 }

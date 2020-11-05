@@ -12,6 +12,8 @@ import (
 	u "gomd/util"
 	"net/http"
 	"os"
+	"os/exec"
+	rt "runtime"
 	"strconv"
 	"time"
 )
@@ -36,7 +38,6 @@ type MdServer struct {
 
 //NewMdServer initializes MdServer
 func NewMdServer(bindHost string, bindPort int, path, theme string, showHidden, quiet, debug, noOpen bool) MdServer {
-	u.InitLog(!quiet, debug)
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		u.Logln(u.Warn, "Specified path doesn't exist. Using default.")
 		path = "./"
@@ -163,11 +164,52 @@ func (md *MdServer) listenForReload(c chan bool) {
 	}
 }
 
+// undaemonArgs removes `--daemon` and `-daemon` flags from passed args
+// returning a new array.
+func undaemonArgs(args *[]string) []string {
+	newArgs := []string{}
+	for _, arg := range *args {
+		if arg == "--daemon" || arg == "-daemon" {
+			continue
+		}
+
+		newArgs = append(newArgs, arg)
+	}
+	return newArgs
+}
+
+// RunDaemon runs mdserver in background. How it is achieved varies on each platform.
+// On macOS and Linux `nohup` is used to start a child process.
+// On windows TODO....
+func RunDaemon() {
+	args := undaemonArgs(&os.Args)
+	switch sys := rt.GOOS; sys {
+	case "darwin":
+	case "linux":
+		cmd := exec.Command("nohup", args...)
+		cmd.Env = os.Environ()
+		cmd.Start()
+	case "windows":
+		args = append([]string{"/b", `""`}, args...)
+		cmd := exec.Command("START", args...)
+		cmd.Env = os.Environ()
+		cmd.Start()
+	default:
+		fmt.Printf("`--daemon` not supported on '%v'", sys)
+		return
+	}
+}
+
 //Run parses commandline opts and prints help if necessary otherwise starts mdserver with
 //provided options
 func Run() {
 	opts := ParseMdOpts()
 	opts.CheckHelp()
-	md := FromOpts(opts)
-	md.Serve()
+	u.InitLog(!*opts.Quiet, *opts.Debug)
+	if *opts.Daemon {
+		RunDaemon()
+	} else {
+		md := FromOpts(opts)
+		md.Serve()
+	}
 }
