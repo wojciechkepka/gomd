@@ -83,10 +83,8 @@ func (f *RenderedFileView) FileDisplayStyle() template.HTML {
 	return template.HTML("<style>" + css.MdFileStyle(f.IsDarkMode, f.Theme) + "</style>")
 }
 func (f *RenderedFileView) FileDisplayScripts() template.HTML {
-	reload := js.ReloadJS{BindAddr: f.BindAddr}
-	js := js.JS{}
-	return template.HTML("<script>" + tmpl.RenderTString(&reload) + "</script>" +
-		"<script>" + tmpl.RenderTString(&js) + "</script>")
+	js := js.JS{BindAddr: f.BindAddr}
+	return template.HTML("<script>" + tmpl.RenderTString(&js) + "</script>")
 }
 
 func RenderMdFile(f *MdFile, isDarkMode, diff, raw bool, bindAddr, theme string, links *map[string]string) string {

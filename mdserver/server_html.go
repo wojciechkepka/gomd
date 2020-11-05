@@ -44,10 +44,8 @@ func (md *MdServer) MainStyle() template.HTML {
 }
 
 func (md *MdServer) MainScripts() template.HTML {
-	reload := js.ReloadJS{BindAddr: md.BindAddr()}
-	js := js.JS{}
-	return template.HTML("<script>" + tmpl.RenderTString(&reload) + "</script>" +
-		"<script>" + tmpl.RenderTString(&js) + "</script>")
+	js := js.JS{BindAddr: md.BindAddr()}
+	return template.HTML("<script>" + tmpl.RenderTString(&js) + "</script>")
 }
 
 // Prepares full FileListView html
