@@ -1,9 +1,9 @@
 # Changes
 ## Fixed
-[10] - Fix displaying hidden files
+[10] - Fix displaying hidden files  
 ## Added
-[13] - Add `--no-open` flag to disable browser startup
-[12] - Add a diff button
+[13] - Add `--no-open` flag to disable browser startup  
+[12] - Add a diff button  
 
 # Versions
 
