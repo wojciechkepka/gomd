@@ -47,10 +47,10 @@ func (md *MdServer) fileViewHandler(w http.ResponseWriter, r *http.Request) {
 		raw = true
 		path = strings.TrimSuffix(path, "/diff")
 	}
-	if strings.HasSuffix(path, "/content") {
+	if strings.HasSuffix(path, "/rendered") {
 		md.isShowingDiff = false
 		raw = true
-		path = strings.TrimSuffix(path, "/content")
+		path = strings.TrimSuffix(path, "/rendered")
 	}
 	fmt.Fprintln(w, string(md.serveFileAsHTML(path, raw)))
 }

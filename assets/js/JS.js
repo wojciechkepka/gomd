@@ -49,9 +49,9 @@ function showDiff() {
     var ep = "/"
     if (btn.innerText === "diff") {
         ep = ep.concat("diff")
-        btn.innerText = "content"
+        btn.innerText = "rendered"
     } else {
-        ep = ep.concat("content")
+        ep = ep.concat("rendered")
         btn.innerText = "diff"
     }
 
