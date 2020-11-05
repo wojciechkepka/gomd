@@ -37,7 +37,7 @@ type MdServer struct {
 }
 
 //NewMdServer initializes MdServer
-func NewMdServer(bindHost string, bindPort int, path, theme string, showHidden, quiet, debug, noOpen bool) MdServer {
+func NewMdServer(bindHost string, bindPort int, path, theme string, showHidden, noOpen bool) MdServer {
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		u.Logln(u.Warn, "Specified path doesn't exist. Using default.")
 		path = "./"
@@ -87,8 +87,6 @@ func FromOpts(opts MdOpts) MdServer {
 		*opts.Dir,
 		*opts.Theme,
 		*opts.ShowHidden,
-		*opts.Quiet,
-		*opts.Debug,
 		*opts.NoOpen,
 	)
 
@@ -180,7 +178,7 @@ func undaemonArgs(args *[]string) []string {
 
 // RunDaemon runs mdserver in background. How it is achieved varies on each platform.
 // On macOS and Linux `nohup` is used to start a child process.
-// On windows TODO....
+// On windows using `startup /b`.
 func RunDaemon() {
 	args := undaemonArgs(&os.Args)
 	switch sys := rt.GOOS; sys {
