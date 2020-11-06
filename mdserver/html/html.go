@@ -55,8 +55,12 @@ type RenderedFileView struct {
 	File             *File
 }
 
-func (tb *RenderedFileView) Template() (*template.Template, error) {
+func (fv *RenderedFileView) Template() (*template.Template, error) {
 	return tmpl.HTemplateFromPath("/assets/html/file.html", "rendered_file")
+}
+
+func (fv *RenderedFileView) Title() string {
+	return fv.File.Filename
 }
 
 func (f *RenderedFileView) SidebarHTML() template.HTML {
