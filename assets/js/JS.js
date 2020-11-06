@@ -72,6 +72,17 @@ function alignLineNumbers() {
         if (btn.innerText === "rendered") {
             const lines = document.querySelectorAll(".diff-line");
             document.documentElement.style.setProperty("--line-no-width", String(lines.length).length + "em")
+
+            const p = document.querySelectorAll(".content");
+            if (p.length > 0) {
+                p[0].style.padding = 0;
+            }
+        } else {
+            const p = document.querySelectorAll(".content");
+            if (p.length > 0) {
+                p[0].style.padding = "1em";
+            }
+
         }
     }
 }
