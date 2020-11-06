@@ -10,16 +10,13 @@ import (
 	"github.com/alecthomas/chroma/styles"
 )
 
-//codeBlock represents code block with specified programming language
-//found in html file
-type codeBlock struct {
-	code, lang               string
-	codeStartIdx, codeEndIdx int
-}
-
-//highlightBlock highlight this codeBlock with specified style.
-func (cb *codeBlock) highlightBlock(style string) (string, error) {
-	lexer := lexers.Get(cb.lang)
+//HighlightCode highlight code if there is a lexer for lang and applies style
+//if such exists.
+func HighlightCode(code, lang, style string) (string, error) {
+	if lang == "markdown" || lang == "" {
+		return code, nil
+	}
+	lexer := lexers.Get(lang)
 	if lexer == nil {
 		lexer = lexers.Fallback
 	}
@@ -30,7 +27,7 @@ func (cb *codeBlock) highlightBlock(style string) (string, error) {
 	}
 	formatter := h.New(h.LineNumbersInTable(true))
 
-	iterator, err := lexer.Tokenise(nil, string(cb.code))
+	iterator, err := lexer.Tokenise(nil, string(code))
 	if err != nil {
 		return "", err
 	}
@@ -40,6 +37,18 @@ func (cb *codeBlock) highlightBlock(style string) (string, error) {
 		return "", err
 	}
 	return buf.String(), nil
+}
+
+//codeBlock represents code block with specified programming language
+//found in html file
+type codeBlock struct {
+	code, lang               string
+	codeStartIdx, codeEndIdx int
+}
+
+//highlightBlock highlight this codeBlock with specified style.
+func (cb *codeBlock) highlightBlock(style string) (string, error) {
+	return HighlightCode(cb.code, cb.lang, style)
 }
 
 //findBlocks finds code blocks in html.

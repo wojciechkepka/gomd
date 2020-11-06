@@ -37,3 +37,21 @@ func TestUnescapesHTML(t *testing.T) {
 		t.Errorf("Error: want \n`%v`\n, got \n`%v`\n", want, got)
 	}
 }
+
+func TestExtractsFileExtension(t *testing.T) {
+	cases := [][]string{
+		{"README.md", ".md"},
+		{"double.dot.rs", ".rs"},
+		{"no_extension", ""},
+		{".hiddenfile", ""},
+		{".hiddenfile.ext", ".ext"},
+	}
+
+	for _, want := range cases {
+		got := fileExtension(want[0])
+
+		if want[1] != got {
+			t.Errorf("Error: want \n`%v`\n, got \n`%v`\n", want[1], got)
+		}
+	}
+}

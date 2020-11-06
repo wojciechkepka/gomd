@@ -1,11 +1,10 @@
 package html
 
 import (
-	"github.com/gomarkdown/markdown"
 	"gomd/mdserver/css"
+	. "gomd/mdserver/file"
 	h "gomd/mdserver/highlight"
 	"gomd/mdserver/js"
-	. "gomd/mdserver/mdfile"
 	tmpl "gomd/mdserver/template"
 	"html/template"
 )
@@ -19,7 +18,7 @@ func (sb *Sidebar) Template() (*template.Template, error) {
 }
 
 type FilesList struct {
-	Files      *[]MdFile
+	Files      *[]File
 	ShowHidden bool
 }
 
@@ -53,7 +52,7 @@ type RenderedFileView struct {
 	Diff, IsDarkMode bool
 	BindAddr, Theme  string
 	Links            *map[string]string
-	File             *MdFile
+	File             *File
 }
 
 func (tb *RenderedFileView) Template() (*template.Template, error) {
@@ -70,7 +69,8 @@ func (f *RenderedFileView) TopbarHTML() template.HTML {
 	return tmpl.RenderHTML(&tb)
 }
 func (f *RenderedFileView) HighlightedContent() string {
-	return h.HighlightHTML(string(markdown.ToHTML(f.File.Content, nil, nil)), h.ChromaName(f.Theme, f.IsDarkMode))
+	style := h.ChromaName(f.Theme, f.IsDarkMode)
+	return f.File.RenderHTML(style)
 }
 func (f *RenderedFileView) RenderedContent() template.HTML {
 	if !f.Diff {
@@ -87,7 +87,7 @@ func (f *RenderedFileView) FileDisplayScripts() template.HTML {
 	return template.HTML("<script>" + tmpl.RenderTString(&js) + "</script>")
 }
 
-func RenderMdFile(f *MdFile, isDarkMode, diff, raw bool, bindAddr, theme string, links *map[string]string) string {
+func RenderMdFile(f *File, isDarkMode, diff, raw bool, bindAddr, theme string, links *map[string]string) string {
 	rendered := RenderedFileView{
 		IsDarkMode: isDarkMode,
 		BindAddr:   bindAddr,

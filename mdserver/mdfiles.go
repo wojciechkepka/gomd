@@ -1,7 +1,7 @@
 package mdserver
 
 import (
-	. "gomd/mdserver/mdfile"
+	. "gomd/mdserver/file"
 	u "gomd/util"
 	"os"
 	"path/filepath"
@@ -11,7 +11,7 @@ import (
 /// MdFiles is a control wrapper for multiple MdFiles
 type MdFiles struct {
 	Path       string
-	Files      []MdFile
+	Files      []File
 	Links      map[string]string
 	ShowHidden bool
 }
@@ -39,7 +39,7 @@ func (md *MdFiles) Watch(changed chan bool, newFound chan bool) {
 
 //linksFromFiles returns a map of mdfile names as keys and their
 //coresponding full path as values
-func linksFromFiles(files []MdFile, showHidden bool) map[string]string {
+func linksFromFiles(files []File, showHidden bool) map[string]string {
 	links := make(map[string]string)
 	for _, f := range files {
 		if f.IsHidden() && !showHidden {
@@ -67,9 +67,9 @@ func (md *MdFiles) isFileInFiles(path string) bool {
 }
 
 //loadMdFiles - Walks through a specified directory and finds md files
-func loadMdFiles(path string) []MdFile {
+func loadMdFiles(path string) []File {
 	u.Logf(u.Debug, "Loading mdfiles from '%v'", path)
-	files := []MdFile{}
+	files := []File{}
 
 	paths, err := filepath.Glob(path + "/*")
 	if err != nil {
@@ -85,7 +85,7 @@ func loadMdFiles(path string) []MdFile {
 			continue
 		}
 		if !info.IsDir() {
-			file, err := LoadMdFile(p)
+			file, err := NewFile(p)
 			if err != nil {
 				u.Logln(u.Error, "Failed to load file - ", err)
 				continue
@@ -105,7 +105,7 @@ func (md *MdFiles) checkIfFilesChanged(changed chan bool) {
 		f := &md.Files[i]
 		if hasChanged, _ := f.HasModTimeChanged(); hasChanged {
 			u.Logf(u.Info, "File %v changed", f.Filename)
-			err := f.ReloadMdFile()
+			err := f.Reload()
 			if err != nil {
 				u.Logln(u.Warn, "Failed to reload file - ", err)
 			}
@@ -138,7 +138,7 @@ func (md *MdFiles) findNewFiles(newFound chan bool) error {
 		if !info.IsDir() {
 			if !md.isFileInFiles(p) {
 				u.Logf(u.Info, "New file found - '%v'", p)
-				file, err := LoadMdFile(p)
+				file, err := NewFile(p)
 				if err != nil {
 					u.Logln(u.Error, "Failed to load file - ", err)
 					continue

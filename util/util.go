@@ -2,6 +2,7 @@ package util
 
 import (
 	"fmt"
+	"os"
 	"os/exec"
 	rt "runtime"
 	"strings"
@@ -42,4 +43,23 @@ func UnescapeHTML(text string) string {
 	text = strings.ReplaceAll(text, "&amp;", "&")
 	text = strings.ReplaceAll(text, "&apos;", "'")
 	return text
+}
+
+func fileExtension(name string) string {
+	if len(name) > 0 {
+		startsWithDot := name[0] == '.'
+		elems := strings.Split(name, ".")
+
+		if (len(elems) == 2 && startsWithDot) || len(elems) == 1 {
+			return ""
+		}
+
+		return "." + elems[len(elems)-1]
+	}
+	return ""
+}
+
+// FileExtension returns file extension of passed os.FileInfo if such exists
+func FileExtension(info os.FileInfo) string {
+	return fileExtension(info.Name())
 }
