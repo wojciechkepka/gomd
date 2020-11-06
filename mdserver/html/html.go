@@ -76,7 +76,7 @@ func (f *RenderedFileView) RenderedContent() template.HTML {
 	if !f.Diff {
 		return template.HTML(f.HighlightedContent())
 	} else {
-		return template.HTML(`<pre>` + f.File.Diff() + `</pre>`)
+		return template.HTML(f.File.Diff(true))
 	}
 }
 func (f *RenderedFileView) FileDisplayStyle() template.HTML {
@@ -98,7 +98,7 @@ func RenderMdFile(f *MdFile, isDarkMode, diff, raw bool, bindAddr, theme string,
 	}
 	if raw {
 		if diff {
-			return `<pre>` + f.Diff() + `</pre>`
+			return f.Diff(true)
 		} else {
 			return rendered.HighlightedContent()
 		}

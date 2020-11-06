@@ -38,6 +38,10 @@ function tryConnectToReload(address) {
     };
 }
 
+function sleep (time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
+
 //################################################################################
 // Content
 
@@ -58,9 +62,20 @@ function showDiff() {
     get_call(path.concat(ep), function(s) {
         var content = document.getElementsByClassName("content")[0];
         content.innerHTML = s;
-        btn
-    })
+        alignLineNumbers();
+    });
 }
+
+function alignLineNumbers() {
+    const btn = document.querySelector("#diff-btn");
+    if (btn != undefined) {
+        if (btn.innerText === "rendered") {
+            const lines = document.querySelectorAll(".diff-line");
+            document.documentElement.style.setProperty("--line-no-width", String(lines.length).length + "em")
+        }
+    }
+}
+
 
 //################################################################################
 // Sidebar
@@ -73,14 +88,19 @@ function changeNavNotify(state) {
 	}
 }
 
-function checkSidebar() {
+function formatPage() {
     get_call("/sidebar/check", function(s){
         if (s.includes("open")) {
             openNav()
         } else if (s.includes("close")) {
             closeNav()
         }
-    })
+    });
+
+    // Figure out why #diff-btn is undefined without this sleep?
+    sleep(1).then(() => {
+        alignLineNumbers();
+    });
 }
 
 function openNav() {
@@ -131,4 +151,5 @@ try {
 
 //################################################################################
 
-document.addEventListener("DOMContentLoaded", checkSidebar());
+document.addEventListener("DOMContentLoaded", formatPage());
+

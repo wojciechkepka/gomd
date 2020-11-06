@@ -11,6 +11,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -90,7 +91,7 @@ func (f *MdFile) IsHidden() bool {
 	return f.Path[0] == '.'
 }
 
-func (f *MdFile) Diff() string {
+func (f *MdFile) Diff(splitLines bool) string {
 	dmp := diff.New()
 	d := dmp.DiffMain(f.InitialContent, string(f.Content), false)
 
@@ -106,5 +107,14 @@ func (f *MdFile) Diff() string {
 		}
 	}
 
-	return s
+	if splitLines {
+		lines := strings.Split(s, "\n")
+		s = ""
+
+		for _, line := range lines {
+			s += `<code class="diff-line">` + line + "</code>\n"
+		}
+	}
+
+	return `<pre>` + s + `</pre>`
 }

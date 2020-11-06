@@ -104,3 +104,20 @@ a
     left: 0
     bottom: 0
 
+\:root
+  --line-no-width: 2em
+
+pre
+  white-space: pre-wrap;
+  margin-left: 8em;
+  &:before
+    counter-reset: listing;
+  code
+    counter-increment: listing;
+    &:before
+      content: counter(listing) ". "
+      display: inline-block;
+      width: var(--line-no-width);
+      padding-left: auto;
+      margin-left: auto;
+      text-align: right;
