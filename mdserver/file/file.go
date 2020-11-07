@@ -155,13 +155,19 @@ func (f *File) Diff(splitLines bool) string {
 
 	s := ""
 	for _, token := range d {
-		switch token.Type {
-		case diff.DiffEqual:
-			s += token.Text
-		case diff.DiffDelete:
-			s += `<span class="token-del">` + token.Text + `</span>`
-		case diff.DiffInsert:
-			s += `<span class="token-add">` + token.Text + `</span>`
+		lines := strings.Split(token.Text, "\n")
+		for i, line := range lines {
+			switch token.Type {
+			case diff.DiffEqual:
+				s += line
+			case diff.DiffDelete:
+				s += `<span class="token-del">` + line + `</span>`
+			case diff.DiffInsert:
+				s += `<span class="token-add">` + line + `</span>`
+			}
+			if len(lines) > 1 && i != len(lines)-1 {
+				s += "\n"
+			}
 		}
 	}
 
